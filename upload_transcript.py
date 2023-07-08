@@ -1,8 +1,12 @@
+'''Upload an epsiode transcript (generated using transcribe_episodes.sh) to AWS
+OpenSearch
+'''
 import argparse
 import csv
 import json
 import requests
 from requests.auth import HTTPBasicAuth
+
 
 # Replace these with your AWS OpenSearch configuration
 opensearch_url = 'https://search-harmontown-search-d6bady5oo7usrqpl5b4kirsuha.us-west-1.es.amazonaws.com'

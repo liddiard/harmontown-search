@@ -1,3 +1,4 @@
 .DS_Store
-episodes/
-transcripts/
+episodes/*.mp3
+episodes/*.mp4
+transcripts/*.tsv
