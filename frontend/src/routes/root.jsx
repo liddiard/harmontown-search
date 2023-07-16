@@ -16,7 +16,7 @@ export default function Root() {
       <Outlet />
       <footer>
         <span className="disclaimer">
-          This is a fan-made project. It is not affiliated with anyone from the podcast or Harmontown Productions LLC.
+          This is a fan-made project. It is not affiliated with anyone from the podcast or with Harmontown Productions LLC.
         </span>
       </footer>
     </>

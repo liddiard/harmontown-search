@@ -9,6 +9,11 @@
     margin: 0.5em 0 0.25em;
   }
 
+  em {
+    background-color: rgba($secondary-yellow, 0.5);
+    font-style: normal;
+  }
+
   .title {
     display: flex;
     align-items: baseline;

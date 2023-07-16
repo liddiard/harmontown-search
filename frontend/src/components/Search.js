@@ -66,6 +66,7 @@ export default function Search() {
                 <EpisodeResult
                   key={result.item.number}
                   query={submittedQuery}
+                  selected={result.item.number === currentEpisodeNumber}
                   setEpisode={setCurrentEpisodeNumber}
                   result={result.item} />
               )}

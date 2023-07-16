@@ -4,7 +4,12 @@
   display: flex;
   margin: 2em 0;
 
+  p {
+    margin-right: 1em;
+  }
+
   input[type=search] {
+    flex-shrink: 1.05;
     width: 100%;
     font-size: 1.5em;
     font-family: $body-font,
@@ -33,7 +38,7 @@
     background-color: $primary-blue;
     display: flex;
     align-items: center;
-    padding: 0 1.5em 0 1em;
+    padding: 0 1.75em 0 1.5em;
     border-radius: 0 1.5rem 1.5rem 0;
 
     img {
