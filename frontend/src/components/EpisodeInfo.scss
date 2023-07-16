@@ -1,0 +1,31 @@
+@import '../globals';
+
+.episode-info {
+  h3 {
+    margin: 0;
+  }
+
+  p {
+    margin: 0.5em 0 0.25em;
+  }
+
+  .title {
+    display: flex;
+    align-items: baseline;
+    gap: 1em;
+
+    time,
+    .episode {
+      font-size: 0.9em;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: $fg-gray;
+    }
+
+    .number,
+    .year {
+      font-weight: bold;
+      color: white;
+    }
+  }
+}

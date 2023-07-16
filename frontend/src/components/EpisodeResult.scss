@@ -1,0 +1,16 @@
+@import '../globals';
+
+.result {
+  padding: 0.5em 0.75em;
+  border-radius: 0.5em;
+
+  &:hover {
+    cursor: pointer;
+    background-color: rgba($primary-blue, 0.3);
+  }
+
+  em {
+    background-color: rgba($primary-blue, 0.5);
+    font-style: normal;
+  }
+}

@@ -1,0 +1,49 @@
+@import '../globals';
+
+#logo {
+  position: relative;
+  text-decoration: none;
+
+  h1 {
+    font-family: $logo-font;
+    font-size: 4em;
+    margin: 0;
+  }
+
+  label {
+    background-color: $secondary-yellow;
+    color: black;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 0.7em;
+    padding: 0.25em 0.5em;
+    transform: rotate(-10deg);
+    top: -5px;
+    left: -15px;
+    position: absolute;
+  }
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid $fg-gray;
+  margin-bottom: 1em;
+
+  nav {
+    a {
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+footer {
+  padding: 2em 0;
+  font-size: 0.9em;
+  color: $fg-gray;
+}

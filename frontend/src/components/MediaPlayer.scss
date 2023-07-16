@@ -1,0 +1,32 @@
+@import '../globals';
+
+#media-player {
+  margin-bottom: 1em;
+
+  .episode-info {
+    margin: 1em 0;
+
+    h3 {
+      font-size: 2.5em;
+    }
+
+    p {
+      line-height: 1.4;
+    }
+
+    time,
+    .episode {
+      font-size: 1em;
+    }
+  }
+
+  .no-video {
+    font-size: 0.9em;
+    color: $fg-gray;
+  }
+
+  audio,
+  video {
+    width: 100%;
+  }
+}
