@@ -18,12 +18,16 @@ export const getEpisodeIndex = () => new Promise((resolve, reject) =>
   })
 )
 
-export const highlightMatches = (result = '', query = '') =>
-  query
+export const highlightMatches = (result = '', query) => {
+  if (!query) {
+    return result
+  }
+  return query
   .trim()
   .split(/\s+/)
   .reduce((acc, cur) =>
     acc.replace(new RegExp(`(${cur})`, 'gi'), '<em>$1</em>'), result)
+}
 
 export const findEpisodeByNumber = (episodes, number) => 
   episodes.find(ep => ep.number === number)

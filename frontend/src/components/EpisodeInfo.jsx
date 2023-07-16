@@ -22,7 +22,7 @@ export default function EpisodeInfo({
         <h3 dangerouslySetInnerHTML={{
           __html: highlightMatches(title, query)
         }} />
-        <span className="episode">Ep <span className="number">{number}</span></span>
+        <span className="episode">Ep. <span className="number">{number}</span></span>
         <time dateTime={date}>
           {formattedDate.slice(0, -1).map(p => p.value).join('')}
           <span className="year">
