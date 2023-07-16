@@ -9,8 +9,8 @@
   }
 
   input[type=search] {
-    flex-shrink: 1.05;
     width: 100%;
+    flex-shrink: 1.1;
     font-size: 1.5em;
     font-family: $body-font,
     sans-serif;
@@ -59,7 +59,7 @@
   }
 
   h2 {
-    font-size: 1.25em;
+    font-size: 1.5em;
     font-weight: 200;
     margin: 1em 0 0.5em;
     text-transform: uppercase;

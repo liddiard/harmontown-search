@@ -14,11 +14,14 @@ export default function Search() {
   const [currentQuery, setCurrentQuery] = useState('')
   const [submittedQuery, setSubmittedQuery] = useState('')
   const [episodeResults, setEpisodeResults] = useState([])
+  const [searchPlaceholder, setSearchPlaceholder] = useState('')
 
   const fuse = useRef(new Fuse())
   const currentEpisode = useMemo(() =>
     findEpisodeByNumber(episodes, currentEpisodeNumber),
     [episodes, currentEpisodeNumber]);
+
+  const placeholderInterval = useRef()
 
   useEffect(() => async () => {
     const { episodes, index } = await getEpisodeIndex()
@@ -28,8 +31,8 @@ export default function Search() {
 
   useEffect(() => {
     const { location, history } = window
-    const originalUrl = location.href;               // Save down the URL without hash.
-    location.href = '#media-player';                 // Go to the target element.
+    const originalUrl = location.href;               // Save down the URL without hash
+    location.href = '#media-player';                 // Go to the target element
     history.replaceState(null, null, originalUrl);   // Remove the hash after jump
   }, [currentEpisode])
 
@@ -45,7 +48,7 @@ export default function Search() {
         <MediaPlayer episode={currentEpisode} />
       : null}
       <form onSubmit={handleSearch} className="search">
-        <p>Search all <strong>361</strong> episodes, <strong>14,931</strong> minutes, and <strong>2,090,340</strong> words spoken in the Harmontown podcast:</p>
+        <p>Search all <strong>361</strong> episodes, <strong>14,931</strong> minutes, <strong>2,090,340</strong> words spoken in the Harmontown podcast:</p>
         <input 
           type="search"
           placeholder="Search"

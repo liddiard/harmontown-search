@@ -14,3 +14,11 @@ export const fuseConfig = {
   },
   transcript: {}
 }
+
+export const searchSuggestions = [
+  'monster man',
+  'mc john',
+  'cheapy peepy',
+  'Robocop',
+  'ED-209'
+]
