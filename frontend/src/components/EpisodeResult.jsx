@@ -21,6 +21,7 @@ export default function EpisodeResult({
     <li 
       className={`result ${selected ? 'selected' : ''}`}
       onClick={() => setEpisode(number)}
+      role="link"
       tabIndex={0}
       onKeyDown={handleKeydown}
     >

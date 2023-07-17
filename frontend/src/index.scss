@@ -20,3 +20,13 @@ body {
 a {
   color: white;
 }
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: white;
+  text-transform: uppercase;
+  font-family: $body-font;
+  font-weight: bold;
+}

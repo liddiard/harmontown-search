@@ -45,7 +45,10 @@ export default function Search() {
   return (
     <>
       {currentEpisode ? 
-        <MediaPlayer episode={currentEpisode} />
+        <MediaPlayer
+          episode={currentEpisode} 
+          setCurrentEpisode={setCurrentEpisodeNumber}
+        />
       : null}
       <form onSubmit={handleSearch} className="search">
         <p>Search all <strong>361</strong> episodes, <strong>14,931</strong> minutes, <strong>2,090,340</strong> words spoken in the Harmontown podcast:</p>

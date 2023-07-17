@@ -1,7 +1,10 @@
 @import '../globals';
 
 #media-player {
+  position: relative;
+  padding-bottom: 1em;
   margin-bottom: 1em;
+  border-bottom: 1px solid $fg-gray;
 
   .episode-info {
     margin: 1em 0;
@@ -23,6 +26,28 @@
   .no-video {
     font-size: 0.9em;
     color: $fg-gray;
+  }
+
+  .close-player {
+    position: absolute;
+    right: 0;
+    background: none;
+    border: none;
+
+    img {
+      width: 2em;
+    }
+  }
+
+  button.share {
+    display: flex;
+    align-items: end;
+    gap: 0.25em;
+    padding: 0.5em;
+
+    img {
+      width: 1.5em;
+    }
   }
 
   audio,
