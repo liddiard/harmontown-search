@@ -1,5 +1,6 @@
 import './EpisodeResult.scss'
 import EpisodeInfo from './EpisodeInfo'
+import playIcon from '../img/play.svg'
 
 export default function EpisodeResult({
   result,
@@ -25,6 +26,9 @@ export default function EpisodeResult({
       tabIndex={0}
       onKeyDown={handleKeydown}
     >
+      {selected ?
+        <img src={playIcon} alt="Now playing" title="Now playing" className="playing" />
+      : null}
       <EpisodeInfo {...result} query={query} />
     </li>
   )
