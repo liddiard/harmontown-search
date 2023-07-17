@@ -33,4 +33,9 @@
       color: white;
     }
   }
+
+  .playing {
+    margin-right: -0.5em; // offset flexbox `gap`
+    height: 1.1em;
+  }
 }
