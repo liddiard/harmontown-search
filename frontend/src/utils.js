@@ -42,3 +42,25 @@ export const highlightMatches = (result = '', query) => {
 
 export const findEpisodeByNumber = (episodes, number) => 
   episodes.find(ep => ep.number === number)
+
+// returns if `value` is between `start` (inclusive) and `end` (exclusive)
+export const inRange = (value, start, end) =>
+  value >= start && value < end
+
+// take a timecode in milliseconds and return a string in the format "H:MM:SS"
+export const formatTimecode = (ms) => {
+  const seconds = Math.floor(ms / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+
+  const secondsRemaining = seconds % 60;
+  const minutesRemaining = minutes % 60;
+
+  return [
+    hours,
+    minutesRemaining.toString().padStart(2, '0'),
+    secondsRemaining.toString().padStart(2, '0')
+  ]
+  .filter(Boolean)
+  .join(':')
+}

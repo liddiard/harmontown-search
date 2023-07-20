@@ -23,7 +23,7 @@
     }
   }
 
-  .no-video {
+  .disclaimer {
     font-size: 0.9em;
     color: $fg-gray;
   }
@@ -42,10 +42,8 @@
   .media-player {
     display: grid;
     grid-template-columns: 2fr 1fr;
-
-    &.audio {
-      gap: 1em;
-    }
+    background: $bg-gray;
+    border-radius: 0.5em;
   }
 
   .actions {
@@ -71,5 +69,11 @@
   video {
     width: 100%;
     border-radius: 0.5em 0 0 0.5em;
+    align-self: center;
+    text-shadow: none;
+  }
+
+  audio {
+    padding: 0 1em;
   }
 }

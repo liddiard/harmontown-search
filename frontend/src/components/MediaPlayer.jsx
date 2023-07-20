@@ -4,7 +4,7 @@ import xIcon from '../img/x.svg'
 import shareIcon from '../img/share.svg'
 import poster from '../img/harmontown-logo-bg-poster.png'
 import EpisodeInfo from './EpisodeInfo'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ShareDialog from './ShareDialog'
 import Transcript from './Transcript'
 
@@ -19,6 +19,8 @@ export default function MediaPlayer({
   const [timecode, setTimecode] = useState(0)
   const [shareOpen, setShareOpen] = useState(false)
 
+  const mediaEl = useRef()
+
   useEffect(() => {
     setShareOpen(false)
   }, [episode])
@@ -30,7 +32,17 @@ export default function MediaPlayer({
   const updateTimecode = (ev) =>
     setTimecode(ev.target.currentTime)
 
-  const getMediaElement = (mediaType, url) => {
+  const seek = (ms, options = {}) => {
+    if (!mediaEl.current) {
+      return
+    }
+    mediaEl.current.currentTime = ms / 1000
+    if (options.play) {
+      mediaEl.current.play()
+    }
+  }
+
+  const getMediaElement = (mediaType, url, mediaEl) => {
     switch (mediaType) {
       case 'audio':
         return <audio
@@ -38,6 +50,7 @@ export default function MediaPlayer({
           autoPlay
           controls
           onTimeUpdate={updateTimecode}
+          ref={mediaEl}
         />
       case 'video':
         return <video
@@ -46,6 +59,7 @@ export default function MediaPlayer({
           controls
           poster={poster}
           onTimeUpdate={updateTimecode}
+          ref={mediaEl}
         />
       default:
         throw Error(`Unrecognized media type: ${mediaType}`)
@@ -63,8 +77,12 @@ export default function MediaPlayer({
       </button>
       <EpisodeInfo {...episode} />
       <div className={`media-player ${mediaType}`}>
-        {getMediaElement(mediaType, url)}
-        <Transcript number={episode.number} timecode={timecode} />
+        {getMediaElement(mediaType, url, mediaEl)}
+        <Transcript
+          number={episode.number}
+          timecode={timecode}
+          seek={seek}
+        />
       </div>
       <div className="actions">
         <button
@@ -74,10 +92,9 @@ export default function MediaPlayer({
           <img src={shareIcon} alt="" />
           Share
         </button>
-        {mediaType === 'audio' ?
-          <span className="no-video">Note: This episode was not video recorded.</span>
-          : null
-        }
+        <span className="disclaimer">
+          Transcript is machine generated and may contain inaccuracies.
+        </span>
       </div>
       <ShareDialog
         open={shareOpen}

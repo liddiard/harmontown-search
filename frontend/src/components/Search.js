@@ -32,6 +32,9 @@ export default function Search() {
   }, []);
 
   useEffect(() => {
+    if (!currentEpisode) {
+      return
+    }
     const { location, history } = window
     const originalUrl = location.href;               // Save down the URL without hash
     location.href = '#media-player';                 // Go to the target element
@@ -53,7 +56,7 @@ export default function Search() {
         />
       : null}
       <form onSubmit={handleSearch} className="search">
-        <p>Search all <strong>361</strong> episodes, <strong>14,931</strong> minutes, and <strong>2,090,340</strong> spoken words in Harmontown:</p>
+        <p>Search all <strong>361</strong> episodes, <strong>14,931</strong> minutes, and <strong>2,090,340</strong> words spoken in Harmontown:</p>
         <input 
           type="search"
           placeholder="Search"
@@ -61,7 +64,7 @@ export default function Search() {
           autoFocus
           onChange={ev => setCurrentQuery(ev.target.value)} 
         />
-        <button>
+        <button className="search">
           <img src={magnifyingGlass} alt="Search" />
         </button>
       </form>

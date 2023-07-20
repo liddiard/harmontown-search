@@ -19,7 +19,7 @@ export default function EpisodeResult({
 
   return (
     <li 
-      className={`result ${selected ? 'selected' : ''}`}
+      className={`selectable result ${selected ? 'selected' : ''}`}
       onClick={() => setEpisode(number)}
       role="link"
       tabIndex={0}

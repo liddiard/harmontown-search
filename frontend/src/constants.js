@@ -26,7 +26,8 @@ export const fuseConfig = {
     ],
     threshold: 0.2,
     ignoreLocation: true,
-    minMatchCharLength: 2
+    minMatchCharLength: 2,
+    sortFn: (a, b) => a.item.start - b.item.start
   }
 }
 

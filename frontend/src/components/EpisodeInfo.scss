@@ -10,8 +10,7 @@
   }
 
   em {
-    background-color: rgba($secondary-yellow, 0.5);
-    font-style: normal;
+    @include highlight;
   }
 
   .title {

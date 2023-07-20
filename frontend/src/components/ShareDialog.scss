@@ -35,10 +35,10 @@ dialog.share {
       }
 
       &.copy-link {
-        color: $secondary-lighter-blue;
+        color: $secondary-blue-lighter;
 
         &.copied {
-          color: $tertiary-lighter-green;
+          color: $tertiary-green-lighter;
 
           img {
             height: 1.3em;
