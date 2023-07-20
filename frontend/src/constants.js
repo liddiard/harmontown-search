@@ -1,3 +1,11 @@
+// https://www.papaparse.com/docs#config
+export const papaConfig = {
+  download: true,
+  header: true,
+  dynamicTyping: true,
+  delimiter: '\t'
+}
+
 // https://www.fusejs.io/api/options.html
 export const fuseConfig = {
   episode: {
@@ -7,12 +15,18 @@ export const fuseConfig = {
       'description'
     ],
     threshold: 0.2,
-    includeScore: true,
     ignoreLocation: true,
     fieldNormWeight: 0.2,
     minMatchCharLength: 2
   },
-  transcript: {}
+  transcript: {
+    keys: [
+      'text'
+    ],
+    threshold: 0.2,
+    ignoreLocation: true,
+    minMatchCharLength: 2
+  }
 }
 
 export const searchSuggestions = [

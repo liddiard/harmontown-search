@@ -1,0 +1,35 @@
+@import '../globals';
+
+.transcript {
+  background-color: $bg-gray;
+  border-radius: 0 0.5em 0.5em 0;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  max-height: 50vh;
+  overflow-y: scroll;
+
+  input[type=search] {
+    width: 100%;
+  }
+
+  .lines {
+    line-height: 1.35;
+    list-style: none;
+    padding: 0 1em;
+    font-size: 0.9em;
+
+    li {
+      padding: 0.5em;
+
+      &.current {
+        background-color: rgba($primary-blue, 0.25);
+      }
+    }
+  }
+}
+
+.audio {
+  .transcript {
+    border-radius: 0.5em;
+  }
+}

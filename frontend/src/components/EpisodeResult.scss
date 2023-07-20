@@ -7,11 +7,16 @@
   
   &:hover {
     cursor: pointer;
-    background-color: rgba($primary-blue, 0.2);
+    // outline: 1px solid $primary-blue;
+    background-color: rgba(255,255,255, 0.15);
   }
   
   &.selected {
     cursor: default;
-    background-color: rgba($primary-blue, 0.4);
+    background-color: rgba($primary-blue, 0.25);
+    
+    &:hover {
+      outline: none;
+    }
   }
 }

@@ -22,7 +22,7 @@ export default function ShareDialog({
         <input
           type="checkbox"
           checked={startCurrent}
-          onClick={() => setStartCurrent(!startCurrent)}
+          onChange={() => setStartCurrent(!startCurrent)}
         />
         Start at current time
       </label>
@@ -30,7 +30,7 @@ export default function ShareDialog({
         <input
           type="checkbox" 
           checked={includeResults}
-          onClick={() => setIncludeResults(!includeResults)}
+          onChange={() => setIncludeResults(!includeResults)}
         />
         Include search results
       </label>
@@ -40,7 +40,7 @@ export default function ShareDialog({
             onClick={copyLink}
           >
           <img src={linkCopied ? checkmarkIcon : linkIcon} alt="" />
-          {linkCopied ? 'Link copied' : 'Copy link'}
+          {linkCopied ? 'Copied' : 'Copy link'}
         </button>
         <button
           className="close"

@@ -19,7 +19,7 @@
     border-color: transparent;
     border-style: solid;
     border-width: 2px 0 2px 2px;
-    border-radius: 1.5rem 0 0 1.5rem;
+    border-radius: 2rem 0 0 2rem;
     padding: 0.5em 1em;
   
     &:focus {
@@ -37,7 +37,7 @@
     display: flex;
     align-items: center;
     padding: 0 1.75em 0 1.5em;
-    border-radius: 0 1.5rem 1.5rem 0;
+    border-radius: 0 2rem 2rem 0;
 
     img {
       width: 2em;
@@ -61,5 +61,9 @@
     font-weight: 200;
     margin: 1em 0 0.5em;
     text-transform: uppercase;
+
+    .num-results {
+      font-weight: normal;
+    }
   }
 }

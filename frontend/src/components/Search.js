@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
 import Fuse from 'fuse.js'
-import { findEpisodeByNumber, getEpisodeIndex } from '../utils'
+import { findEpisodeByNumber, fetchEpisodeIndex } from '../utils'
 import './Search.scss'
 import EpisodeResult from './EpisodeResult'
 import magnifyingGlass from '../img/magnifying-glass.svg'
@@ -23,10 +23,12 @@ export default function Search() {
 
   const placeholderInterval = useRef()
 
-  useEffect(() => async () => {
-    const { episodes, index } = await getEpisodeIndex()
-    setEpisodes(episodes)
-    fuse.current = index
+  useEffect(() => {
+    (async () => {
+      const { episodes, index } = await fetchEpisodeIndex()
+      setEpisodes(episodes)
+      fuse.current = index
+    })()
   }, []);
 
   useEffect(() => {
@@ -51,7 +53,7 @@ export default function Search() {
         />
       : null}
       <form onSubmit={handleSearch} className="search">
-        <p>Search all <strong>361</strong> episodes, <strong>14,931</strong> minutes, and <strong>2,090,340</strong> words spoken in the podcast Harmontown:</p>
+        <p>Search all <strong>361</strong> episodes, <strong>14,931</strong> minutes, and <strong>2,090,340</strong> spoken words in Harmontown:</p>
         <input 
           type="search"
           placeholder="Search"
@@ -66,7 +68,7 @@ export default function Search() {
       <div className="results">
         {episodeResults.length ? 
           <div className="episodes">
-            <h2>Episodes</h2>
+            <h2><span className="num-results">{episodeResults.length}</span> Episodes</h2>
             <ol>
               {episodeResults.map(result => 
                 <EpisodeResult

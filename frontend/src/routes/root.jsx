@@ -7,7 +7,7 @@ export default function Root() {
       <header>
         <a href="/" id="logo">
           <label>Unofficial</label>
-          <h1>Harmontown Search</h1>
+          <h1>Harmontown<span className="search-heading"> Podcast Search</span></h1>
         </a>
         <nav>
           <a href="/about">About</a>
@@ -16,7 +16,7 @@ export default function Root() {
       <Outlet />
       <footer>
         <span className="disclaimer">
-          This is a fan-made project. It is not affiliated with anyone from the podcast or with Harmontown Productions LLC.
+          This is a fan-made site. It is not affiliated with Harmontown Productions LLC nor with anyone from the podcast.
         </span>
       </footer>
     </>

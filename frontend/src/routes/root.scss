@@ -8,11 +8,18 @@
     font-family: $logo-font;
     font-size: 4em;
     margin: 0;
+
+    .search-heading {
+      font-family: $body-font;
+      font-weight: 200;
+      font-size: 0.65em;
+    }
   }
 
   label {
     background-color: $secondary-yellow;
     color: black;
+    text-shadow: none;
     text-transform: uppercase;
     font-weight: bold;
     font-size: 0.7em;
