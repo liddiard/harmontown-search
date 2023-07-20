@@ -6,13 +6,19 @@ import { fetchTranscript } from '../utils'
 const inRange = (value, start, end) =>
   value >= start && value < end
 
-const binarySearch = (transcript, timecode, lo = 0, hi = transcript.length) => {
-  const mid = Math.floor((lo+hi) / 2)
-  console.log(lo, mid, hi)
-  if (inRange(timecode, transcript[mid].start, transcript[mid+1].start)) {
-    return transcript[mid]
+const binarySearch = (transcript, timecode, lo = 0, hi = transcript.length - 1) => {
+  if (lo > hi) {
+    return
   }
-  if (timecode > transcript[mid].start) {
+  const mid = Math.floor((lo+hi) / 2)
+  // console.log(timecode, lo, hi, transcript[mid].start, transcript[mid+1].start)
+  if (
+    !transcript[mid+1] ||
+    inRange(timecode, transcript[mid].start, transcript[mid+1].start)
+  ) {
+    return mid
+  }
+  if (timecode < transcript[mid].start) {
     return binarySearch(
       transcript,
       timecode,
@@ -33,14 +39,16 @@ const getCurrentLine = (
   timecode,
   currentLineNum
 ) => {
-  debugger;
   const currentLine = transcript[currentLineNum]
   const nextLine = transcript[currentLineNum+1]
   const twoLinesAhead = transcript[currentLineNum+2]
-  if (inRange(timecode, currentLine.start, nextLine.start)) {
+  if (timecode > transcript[transcript.length - 1].start) {
+    return transcript.length - 1
+  }
+  if (inRange(timecode, currentLine.start, nextLine?.start)) {
     return currentLineNum
   }
-  if (inRange(timecode, nextLine.start, twoLinesAhead.start)) {
+  if (inRange(timecode, nextLine?.start, twoLinesAhead?.start)) {
     return currentLineNum + 1
   }
   return binarySearch(transcript, timecode)
@@ -57,6 +65,7 @@ export default function Transcript({
   const [submittedQuery, setSubmittedQuery] = useState('')
 
   const fuse = useRef(new Fuse())
+  const currentLineEl = useRef(null)
 
   useEffect(() => {
     (async () => {
@@ -75,18 +84,27 @@ export default function Transcript({
     )
   }, [transcript, timecode, currentLine])
 
+  useEffect(() => {
+    currentLineEl.current?.scrollIntoView({ block: 'center', behavior: 'smooth'})
+  }, [currentLine])
+
   return (
     <article className="transcript">
       <input type="search" placeholder="Search this episode" />
       {/* attach click event listener at  */}
       <ol className="lines">
-        {transcript.map(({ start, end, text }) =>
-          <li
-            key={start}
-            className={transcript[currentLine].start === start ? `current` : ''}
-          >
-            {text}
-          </li>
+        {transcript.map(({ start, end, text }) => {
+          const isCurrent = transcript[currentLine]?.start === start
+          return (
+            <li
+              key={start}
+              className={isCurrent ? `current` : ''}
+              ref={isCurrent ? currentLineEl : null}
+            >
+              {text}
+            </li>
+          )
+        }
         )}
       </ol>
     </article>

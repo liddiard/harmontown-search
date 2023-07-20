@@ -3,7 +3,8 @@ export const papaConfig = {
   download: true,
   header: true,
   dynamicTyping: true,
-  delimiter: '\t'
+  delimiter: '\t',
+  skipEmptyLines: true
 }
 
 // https://www.fusejs.io/api/options.html
