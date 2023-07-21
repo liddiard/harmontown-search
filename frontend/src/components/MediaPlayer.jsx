@@ -10,7 +10,8 @@ import Transcript from './Transcript'
 
 export default function MediaPlayer({
   episode = {},
-  setCurrentEpisode 
+  setCurrentEpisode,
+  startTimecode
 }) {
   const { video_link, audio_link } = episode
   const mediaType = video_link ? 'video' : 'audio'
@@ -43,10 +44,11 @@ export default function MediaPlayer({
   }
 
   const getMediaElement = (mediaType, url, mediaEl) => {
+    const timecodeUrl = `${url}#t=${startTimecode}`
     switch (mediaType) {
       case 'audio':
         return <audio
-          src={url}
+          src={timecodeUrl}
           autoPlay
           controls
           onTimeUpdate={updateTimecode}
@@ -54,7 +56,7 @@ export default function MediaPlayer({
         />
       case 'video':
         return <video
-          src={url}
+          src={timecodeUrl}
           autoPlay
           controls
           poster={poster}
@@ -84,7 +86,7 @@ export default function MediaPlayer({
           seek={seek}
         />
       </div>
-      <div className="actions">
+      <div className="media-actions">
         <button
           className="share"
           onClick={() => setShareOpen(!shareOpen)}
@@ -96,10 +98,9 @@ export default function MediaPlayer({
           Transcript is machine generated and may contain inaccuracies.
         </span>
       </div>
-      <ShareDialog
-        open={shareOpen}
-        setOpen={setShareOpen}
-      />
+      {shareOpen ?
+        <ShareDialog timecode={timecode} setOpen={setShareOpen} />
+        : null}
       <Tooltip id="close-player" place="left" />
     </div>
   )
