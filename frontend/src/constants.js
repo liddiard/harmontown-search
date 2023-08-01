@@ -38,3 +38,5 @@ export const searchSuggestions = [
   'Robocop',
   'ED-209'
 ]
+
+export const defaultTitle = 'Harmontown Podcast Search'

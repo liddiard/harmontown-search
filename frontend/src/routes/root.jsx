@@ -9,7 +9,7 @@ export default function Root() {
       <header>
         <a href="/" id="logo">
           <label>Unofficial</label>
-          <h1>Harmontown<span className="search-heading"> Podcast Search</span></h1>
+          <h1>Harmontown<span className="search-heading"> Podcast Search</span></h1>
         </a>
         <nav>
           <a href="/about">About</a>

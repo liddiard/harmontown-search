@@ -1,91 +1,38 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useMemo, useCallback } from 'react'
 import Fuse from 'fuse.js'
 import './Transcript.scss'
 import leftChevron from '../img/left-chevron.svg'
 import magnifyingGlass from '../img/magnifying-glass.svg'
 import { fetchTranscript, formatTimecode, highlightMatches, inRange } from '../utils'
+import { getCurrentLine } from './transcriptUtils'
 import { Tooltip } from 'react-tooltip'
 
-// Given a `transcript` and a `timecode`, binary search for the line in
-// transcript that matches the timecode. If timecode is between two lines or
-// past the end of the transcript, returns the nearest previous line.
-const searchForLine = (transcript, timecode, lo = 0, hi = transcript.length - 1) => {
-  if (lo > hi) {
-    // not found
-    return
-  }
-  const mid = Math.floor((lo+hi) / 2)
-  if (
-    !transcript[mid+1] ||
-    inRange(timecode, transcript[mid].start, transcript[mid+1].start)
-  ) {
-    // Match: there is no next line (we're at the end of the transcript), or
-    // timecode is in current midpoint's range
-    return mid
-  }
-  if (timecode < transcript[mid].start) {
-    // timecode is before current midpoint recurse on first half
-    return searchForLine(
-      transcript,
-      timecode,
-      lo,
-      mid - 1
-    )
-  } else {
-    // timecode is after current midpoint recurse on second half
-    return searchForLine(
-      transcript,
-      timecode,
-      mid + 1,
-      hi
-    )
-  }
-}
-
-const getCurrentLine = (
-  transcript,
-  timecode,
-  currentLineNum
-) => {
-  const currentLine = transcript[currentLineNum]
-  const nextLine = transcript[currentLineNum+1]
-  const twoLinesAhead = transcript[currentLineNum+2]
-  const lastLine = transcript[transcript.length - 1]
-
-  if (timecode > lastLine.start) {
-    // timecode is within or beyond the last line
-    return transcript.length - 1
-  }
-  if (inRange(timecode, currentLine.start, nextLine?.start)) {
-    // timecode is within the current line
-    return currentLineNum
-  }
-  if (inRange(timecode, nextLine?.start, twoLinesAhead?.start)) {
-    // timecode is within the next line
-    return currentLineNum + 1
-  }
-  // timecode is somewhere else (possibly due to user seek) binary search for
-  // the current line
-  return searchForLine(transcript, timecode)
-}
 
 export default function Transcript({
   number,
   timecode,
   seek
 }) {
+  // transcript: array of lines
   const [transcript, setTranscript] = useState([])
+  // current line of transcript matching the media timecode
   const [currentLine, setCurrentLine] = useState(0)
+  // current text in the episode search input
   const [currentQuery, setCurrentQuery] = useState('')
+  // submitted text in the episode search input
   const [submittedQuery, setSubmittedQuery] = useState('')
+  // results from the `submittedQuery`
   const [searchResults, setSearchResults] = useState([])
   // whether or not to display a "no search results" message
   const [noResults, setNoResults] = useState(false)
 
+  // whether or not the mouse cursor is currently inside the transcript element
+  const cursorInTranscript = useRef(false)
   const fuse = useRef(new Fuse())
   const currentLineEl = useRef(null)
   const transcriptEl = useRef(null)
 
+  // fetch the episode transcript whenever the episode number changes
   useEffect(() => {
     (async () => {
       const { transcript, index } = await fetchTranscript(number)
@@ -94,7 +41,10 @@ export default function Transcript({
     })()
   }, [number])
 
+  // set the current line of the transcript based on the media timecode
   useEffect(() => {
+    // do nothing if there's no transcript or timecode, or if UI is displaying
+    // search results
     if (!transcript.length || !timecode || searchResults.length) {
       return
     }
@@ -103,12 +53,18 @@ export default function Transcript({
     )
   }, [transcript, timecode, currentLine, searchResults])
 
+  // when the user changes the text in the episode search input, remove the
+  // "no search results" message
   useEffect(() => {
     setNoResults(false)
   }, [currentQuery])
 
+  // scroll the transcript element to display the current line in the middle
+  // of its boundingClientRect
   useEffect(() => {
-    if (!transcriptEl.current || !currentLineEl.current) {
+    // return if any required element are not currently rendered in DOM, or if
+    // the user's mouse is currently inside the transcript
+    if (!transcriptEl.current || !currentLineEl.current || cursorInTranscript.current) {
       return
     }
     // we need to manually calculate scroll position instead of using
@@ -132,34 +88,40 @@ export default function Transcript({
     })
   }, [currentLine])
 
-  const handleLineClick = (start, isCurrent) => {
+  const handleLineClick = useCallback((start, isCurrent) => {
     if (isCurrent) {
       return
     }
     seek(start)
-  }
+  }, [seek])
 
-  const handleLineKeydown = (ev, start, isCurrent) => {
+  const handleLineKeydown = useCallback((ev, start, isCurrent) => {
     // enter or space keys
     if (ev.keyCode === 13 || ev.keyCode === 32) {
       ev.preventDefault()
       handleLineClick(start, isCurrent)
     }
-  }
+  }, [handleLineClick])
 
   const handleSearch = (ev) => {
     ev.preventDefault()
     setSubmittedQuery(currentQuery)
     const results = fuse.current.search(currentQuery)
     setSearchResults(results)
-    setNoResults(!results.length)
+    if (currentQuery) {
+      setNoResults(!results.length)
+    }
     if (results.length && transcriptEl.current) {
       transcriptEl.current.scrollTop = 0
     }
   }
 
-  const renderTranscript = () => (
-    <ol className="lines">
+  const transcriptComponent = useMemo(() => ((transcript, currentLine) => (
+    <ol
+      className="lines"
+      onMouseEnter={() => cursorInTranscript.current = true}
+      onMouseLeave={() => cursorInTranscript.current = false}
+    >
       {transcript.map(({ start, text }) => {
         const isCurrent = transcript[currentLine]?.start === start
         return (
@@ -177,7 +139,7 @@ export default function Transcript({
         )
       })}
     </ol>
-  )
+  ))(transcript, currentLine), [transcript, currentLine, handleLineClick, handleLineKeydown])
 
   const renderSearchResults = () => (
     <ol className="search-results">
@@ -225,7 +187,7 @@ export default function Transcript({
             <img src={magnifyingGlass} alt="Search" />
           </button>
         </form>
-        {searchResults.length ? renderSearchResults() : renderTranscript()}
+        {searchResults.length ? renderSearchResults() : transcriptComponent}
       </article>
       <Tooltip id="back-to-transcript" place="left" />
     </>

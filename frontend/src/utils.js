@@ -2,7 +2,7 @@ import Papa from 'papaparse'
 import Fuse from 'fuse.js'
 import { papaConfig, fuseConfig } from './constants'
 
-
+// fetch and parse the TSV file of all episodes
 export const fetchEpisodeIndex = () => new Promise((resolve, reject) =>
   Papa.parse('/episode_list.tsv', {
     ...papaConfig,
@@ -16,6 +16,7 @@ export const fetchEpisodeIndex = () => new Promise((resolve, reject) =>
   })
 )
 
+// fetch and parse the TSV file of a transcript with the passed episode `number`
 export const fetchTranscript = (number) => new Promise((resolve, reject) =>
   Papa.parse(`/transcripts/${number}.tsv`, {
     ...papaConfig,
@@ -29,6 +30,9 @@ export const fetchTranscript = (number) => new Promise((resolve, reject) =>
   })
 )
 
+// given some search `result` text and the original `query`, return a markup
+// string with whole words in `query` that match a substring of the `result`
+// wrapped in an <em> tag
 export const highlightMatches = (result = '', query) => {
   if (!query) {
     return result
@@ -40,6 +44,8 @@ export const highlightMatches = (result = '', query) => {
     acc.replace(new RegExp(`(${cur})`, 'gi'), '<em>$1</em>'), result)
 }
 
+// given the `episodes` list and an episode `number`, return the episode
+// metadata object matching the passed `number`
 export const findEpisodeByNumber = (episodes, number) => 
   episodes.find(ep => ep.number === number)
 
@@ -56,9 +62,13 @@ export const formatTimecode = (ms) => {
   const secondsRemaining = seconds % 60;
   const minutesRemaining = minutes % 60;
 
+  // if the timecode has hours, pad minutes like "1:05:20"
+  // else pad minutes like "5:20" or "0:20"
+  const minutesPadding = hours ? 2 : 1
+
   return [
     hours,
-    minutesRemaining.toString().padStart(2, '0'),
+    minutesRemaining.toString().padStart(minutesPadding, '0'),
     secondsRemaining.toString().padStart(2, '0')
   ]
   .filter(Boolean)

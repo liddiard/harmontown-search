@@ -31,6 +31,10 @@
       font-weight: bold;
       color: white;
     }
+
+    @include tablet {
+      flex-wrap: wrap;
+    } 
   }
 
   .playing {

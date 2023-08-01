@@ -4,7 +4,7 @@ import xIcon from '../img/x.svg'
 import shareIcon from '../img/share.svg'
 import poster from '../img/harmontown-logo-bg-poster.png'
 import EpisodeInfo from './EpisodeInfo'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import ShareDialog from './ShareDialog'
 import Transcript from './Transcript'
 
@@ -33,7 +33,7 @@ export default function MediaPlayer({
   const updateTimecode = (ev) =>
     setTimecode(ev.target.currentTime)
 
-  const seek = (ms, options = {}) => {
+  const seek = useCallback((ms, options = {}) => {
     if (!mediaEl.current) {
       return
     }
@@ -41,9 +41,9 @@ export default function MediaPlayer({
     if (options.play) {
       mediaEl.current.play()
     }
-  }
+  }, [mediaEl])
 
-  const getMediaElement = (mediaType, url, mediaEl) => {
+  const mediaElement = useMemo(() => ((mediaType, url) => {
     const timecodeUrl = `${url}#t=${startTimecode}`
     switch (mediaType) {
       case 'audio':
@@ -66,7 +66,7 @@ export default function MediaPlayer({
       default:
         throw Error(`Unrecognized media type: ${mediaType}`)
     }
-  }
+  })(mediaType, url), [startTimecode, mediaType, url])
 
   return (
     <div id="media-player">
@@ -79,7 +79,7 @@ export default function MediaPlayer({
       </button>
       <EpisodeInfo {...episode} />
       <div className={`media-player ${mediaType}`}>
-        {getMediaElement(mediaType, url, mediaEl)}
+        {mediaElement}
         <Transcript
           number={episode.number}
           timecode={timecode}
@@ -95,7 +95,7 @@ export default function MediaPlayer({
           Share
         </button>
         <span className="disclaimer">
-          Transcript is machine generated and may contain inaccuracies.
+          Transcript is machine generated and may contain errors.
         </span>
       </div>
       {shareOpen ?

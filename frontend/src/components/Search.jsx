@@ -6,6 +6,7 @@ import './Search.scss'
 import EpisodeResult from './EpisodeResult'
 import magnifyingGlass from '../img/magnifying-glass.svg'
 import MediaPlayer from './MediaPlayer'
+import { defaultTitle } from '../constants'
 
 
 export default function Search() {
@@ -47,13 +48,16 @@ export default function Search() {
   }, []);
 
   useEffect(() => {
-    if (currentEpisodeNumber) {
+    if (currentEpisode) {
       const { location, history } = window
       const originalUrl = location.href;               // Save down the URL without hash
       location.href = '#media-player';                 // Go to the target element
       history.replaceState(null, null, originalUrl);   // Remove the hash after jump
+      document.title = `${currentEpisode.title} | ${defaultTitle}`
+    } else {
+      document.title = defaultTitle
     }
-  }, [currentEpisodeNumber])
+  }, [currentEpisode])
 
   const handleSearch = (ev) => {
     ev?.preventDefault()
@@ -96,7 +100,10 @@ export default function Search() {
       <div className="results">
         {episodeResults.length ? 
           <div className="episodes">
-            <h2><span className="num-results">{episodeResults.length}</span> Episodes</h2>
+            <h2>
+              <span className="num-results">{episodeResults.length} </span>
+              Episode{episodeResults.length > 1 ? 's' : null}
+            </h2>
             <ol>
               {episodeResults.map(result => 
                 <EpisodeResult

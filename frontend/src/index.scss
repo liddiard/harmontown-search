@@ -22,6 +22,10 @@ body {
   background-repeat: no-repeat;
   background-position: bottom;
   min-height: 100vh;
+
+  @include phone-lg {
+    font-size: 0.9em;
+  }
 }
 
 a {
