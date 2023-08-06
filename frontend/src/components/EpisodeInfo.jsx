@@ -1,4 +1,5 @@
 import { highlightMatches } from '../utils'
+import playIcon from '../img/play.svg'
 import './EpisodeInfo.scss'
 
 export default function EpisodeInfo({
@@ -7,7 +8,8 @@ export default function EpisodeInfo({
   number,
   record_date,
   release_date,
-  query
+  query,
+  selected
 }) {
   const date = record_date || release_date
   const formattedDate = Intl.DateTimeFormat('en-US', {
@@ -19,6 +21,9 @@ export default function EpisodeInfo({
   return (
     <div className="episode-info">
       <div className="title">
+        {selected ?
+          <img src={playIcon} alt="Now playing" title="Now playing" className="playing" />
+        : null}
         <h3 dangerouslySetInnerHTML={{
           __html: highlightMatches(title, query)
         }} />
@@ -31,7 +36,7 @@ export default function EpisodeInfo({
         </time>
       </div>
       <p dangerouslySetInnerHTML={{
-        __html: highlightMatches(description, query).replace(/\\n/g, ' ')
+        __html: highlightMatches(description, query)
       }} />
     </div>
   )

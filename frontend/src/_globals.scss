@@ -1,11 +1,35 @@
 $primary-blue: rgb(0, 189, 189);
-$secondary-lighter-blue: rgb(78, 206, 206);
+$secondary-blue-lighter: rgb(78, 206, 206);
 $secondary-yellow: rgb(255, 170, 0);
 $secondary-red: rgb(255, 0, 0);
-$tertiary-lighter-green: rgb(88, 230, 88);
-$fg-gray: #aaa;
-$bg-gray: #222;
+$secondary-red-lighter: rgb(255, 64, 64);
+$tertiary-green-lighter: rgb(88, 230, 88);
+$fg-gray: rgba(255, 255, 255, 0.65);
+$bg-gray: rgba(255, 255, 255, 0.125);
+$bg-gray-opaque: rgb(32, 32, 32);
+$bg-gray-lighter-opaque: rgb(64, 64, 64);
 
 $body-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 $logo-font: 'Bebas Neue', sans-serif;
+
+@mixin highlight {
+  background-color: rgba($secondary-yellow, 0.5);
+  font-style: normal;
+}
+
+@mixin narrow {
+  @media (max-width: 800px) { @content; }
+}
+
+@mixin tablet {
+  @media (max-width: 640px) { @content; }
+}
+
+@mixin phone-lg {
+  @media (max-width: 480px) { @content; }
+}
+
+@mixin phone-sm {
+  @media (max-width: 400px) { @content; }
+}

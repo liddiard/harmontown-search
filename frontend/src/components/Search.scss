@@ -1,6 +1,6 @@
 @import '../globals';
 
-.search {
+form.search {
   display: flex;
   margin: 2em 0;
 
@@ -9,35 +9,14 @@
   }
 
   input[type=search] {
-    width: 100%;
     flex-shrink: 1.1;
     font-size: 1.5em;
-    font-family: $body-font,
-    sans-serif;
-    background-color: $bg-gray;
-    color: white;
-    border-color: transparent;
-    border-style: solid;
-    border-width: 2px 0 2px 2px;
-    border-radius: 1.5rem 0 0 1.5rem;
-    padding: 0.5em 1em;
-  
-    &:focus {
-      outline: none;
-      border-color: $primary-blue;
-    }
-
-    &::-webkit-search-cancel-button {
-      display: none;
-    }
+    border-radius: 2rem 0 0 2rem;
   }
 
-  button {
-    background-color: $primary-blue;
-    display: flex;
-    align-items: center;
+  button.search {
     padding: 0 1.75em 0 1.5em;
-    border-radius: 0 1.5rem 1.5rem 0;
+    border-radius: 0 2rem 2rem 0;
 
     img {
       width: 2em;
@@ -47,7 +26,7 @@
 
 .results {
   ol {
-    max-height: 50vh;
+    max-height: min(60vh, 20em);
     overflow-y: scroll;
     list-style: none;
     padding: 0.75em;
@@ -61,5 +40,9 @@
     font-weight: 200;
     margin: 1em 0 0.5em;
     text-transform: uppercase;
+
+    .num-results {
+      font-weight: normal;
+    }
   }
 }

@@ -3,8 +3,9 @@
 dialog.share {
   margin: 0;
   color: white;
-  background-color: $bg-gray;
-  border-color: $fg-gray;
+  background-color: #222;
+  border: none;
+  border-radius: 0.5em;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 1);
 
   label {
@@ -13,10 +14,10 @@ dialog.share {
   }
 
   input[type=checkbox] {
-    margin-right: 0.5em;
+    margin: 0 0.5em 0 0;
   }
 
-  .actions {
+  .share-actions {
     display: flex;
     justify-content: space-between;
     margin-top: 1em;
@@ -34,10 +35,10 @@ dialog.share {
       }
 
       &.copy-link {
-        color: $secondary-lighter-blue;
+        color: $secondary-blue-lighter;
 
         &.copied {
-          color: $tertiary-lighter-green;
+          color: $tertiary-green-lighter;
 
           img {
             height: 1.3em;
@@ -51,4 +52,10 @@ dialog.share {
       }
     }
   }
+}
+
+.bg-mask {
+  position: fixed;
+  top: 0; right: 0; bottom: 0; left: 0;
+  // z-index: -1000;
 }

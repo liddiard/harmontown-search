@@ -1,3 +1,12 @@
+// https://www.papaparse.com/docs#config
+export const papaConfig = {
+  download: true,
+  header: true,
+  dynamicTyping: true,
+  delimiter: '\t',
+  skipEmptyLines: true
+}
+
 // https://www.fusejs.io/api/options.html
 export const fuseConfig = {
   episode: {
@@ -7,12 +16,19 @@ export const fuseConfig = {
       'description'
     ],
     threshold: 0.2,
-    includeScore: true,
     ignoreLocation: true,
     fieldNormWeight: 0.2,
     minMatchCharLength: 2
   },
-  transcript: {}
+  transcript: {
+    keys: [
+      'text'
+    ],
+    threshold: 0.2,
+    ignoreLocation: true,
+    minMatchCharLength: 2,
+    sortFn: (a, b) => a.item.start - b.item.start
+  }
 }
 
 export const searchSuggestions = [
@@ -22,3 +38,5 @@ export const searchSuggestions = [
   'Robocop',
   'ED-209'
 ]
+
+export const defaultTitle = 'Harmontown Podcast Search'

@@ -9,12 +9,23 @@ html {
 }
 
 body {
-  margin: 2em;
+  margin: 0;
+  padding: 2rem;
   font-family: $body-font;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: black;
   color: white;
+  text-shadow: 1px 1px black;
+  background-image: url('./img/harmontown-crew-bg.webp');
+  background-size: 90%;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  min-height: 100vh;
+
+  @include phone-lg {
+    font-size: 0.9em;
+  }
 }
 
 a {

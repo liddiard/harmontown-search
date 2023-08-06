@@ -8,11 +8,18 @@
     font-family: $logo-font;
     font-size: 4em;
     margin: 0;
+
+    .search-heading {
+      font-family: $body-font;
+      font-weight: 200;
+      font-size: 0.65em;
+    }
   }
 
   label {
     background-color: $secondary-yellow;
     color: black;
+    text-shadow: none;
     text-transform: uppercase;
     font-weight: bold;
     font-size: 0.7em;
@@ -46,4 +53,46 @@ footer {
   padding: 2em 0;
   font-size: 0.9em;
   color: $fg-gray;
+}
+
+input[type=search] {
+  width: 100%;
+  font-family: $body-font,
+  sans-serif;
+  background-color: $bg-gray;
+  color: white;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 2px 0 2px 2px;
+  padding: 0.5em 1em;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-blue;
+  }
+
+  &::-webkit-search-cancel-button {
+    display: none;
+  }
+}
+
+button.search {
+  background-color: $primary-blue;
+  display: flex;
+  align-items: center;
+}
+
+li.selectable {
+  padding: 0.5em 0.75em;
+  border-radius: 0.5em;
+  
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(255,255,255, 0.15);
+  }
+  
+  &.selected {
+    cursor: default;
+    background-color: rgba($primary-blue, 0.25);
+  }
 }

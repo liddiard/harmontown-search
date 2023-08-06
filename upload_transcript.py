@@ -1,65 +1,100 @@
-'''Upload an epsiode transcript (generated using transcribe_episodes.sh) to AWS
-OpenSearch
+'''Upload all epsiode transcripts (generated using transcribe_episodes.sh) to
+Typesense server. DELETES existing transcripts.
 '''
-import argparse
+import sys
 import csv
-import json
-import requests
-from requests.auth import HTTPBasicAuth
+import re
+import argparse
+from glob import glob
+
+import typesense
 
 
-# Replace these with your AWS OpenSearch configuration
-opensearch_url = 'https://search-harmontown-search-d6bady5oo7usrqpl5b4kirsuha.us-west-1.es.amazonaws.com'
-index_name = 'transcripts'
+COLLECTION_NAME = 'transcripts'
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-u', '--username', type=str, required=True, 
-                    help='AWS username')
-parser.add_argument('-p', '--password', type=str, required=True, 
-                    help='AWS password')
-parser.add_argument('-e', '--episode', type=int, required=True, 
-                    help='Episode number')
-parser.add_argument(
-  'transcript_file',
-  help='Episode transcript file in .tsv format output by Whisper'
-)
+parser.add_argument('-k', '--api-key', type=str, required=True, 
+                    help='Typesense API key')
+parser.add_argument('-d', '--drop-existing',
+                    action=argparse.BooleanOptionalAction,
+                    help='Drop existing collection')
 args = parser.parse_args()
 
-if args.transcript_file is None:
-    raise TypeError('Missing required argument [transcript_file]')
+if args.drop_existing:
+    proceed = input("Warning: Running with -d will drop the existing episode "
+                    "index and result in downtime. Are you sure you want to "
+                    "proceed? [y/N]: ")
+    if proceed not in ['y', 'Y', 'yes', 'Yes', 'YES']:
+        sys.exit()
 
-episode = args.episode
-transcript = []
-with open(args.transcript_file, 'r') as f:
-    reader = csv.DictReader(f, delimiter='\t')
-    for row in reader:
-        transcript.append({
-            'episode': episode,
-            'start': int(row['start']) // 1000,
-            'end': int(row['end']) // 1000,
-            'text': row['text']
-        })
-
-bulk_data = ''
-for line in transcript:
-    # Create the index metadata for this document
-    index_metadata = {
-        'index': {
-            '_index': index_name,
-            '_id': f"{episode}_{line['start']}"  # Optionally, provide a unique id for each document
-        }
-    }
-    bulk_data += json.dumps(index_metadata) + '\n' + json.dumps(line) + '\n'
-
-headers = {
-    'Content-Type': 'application/x-ndjson',  # Bulk API requires newline-delimited JSON
-    'Accept': 'application/json'
+# https://typesense.org/docs/0.24.1/api/collections.html#field-types
+# https://typesense.org/docs/0.24.1/api/search.html#facet-results
+transcripts_schema = {
+    'name': COLLECTION_NAME,
+    'fields': [
+        {'name': 'episode', 'type': 'int32', 'facet': True},
+        {'name': 'text', 'type': 'string'},
+        {'name': 'start', 'type': 'int32', 'index': False, 'optional': True},
+        {'name': 'end', 'type': 'int32', 'index': False, 'optional': True}
+    ]
 }
 
-response = requests.post(f'{opensearch_url}/_bulk',
-                         auth=HTTPBasicAuth(args.username, args.password),
-                         headers=headers,
-                         data=bulk_data)
+# Resources:
+# - https://typesense.org/docs/guide/building-a-search-application.html
+# - https://typesense.org/docs/0.24.1/api/collections.html
+client = typesense.Client({
+  'nodes': [{
+    'host': 'api.harmontown-search.harrisonliddiard.com',
+    'port': '443',
+    'protocol': 'https'
+  }],
+  'api_key': args.api_key,
+  # From docs: IMPORTANT: Be sure to increase connection_timeout_seconds to
+  # at least 5 minutes or more for imports, when instantiating the client
+  'connection_timeout_seconds': 5 * 60
+})
 
-# # Print the response from AWS OpenSearch
-print(response.json())
+if args.drop_existing:
+    try:
+        client.collections[COLLECTION_NAME].delete()
+        print(f"Deleted existing collection: {COLLECTION_NAME}")
+    except typesense.exceptions.ObjectNotFound:
+        print(f"Existing collection '{COLLECTION_NAME}' not found.")
+
+try:
+    client.collections.create(transcripts_schema)
+    print(f"Created collection: {COLLECTION_NAME}")
+except typesense.exceptions.ObjectAlreadyExists:
+    print(f"Collection '{COLLECTION_NAME}' already exists.")
+
+transcripts = glob("transcripts/*.tsv")
+
+errors = False
+for transcript_file in transcripts:
+    episode = re.search(r"(\d+)\.tsv", transcript_file).group(1)
+    transcript = []
+    print(f"⬆️  Starting upload for episode: {episode}")
+    with open(transcript_file, 'r') as f:
+        reader = csv.DictReader(f, delimiter='\t')
+        for row in reader:
+            transcript.append({
+                'id': f"{episode}_{row['start']}",
+                'text': row['text'],
+                'episode': int(episode),
+                'start': int(row['start']),
+                'end': int(row['end'])
+            })
+    res = client.collections[COLLECTION_NAME].documents.import_(
+        transcript,
+        {'action': 'upsert'}
+    )
+    for upload in res:
+        if upload['success'] is False:
+            errors = True
+            print(f'❗️ {upload}')
+    print(f"✅ Finished upload for episode: {episode}")
+
+if errors:
+    print(f"🔴 Completed with errors – see above")
+else:
+    print(f"🟢 Completed without errors")
