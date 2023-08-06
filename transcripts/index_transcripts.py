@@ -1,5 +1,5 @@
 '''Upload all epsiode transcripts (generated using transcribe_episodes.sh) to
-Typesense server. DELETES existing transcripts.
+Typesense server.
 '''
 import sys
 import csv
@@ -67,7 +67,7 @@ try:
 except typesense.exceptions.ObjectAlreadyExists:
     print(f"Collection '{COLLECTION_NAME}' already exists.")
 
-transcripts = glob("transcripts/*.tsv")
+transcripts = glob("*.tsv")
 
 errors = False
 for transcript_file in transcripts:
