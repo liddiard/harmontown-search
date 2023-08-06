@@ -42,7 +42,7 @@ def download_eps(episode_list):
             else:
                 url = ep['audio_link']
                 ext = 'mp3'
-            filename = f"episodes/{episode_number}.{ext}"
+            filename = f"{episode_number}.{ext}"
 
             print(f"⬇️  Downloading {url} to {filename}")
             success = download_file(url, filename)

@@ -36,7 +36,7 @@ export default function EpisodeInfo({
         </time>
       </div>
       <p dangerouslySetInnerHTML={{
-        __html: highlightMatches(description, query).replace(/\\n/g, ' ')
+        __html: highlightMatches(description, query)
       }} />
     </div>
   )
