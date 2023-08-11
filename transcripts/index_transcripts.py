@@ -10,20 +10,37 @@ from glob import glob
 import typesense
 
 
+DEV = 'dev'
+PROD = 'prod'
+CONFIG = {
+    DEV: {
+        'host': 'localhost',
+        'port': '8108',
+        'protocol': 'http'
+    },
+    PROD: {
+        'host': 'api.harmontown-search.harrisonliddiard.com',
+        'port': '443',
+        'protocol': 'https'
+    }
+}
 COLLECTION_NAME = 'transcripts'
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-k', '--api-key', type=str, required=True, 
                     help='Typesense API key')
+parser.add_argument('-e', '--env', type=str, required=True,
+                    choices=[DEV, PROD],
+                    help='Typesense client environment')
 parser.add_argument('-d', '--drop-existing',
                     action=argparse.BooleanOptionalAction,
                     help='Drop existing collection')
 args = parser.parse_args()
 
 if args.drop_existing:
-    proceed = input("Warning: Running with -d will drop the existing episode "
-                    "index and result in downtime. Are you sure you want to "
-                    "proceed? [y/N]: ")
+    proceed = input("Warning: Running with -d will drop the existing" 
+                    "'transcripts' index and result in downtime. Are you "
+                    "sure you want to proceed? [y/N]: ")
     if proceed not in ['y', 'Y', 'yes', 'Yes', 'YES']:
         sys.exit()
 
@@ -43,11 +60,7 @@ transcripts_schema = {
 # - https://typesense.org/docs/guide/building-a-search-application.html
 # - https://typesense.org/docs/0.24.1/api/collections.html
 client = typesense.Client({
-  'nodes': [{
-    'host': 'api.harmontown-search.harrisonliddiard.com',
-    'port': '443',
-    'protocol': 'https'
-  }],
+  'nodes': [CONFIG[DEV] if args.env == DEV else CONFIG[PROD]],
   'api_key': args.api_key,
   # From docs: IMPORTANT: Be sure to increase connection_timeout_seconds to
   # at least 5 minutes or more for imports, when instantiating the client
