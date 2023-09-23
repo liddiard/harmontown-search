@@ -1,8 +1,6 @@
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react'
 import Fuse from 'fuse.js'
 import './Transcript.scss'
-import leftChevron from '../img/left-chevron.svg'
-import magnifyingGlass from '../img/magnifying-glass.svg'
 import { fetchTranscript, formatTimecode, highlightMatches, inRange } from '../utils'
 import { getCurrentLine } from './transcriptUtils'
 import { Tooltip } from 'react-tooltip'
@@ -17,14 +15,11 @@ export default function Transcript({
   const [transcript, setTranscript] = useState([])
   // current line of transcript matching the media timecode
   const [currentLine, setCurrentLine] = useState(0)
-  // current text in the episode search input
-  const [currentQuery, setCurrentQuery] = useState('')
+
   // submitted text in the episode search input
   const [submittedQuery, setSubmittedQuery] = useState('')
   // results from the `submittedQuery`
   const [searchResults, setSearchResults] = useState([])
-  // whether or not to display a "no search results" message
-  const [noResults, setNoResults] = useState(false)
 
   // whether or not the mouse cursor is currently inside the transcript element
   const cursorInTranscript = useRef(false)
@@ -103,18 +98,7 @@ export default function Transcript({
     }
   }, [handleLineClick])
 
-  const handleSearch = (ev) => {
-    ev.preventDefault()
-    setSubmittedQuery(currentQuery)
-    const results = fuse.current.search(currentQuery)
-    setSearchResults(results)
-    if (currentQuery) {
-      setNoResults(!results.length)
-    }
-    if (results.length && transcriptEl.current) {
-      transcriptEl.current.scrollTop = 0
-    }
-  }
+
 
   const transcriptComponent = useMemo(() => ((transcript, currentLine) => (
     <ol
@@ -141,52 +125,9 @@ export default function Transcript({
     </ol>
   ))(transcript, currentLine), [transcript, currentLine, handleLineClick, handleLineKeydown])
 
-  const renderSearchResults = () => (
-    <ol className="search-results">
-      {searchResults.map(({ item: { start, text } }) => 
-        <li
-          key={start}
-          className="selectable"
-          onClick={() => {
-            seek(start, { play: true })
-            setSearchResults([])
-          }}
-        >
-          <time className="timecode">{formatTimecode(start)}</time>
-          <span dangerouslySetInnerHTML={{ __html: highlightMatches(text, submittedQuery) }} />
-        </li>
-      )}
-    </ol>
-  )
-
   return (
     <>
       <article className="transcript" ref={transcriptEl}>
-        <form className="episode-search" onSubmit={handleSearch}>
-          {searchResults.length ? 
-            <button 
-              type="button"
-              className="back-to-transcript"
-              data-tooltip-id="back-to-transcript"
-              data-tooltip-content="Back to transcript"
-              onClick={() => setSearchResults([])}>
-              <img src={leftChevron} alt="Back to transcript" />
-            </button>
-          : null}
-          <input
-            type="search"
-            value={currentQuery}
-            placeholder="Search this episode"
-            className={searchResults.length ? 'showing-results' : ''}
-            onChange={(ev) => setCurrentQuery(ev.target.value)}
-          />
-          {noResults ?
-            <span className="no-results" role="alert">Not found</span>
-          : null}
-          <button className="search">
-            <img src={magnifyingGlass} alt="Search" />
-          </button>
-        </form>
         {searchResults.length ? renderSearchResults() : transcriptComponent}
       </article>
       <Tooltip id="back-to-transcript" place="left" />
