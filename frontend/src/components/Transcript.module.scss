@@ -5,7 +5,7 @@
   max-height: 50vh;
   overflow-y: scroll;
 
-  .close-results {
+  .closeResults {
     position: sticky;
     top: 0;
     right: 0;
@@ -15,18 +15,10 @@
     }
   }
 
-  ol {
-    list-style: none;
-    line-height: 1.35;
+  .lines {
+    @include transcript-line;
     padding: 0 0.5em;
     margin: 1em 0;
-    font-size: 0.9em;
-
-    .timecode {
-      display: block;
-      font-size: 0.9em;
-      color: $fg-gray;
-    }
 
     li {
       transition: background-color 0.5s;

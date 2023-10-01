@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import Fuse from 'fuse.js'
+import s from './Search.module.scss'
 import { findEpisodeByNumber, fetchEpisodeIndex } from '../utils'
-import './Search.scss'
 import EpisodeResult from './EpisodeResult'
 import magnifyingGlass from '../img/magnifying-glass.svg'
 import MediaPlayer from './MediaPlayer'
@@ -84,7 +84,7 @@ export default function Search() {
           setCurrentEpisode={setCurrentEpisode}
         />
       : null}
-      <form onSubmit={handleSearch} className="search">
+      <form onSubmit={handleSearch} className={s.search}>
         <p>Search all <strong>361</strong> episodes, <strong>14,931</strong> minutes, and <strong>2,090,340</strong> words spoken in Harmontown:</p>
         <input 
           type="search"
@@ -97,11 +97,11 @@ export default function Search() {
           <img src={magnifyingGlass} alt="Search" />
         </button>
       </form>
-      <div className="results">
+      <div className={s.results}>
         {episodeResults.length ? 
           <div className="episodes">
             <h2>
-              <span className="num-results">{episodeResults.length} </span>
+              <span className={s.numResults}>{episodeResults.length} </span>
               Episode{episodeResults.length > 1 ? 's' : null}
             </h2>
             <ol>

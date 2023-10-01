@@ -18,6 +18,12 @@ $logo-font: 'Bebas Neue', sans-serif;
   font-style: normal;
 }
 
+@mixin transcript-line {
+  list-style: none;
+  line-height: 1.35;
+  font-size: 0.9em;
+}
+
 @mixin narrow {
   @media (max-width: 800px) { @content; }
 }

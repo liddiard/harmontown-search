@@ -1,3 +1,5 @@
+import { useRef, useEffect } from 'react'
+import s from './TranscriptSearchResults.module.scss'
 import { formatTimecode, highlightMatches } from '../utils'
 
 export default function TranscriptSearchResults({ 
@@ -6,8 +8,19 @@ export default function TranscriptSearchResults({
   submittedQuery,
   seek
 }) {
+  const resultsEl = useRef(null)
+
+  useEffect(() => {
+    if (resultsEl.current) {
+      resultsEl.current.scrollTop = 0
+    }
+  }, [searchResults])
+
+  if (!searchResults.length)  {
+    return
+  }
   return (
-    <ol className="search-results">
+    <ol className={s.transcriptSearchResults} ref={resultsEl}>
       {searchResults.map(({ item: { start, text } }) => 
         <li
           key={start}
@@ -17,7 +30,7 @@ export default function TranscriptSearchResults({
             setSearchResults([])
           }}
         >
-          <time className="timecode">{formatTimecode(start)}</time>
+          <time className={s.timecode}>{formatTimecode(start)}</time>
           <span dangerouslySetInnerHTML={{ __html: highlightMatches(text, submittedQuery) }} />
         </li>
       )}

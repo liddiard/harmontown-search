@@ -1,4 +1,4 @@
-import './EpisodeResult.scss'
+import './EpisodeResult.module.scss'
 import EpisodeInfo from './EpisodeInfo'
 
 export default function EpisodeResult({

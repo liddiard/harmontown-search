@@ -1,25 +1,27 @@
 @import '../globals';
 
-form.search {
+.search {
   display: flex;
   margin: 2em 0;
 
-  p {
-    margin-right: 1em;
-  }
-
-  input[type=search] {
-    flex-shrink: 1.1;
-    font-size: 1.5em;
-    border-radius: 2rem 0 0 2rem;
-  }
-
-  button.search {
-    padding: 0 1.75em 0 1.5em;
-    border-radius: 0 2rem 2rem 0;
-
-    img {
-      width: 2em;
+  :global {
+    p {
+      margin-right: 1em;
+    }
+  
+    input[type=search] {
+      flex-shrink: 1.1;
+      font-size: 1.5em;
+      border-radius: 2rem 0 0 2rem;
+    }
+  
+    button.search {
+      padding: 0 1.75em 0 1.5em;
+      border-radius: 0 2rem 2rem 0;
+  
+      img {
+        width: 2em;
+      }
     }
   }
 }
@@ -41,7 +43,7 @@ form.search {
     margin: 1em 0 0.5em;
     text-transform: uppercase;
 
-    .num-results {
+    .numResults {
       font-weight: normal;
     }
   }

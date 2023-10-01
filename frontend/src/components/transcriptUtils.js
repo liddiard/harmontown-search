@@ -18,7 +18,7 @@ const searchForLine = (transcript, timecode, lo = 0, hi = transcript.length - 1)
     return mid
   }
   if (timecode < transcript[mid].start) {
-    // timecode is before current midpoint recurse on first half
+    // timecode is before current midpoint: recurse on first half
     return searchForLine(
       transcript,
       timecode,
@@ -26,7 +26,7 @@ const searchForLine = (transcript, timecode, lo = 0, hi = transcript.length - 1)
       mid - 1
     )
   } else {
-    // timecode is after current midpoint recurse on second half
+    // timecode is after current midpoint: recurse on second half
     return searchForLine(
       transcript,
       timecode,
