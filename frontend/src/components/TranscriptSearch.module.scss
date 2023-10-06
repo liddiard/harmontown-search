@@ -33,14 +33,14 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 
     &::placeholder {
-      color: rgb(192, 192, 192);
+      color: $fg-gray;
     }
 
     &.showingResults {
       padding-left: 2.5em;
     }
   }
-  
+
   em {
     @include highlight;
   }

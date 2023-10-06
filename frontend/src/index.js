@@ -9,7 +9,7 @@ import reportWebVitals from './reportWebVitals';
 import Root from './routes/root';
 import About from './routes/about';
 import ErrorPage from './error-page';
-import Search from './components/Search';
+import EpisodeSearch from './components/EpisodeSearch';
 
 
 const router = createBrowserRouter([
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Search />
+        element: <EpisodeSearch />
       },
       {
         path: '/about',
