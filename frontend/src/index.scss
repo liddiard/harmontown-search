@@ -9,7 +9,7 @@ html {
 }
 
 body {
-  margin: 0;
+  margin: 0 auto;
   padding: 2rem;
   font-family: $body-font;
   -webkit-font-smoothing: antialiased;
@@ -21,9 +21,11 @@ body {
   background-size: 90%;
   background-repeat: no-repeat;
   background-position: bottom;
+  max-width: 1440px;
   min-height: 100vh;
 
   @include phone-lg {
+    padding: 1rem;
     font-size: 0.9em;
   }
 }
@@ -41,3 +43,24 @@ button {
   font-family: $body-font;
   font-weight: bold;
 }
+
+// /* Works on Firefox */
+// * {
+//   scrollbar-width: thin;
+//   scrollbar-color: $fg-gray transparent;
+// }
+
+// /* Works on Chrome, Edge, and Safari */
+// *::-webkit-scrollbar {
+//   width: 12px;
+// }
+
+// *::-webkit-scrollbar-track {
+//   background: transparent;
+// }
+
+// *::-webkit-scrollbar-thumb {
+//   background-color: $fg-gray;
+//   border-radius: 20px;
+//   border: 1px solid black;
+// }

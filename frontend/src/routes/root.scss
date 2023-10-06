@@ -7,6 +7,7 @@
   h1 {
     font-family: $logo-font;
     font-size: 4em;
+    line-height: 0.75;
     margin: 0;
 
     .search-heading {
@@ -25,7 +26,7 @@
     font-size: 0.7em;
     padding: 0.25em 0.5em;
     transform: rotate(-10deg);
-    top: -5px;
+    top: -22px;
     left: -15px;
     position: absolute;
   }
@@ -33,10 +34,11 @@
 
 header {
   display: flex;
-  align-items: baseline;
+  align-items: end;
   justify-content: space-between;
   border-bottom: 1px solid $fg-gray;
   margin-bottom: 1em;
+  padding: 1em 0 0.75em;
 
   nav {
     a {

@@ -88,7 +88,7 @@ export default function MediaPlayer({
       </div>
       <div className={s.mediaActions}>
         <button
-          className={s.share}
+          className={`${s.share} ${shareOpen ? s.open : ''}`}
           onClick={() => setShareOpen(!shareOpen)}
           >
           <img src={shareIcon} alt="" />

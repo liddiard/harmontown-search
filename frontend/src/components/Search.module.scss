@@ -4,24 +4,32 @@
   display: flex;
   margin: 2em 0;
 
-  :global {
-    p {
-      margin-right: 1em;
-    }
-  
-    input[type=search] {
-      flex-shrink: 1.1;
-      font-size: 1.5em;
-      border-radius: 2rem 0 0 2rem;
-    }
-  
-    button.search {
-      padding: 0 1.75em 0 1.5em;
-      border-radius: 0 2rem 2rem 0;
-  
-      img {
-        width: 2em;
-      }
+  @include narrow {
+    flex-wrap: wrap;
+  }
+
+  p {
+    margin-right: 1em;
+    line-height: 1.3;
+  }
+
+  .inputWrapper {
+    display: flex;
+    width: 100%;
+  }
+
+  input[type=search] {
+    flex-shrink: 1.1;
+    font-size: 1.5em;
+    border-radius: 2rem 0 0 2rem;
+  }
+
+  button {
+    padding: 0 1.75em 0 1.5em;
+    border-radius: 0 2rem 2rem 0;
+
+    img {
+      width: 2em;
     }
   }
 }

@@ -28,6 +28,9 @@ export default function Transcript({
       const { transcript, index } = await fetchTranscript(number)
       setTranscript(transcript)
       fuse.current = index
+      if (transcriptEl.current) {
+        transcriptEl.scrollTop = 0
+      }
     })()
   }, [number])
 
@@ -86,8 +89,6 @@ export default function Transcript({
       handleLineClick(start, isCurrent)
     }
   }, [handleLineClick])
-
-
 
   const transcriptComponent = useMemo(() => ((transcript, currentLine) => (
     <ol

@@ -2,12 +2,11 @@
 
 #mediaPlayer {
   position: relative;
-  padding-bottom: 1em;
   margin-bottom: 1em;
   border-bottom: 1px solid $fg-gray;
 
   .episodeInfo {
-    margin: 1em 0;
+    margin: 1em 2em 1em 0;
 
     h3 {
       font-size: 2.5em;
@@ -33,6 +32,14 @@
     right: 0;
     background: none;
     border: none;
+    background-color: $bg-gray;
+    border-radius: 100%;
+    aspect-ratio: 1;
+    line-height: 0;
+
+    &:hover {
+      background-color: $bg-gray-lighter;
+    }
 
     img {
       width: 2em;
@@ -44,24 +51,38 @@
     grid-template-columns: 2fr 1fr;
     background: $bg-gray;
     border-radius: 0.5em;
+
+    @include narrow {
+      grid-template-columns: none;
+    } 
   }
 
   .mediaActions {
-    margin-top: 0.5em;
+    margin: 1em 0;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: start;
     gap: 1em;
   }
 
   button.share {
     display: flex;
     align-items: flex-end;
-    gap: 0.5em;
-    padding: 0.5em;
+    gap: 0.25em;
+    padding: 0.5em 1.2em 0.6em;
+    background-color: $bg-gray;
+    border-radius: 2em;
+
+    &:hover {
+      background-color: $bg-gray-lighter;
+    }
+
+    &.open {
+      background-color: $bg-gray-lighter;
+    }
 
     img {
-      height: 1.4em;
+      height: 1.3em;
     }
   }
 
@@ -71,9 +92,14 @@
     border-radius: 0.5em 0 0 0.5em;
     align-self: center;
     text-shadow: none;
+
+    @include narrow {
+      border-radius: 0;
+    }
   }
 
   audio {
     padding: 0 1em;
+    margin: 1em 0;
   }
 }

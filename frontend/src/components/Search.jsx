@@ -86,16 +86,19 @@ export default function Search() {
       : null}
       <form onSubmit={handleSearch} className={s.search}>
         <p>Search all <strong>361</strong> episodes, <strong>14,931</strong> minutes, and <strong>2,090,340</strong> words spoken in Harmontown:</p>
-        <input 
-          type="search"
-          placeholder="Search"
-          value={currentQuery}
-          autoFocus
-          onChange={ev => setCurrentQuery(ev.target.value)} 
-        />
-        <button className="search">
-          <img src={magnifyingGlass} alt="Search" />
-        </button>
+        <div className={s.inputWrapper}>
+          <input 
+            type="search"
+            placeholder="Search"
+            aria-label="Search all episodes"
+            value={currentQuery}
+            autoFocus
+            onChange={ev => setCurrentQuery(ev.target.value)} 
+          />
+          <button className="search">
+            <img src={magnifyingGlass} alt="Search" />
+          </button>
+        </div>
       </form>
       <div className={s.results}>
         {episodeResults.length ? 
