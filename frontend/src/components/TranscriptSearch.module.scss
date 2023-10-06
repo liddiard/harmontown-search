@@ -40,6 +40,10 @@
       padding-left: 2.5em;
     }
   }
+  
+  em {
+    @include highlight;
+  }
 
   .backToTranscript {
     position: absolute;

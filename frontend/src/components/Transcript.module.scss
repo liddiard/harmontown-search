@@ -36,7 +36,29 @@
     }
   }
 
-  em {
-    @include highlight;
+  progress {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+     /* Reset the default appearance */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+        appearance: none;
+
+    /* Get rid of default border in Firefox. */
+    border: none;
+
+    &::-webkit-progress-bar {
+      background-color: transparent;
+    }
+
+    &::-webkit-progress-value {
+      background-color: $primary-blue;
+    }
+
+    &::-moz-progress-bar {
+      background-color: $primary-blue;
+    }
   }
 }

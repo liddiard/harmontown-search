@@ -21,6 +21,7 @@ export default function Transcript({
   const fuse = useRef(new Fuse())
   const currentLineEl = useRef(null)
   const transcriptEl = useRef(null)
+  const progressEl = useRef(null)
 
   // fetch the episode transcript whenever the episode number changes
   useEffect(() => {
@@ -75,6 +76,14 @@ export default function Transcript({
     })
   }, [currentLine])
 
+  useEffect(() => {
+    const scrollListener = transcriptEl.current.addEventListener('scroll', () => {
+      const { scrollTop, scrollHeight } = transcriptEl.current
+      progressEl.current.value = scrollTop / scrollHeight
+    })
+    return transcriptEl.current.removeEventListener('scroll', scrollListener)
+  })
+
   const handleLineClick = useCallback((start, isCurrent) => {
     if (isCurrent) {
       return
@@ -123,6 +132,7 @@ export default function Transcript({
         seek={seek}
       />
       {transcriptComponent}
+      <progress max={1} ref={progressEl} />
     </div>
   )
 }
