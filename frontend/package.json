@@ -15,6 +15,7 @@
     "react-scripts": "5.0.1",
     "react-tooltip": "^5.18.0",
     "sass": "^1.63.6",
+    "typesense": "^1.5.4",
     "web-vitals": "^2.1.4"
   },
   "engines": {

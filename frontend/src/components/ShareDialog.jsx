@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import './ShareDialog.scss'
+import s from './ShareDialog.module.scss'
 import xIcon from '../img/x.svg'
 import linkIcon from '../img/link.svg'
 import checkmarkIcon from '../img/checkmark.svg'
@@ -27,7 +27,7 @@ export default function ShareDialog({
   }
 
   return (
-    <dialog className="share" open>
+    <dialog className={s.shareDialog} open>
       <label>
         <input
           type="checkbox"
@@ -44,16 +44,16 @@ export default function ShareDialog({
         />
         Include search results
       </label>
-      <div className="share-actions">
+      <div className={s.shareActions}>
         <button
-            className={`copy-link ${linkCopied ? 'copied' : ''}`}
+            className={`${s.copyLink} ${linkCopied ? s.copied : ''}`}
             onClick={copyLink}
           >
           <img src={linkCopied ? checkmarkIcon : linkIcon} alt="" />
           {linkCopied ? 'Copied' : 'Copy link'}
         </button>
         <button
-          className="close"
+          className={s.close}
           onClick={() => {
             setOpen(false)
             setLinkCopied(false)

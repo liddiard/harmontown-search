@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react'
 import Fuse from 'fuse.js'
-import './Transcript.scss'
-import { fetchTranscript, formatTimecode, highlightMatches, inRange } from '../utils'
+import s from './Transcript.module.scss'
+import { fetchTranscript, inRange } from '../utils'
 import { getCurrentLine } from './transcriptUtils'
-import { Tooltip } from 'react-tooltip'
+import TranscriptSearch from './TranscriptSearch'
 
 
 export default function Transcript({
@@ -16,16 +16,12 @@ export default function Transcript({
   // current line of transcript matching the media timecode
   const [currentLine, setCurrentLine] = useState(0)
 
-  // submitted text in the episode search input
-  const [submittedQuery, setSubmittedQuery] = useState('')
-  // results from the `submittedQuery`
-  const [searchResults, setSearchResults] = useState([])
-
   // whether or not the mouse cursor is currently inside the transcript element
   const cursorInTranscript = useRef(false)
   const fuse = useRef(new Fuse())
   const currentLineEl = useRef(null)
   const transcriptEl = useRef(null)
+  const progressEl = useRef(null)
 
   // fetch the episode transcript whenever the episode number changes
   useEffect(() => {
@@ -33,6 +29,9 @@ export default function Transcript({
       const { transcript, index } = await fetchTranscript(number)
       setTranscript(transcript)
       fuse.current = index
+      if (transcriptEl.current) {
+        transcriptEl.scrollTop = 0
+      }
     })()
   }, [number])
 
@@ -40,19 +39,13 @@ export default function Transcript({
   useEffect(() => {
     // do nothing if there's no transcript or timecode, or if UI is displaying
     // search results
-    if (!transcript.length || !timecode || searchResults.length) {
+    if (!transcript.length || !timecode) {
       return
     }
     setCurrentLine(
       getCurrentLine(transcript, timecode * 1000, currentLine)
     )
-  }, [transcript, timecode, currentLine, searchResults])
-
-  // when the user changes the text in the episode search input, remove the
-  // "no search results" message
-  useEffect(() => {
-    setNoResults(false)
-  }, [currentQuery])
+  }, [transcript, timecode, currentLine])
 
   // scroll the transcript element to display the current line in the middle
   // of its boundingClientRect
@@ -83,6 +76,14 @@ export default function Transcript({
     })
   }, [currentLine])
 
+  useEffect(() => {
+    const scrollListener = transcriptEl.current.addEventListener('scroll', () => {
+      const { scrollTop, scrollHeight } = transcriptEl.current
+      progressEl.current.value = scrollTop / scrollHeight
+    })
+    return transcriptEl.current.removeEventListener('scroll', scrollListener)
+  })
+
   const handleLineClick = useCallback((start, isCurrent) => {
     if (isCurrent) {
       return
@@ -98,11 +99,9 @@ export default function Transcript({
     }
   }, [handleLineClick])
 
-
-
   const transcriptComponent = useMemo(() => ((transcript, currentLine) => (
     <ol
-      className="lines"
+      className={s.lines}
       onMouseEnter={() => cursorInTranscript.current = true}
       onMouseLeave={() => cursorInTranscript.current = false}
     >
@@ -126,11 +125,14 @@ export default function Transcript({
   ))(transcript, currentLine), [transcript, currentLine, handleLineClick, handleLineKeydown])
 
   return (
-    <>
-      <article className="transcript" ref={transcriptEl}>
-        {searchResults.length ? renderSearchResults() : transcriptComponent}
-      </article>
-      <Tooltip id="back-to-transcript" place="left" />
-    </>
+    <div className={s.transcript} ref={transcriptEl}>
+      <TranscriptSearch
+        transcript={transcript}
+        fuse={fuse}
+        seek={seek}
+      />
+      {transcriptComponent}
+      <progress max={1} ref={progressEl} />
+    </div>
   )
 }

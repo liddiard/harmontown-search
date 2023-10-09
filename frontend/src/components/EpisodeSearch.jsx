@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import Fuse from 'fuse.js'
+import s from './EpisodeSearch.module.scss'
 import { findEpisodeByNumber, fetchEpisodeIndex } from '../utils'
-import './Search.scss'
+import EpisodeSearchBar from './EpisodeSearchBar'
 import EpisodeResult from './EpisodeResult'
-import magnifyingGlass from '../img/magnifying-glass.svg'
 import MediaPlayer from './MediaPlayer'
 import { defaultTitle } from '../constants'
 
@@ -21,17 +21,13 @@ export default function Search() {
   const [episodes, setEpisodes] = useState([])
   const [currentEpisodeNumber, setCurrentEpisodeNumber] = useState(queryParams.episode)
   const [startTimecode, setStartTimecode] = useState(queryParams.timecode)
-  const [currentQuery, setCurrentQuery] = useState(queryParams.query)
   const [submittedQuery, setSubmittedQuery] = useState(queryParams.query)
   const [episodeResults, setEpisodeResults] = useState([])
-  const [searchPlaceholder, setSearchPlaceholder] = useState('')
 
   const fuse = useRef(new Fuse())
   const currentEpisode = useMemo(() =>
     findEpisodeByNumber(episodes, currentEpisodeNumber),
     [episodes, currentEpisodeNumber]);
-
-  const placeholderInterval = useRef()
 
   useEffect(() => {
     (async () => {
@@ -59,8 +55,7 @@ export default function Search() {
     }
   }, [currentEpisode])
 
-  const handleSearch = (ev) => {
-    ev?.preventDefault()
+  const handleSearch = (currentQuery) => {
     setSubmittedQuery(currentQuery)
     setEpisodeResults(fuse.current.search(currentQuery))
     searchParams.set('q', currentQuery)
@@ -84,24 +79,15 @@ export default function Search() {
           setCurrentEpisode={setCurrentEpisode}
         />
       : null}
-      <form onSubmit={handleSearch} className="search">
-        <p>Search all <strong>361</strong> episodes, <strong>14,931</strong> minutes, and <strong>2,090,340</strong> words spoken in Harmontown:</p>
-        <input 
-          type="search"
-          placeholder="Search"
-          value={currentQuery}
-          autoFocus
-          onChange={ev => setCurrentQuery(ev.target.value)} 
-        />
-        <button className="search">
-          <img src={magnifyingGlass} alt="Search" />
-        </button>
-      </form>
-      <div className="results">
+      <EpisodeSearchBar
+        initialQuery={queryParams.query}
+        handleSearch={handleSearch}
+      />
+      <div className={s.results}>
         {episodeResults.length ? 
           <div className="episodes">
             <h2>
-              <span className="num-results">{episodeResults.length} </span>
+              <span className={s.numResults}>{episodeResults.length} </span>
               Episode{episodeResults.length > 1 ? 's' : null}
             </h2>
             <ol>

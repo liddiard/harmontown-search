@@ -1,6 +1,6 @@
 @import '../globals';
 
-dialog.share {
+.shareDialog {
   margin: 0;
   color: white;
   background-color: #222;
@@ -17,7 +17,7 @@ dialog.share {
     margin: 0 0.5em 0 0;
   }
 
-  .share-actions {
+  .shareActions {
     display: flex;
     justify-content: space-between;
     margin-top: 1em;
@@ -34,7 +34,7 @@ dialog.share {
         }
       }
 
-      &.copy-link {
+      &.copyLink {
         color: $secondary-blue-lighter;
 
         &.copied {
@@ -54,7 +54,7 @@ dialog.share {
   }
 }
 
-.bg-mask {
+.bgMask {
   position: fixed;
   top: 0; right: 0; bottom: 0; left: 0;
   // z-index: -1000;
