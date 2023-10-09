@@ -4,12 +4,13 @@ import Fuse from 'fuse.js'
 import s from './EpisodeSearch.module.scss'
 import { findEpisodeByNumber, fetchEpisodeIndex } from '../utils'
 import EpisodeSearchBar from './EpisodeSearchBar'
-import EpisodeResult from './EpisodeResult'
 import MediaPlayer from './MediaPlayer'
 import { defaultTitle } from '../constants'
+import TranscriptSearchResults from './TranscriptSearchResults'
+import EpisodeSearchResults from './EpisodeSearchResults'
 
 
-export default function Search() {
+export default function EpisodeSearch() {
   const [searchParams, setSearchParams] = useOutletContext()
 
   const queryParams = {
@@ -62,9 +63,9 @@ export default function Search() {
     setSearchParams(searchParams)
   }
 
-  const setCurrentEpisode = (ep) => {
+  const setCurrentEpisode = (ep, timecode = 0) => {
     setCurrentEpisodeNumber(ep)
-    setStartTimecode(0)
+    setStartTimecode(timecode)
     searchParams.delete('t')
     searchParams.set('ep', ep || '')
     setSearchParams(searchParams)
@@ -84,24 +85,18 @@ export default function Search() {
         handleSearch={handleSearch}
       />
       <div className={s.results}>
-        {episodeResults.length ? 
-          <div className="episodes">
-            <h2>
-              <span className={s.numResults}>{episodeResults.length} </span>
-              Episode{episodeResults.length > 1 ? 's' : null}
-            </h2>
-            <ol>
-              {episodeResults.map(result => 
-                <EpisodeResult
-                  key={result.item.number}
-                  query={submittedQuery}
-                  selected={result.item.number === currentEpisodeNumber}
-                  setEpisode={setCurrentEpisode}
-                  result={result.item} />
-              )}
-            </ol>
-          </div>
-        : null}
+        <EpisodeSearchResults
+          query={submittedQuery}
+          currentEpisodeNumber={currentEpisodeNumber}
+          setCurrentEpisode={setCurrentEpisode}
+          results={episodeResults}
+        />
+        <TranscriptSearchResults
+          query={submittedQuery}
+          currentEpisodeNumber={currentEpisodeNumber}
+          episodes={episodes}
+          setCurrentEpisode={setCurrentEpisode}
+        />
       </div>
     </>
   )

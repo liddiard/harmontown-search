@@ -1,3 +1,5 @@
+export const defaultTitle = 'Harmontown Podcast Search'
+
 // https://www.papaparse.com/docs#config
 export const papaConfig = {
   download: true,
@@ -31,6 +33,20 @@ export const fuseConfig = {
   }
 }
 
+export const TYPESENSE_CONFIG = process.env.NODE_ENV === 'development' ? {
+  nodes: [{
+    host: 'localhost',
+    port: '8108',
+    protocol: 'http'
+  }],
+  // IMPORTANT: This is a PUBLIC API key, with read-only access to the
+  // `transcripts` collection.
+  apiKey: 'J0NFQhLXtu5elmr7ulOrL4m9ZGOEVvSz',
+  connectionTimeoutSeconds: 2
+} : {
+
+}
+
 export const searchSuggestions = [
   'pringles dick',
   'typewriter was invented here',
@@ -39,6 +55,7 @@ export const searchSuggestions = [
   'emily gordon',
   'chinese murder van',
   'in god’s crosshairs',
+  'giraffes',
   'earthshine',
   '9-11',
   'they’re coming for you barbara',
@@ -47,7 +64,7 @@ export const searchSuggestions = [
   'adam goldberg',
   'airlines',
   'uber',
-  'mister yahoo',
+  'mr yahoo',
   'joseph campbell',
   'crossing the threshold',
   'meeting with the goddess',
@@ -79,5 +96,3 @@ export const searchSuggestions = [
   'meltdown comics',
   'demorge brown',
 ]
-
-export const defaultTitle = 'Harmontown Podcast Search'

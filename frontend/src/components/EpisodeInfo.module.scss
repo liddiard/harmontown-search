@@ -9,18 +9,14 @@
     margin: 0.5em 0 0.25em;
   }
 
-  em {
-    @include highlight;
-  }
-
   .title {
     display: flex;
     align-items: baseline;
-    gap: 1em;
+    column-gap: 1em;
+    row-gap: 0.5em;
 
     time,
     .episode {
-      font-size: 0.9em;
       font-weight: bold;
       text-transform: uppercase;
       color: $fg-gray;

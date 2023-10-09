@@ -13,7 +13,7 @@
     .search-heading {
       font-family: $body-font;
       font-weight: 200;
-      font-size: 0.65em;
+      font-size: 0.9em;
     }
   }
 
@@ -92,9 +92,14 @@ li.selectable {
     cursor: pointer;
     background-color: rgba(255,255,255, 0.15);
   }
-  
-  &.selected {
-    cursor: default;
-    background-color: rgba($primary-blue, 0.25);
-  }
+}
+
+li.selected {
+  cursor: default;
+  background-color: rgba($primary-blue, 0.25);
+}
+
+mark {
+  background-color: rgba($secondary-yellow, 0.5);
+  color: unset;
 }

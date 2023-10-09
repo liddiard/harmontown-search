@@ -41,10 +41,6 @@
     }
   }
 
-  em {
-    @include highlight;
-  }
-
   .backToTranscript {
     position: absolute;
     padding: 0.5em;

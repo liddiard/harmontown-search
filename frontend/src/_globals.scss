@@ -14,11 +14,6 @@ $body-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'O
 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 $logo-font: 'Bebas Neue', sans-serif;
 
-@mixin highlight {
-  background-color: rgba($secondary-yellow, 0.5);
-  font-style: normal;
-}
-
 @mixin transcript-line {
   list-style: none;
   line-height: 1.35;

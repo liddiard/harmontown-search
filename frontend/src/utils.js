@@ -32,7 +32,7 @@ export const fetchTranscript = (number) => new Promise((resolve, reject) =>
 
 // given some search `result` text and the original `query`, return a markup
 // string with whole words in `query` that match a substring of the `result`
-// wrapped in an <em> tag
+// wrapped in an <mark> tag
 export const highlightMatches = (result = '', query) => {
   if (!query) {
     return result
@@ -41,12 +41,12 @@ export const highlightMatches = (result = '', query) => {
   .trim()
   .split(/\s+/)
   .reduce((acc, cur) =>
-    acc.replace(new RegExp(`(${cur})`, 'gi'), '<em>$1</em>'), result)
+    acc.replace(new RegExp(`(${cur})`, 'gi'), '<mark>$1</mark>'), result)
 }
 
 // given the `episodes` list and an episode `number`, return the episode
 // metadata object matching the passed `number`
-export const findEpisodeByNumber = (episodes, number) => 
+export const findEpisodeByNumber = (episodes, number) =>
   episodes.find(ep => ep.number === number)
 
 // returns if `value` is between `start` (inclusive) and `end` (exclusive)

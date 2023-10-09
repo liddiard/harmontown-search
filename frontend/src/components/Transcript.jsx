@@ -3,7 +3,7 @@ import Fuse from 'fuse.js'
 import s from './Transcript.module.scss'
 import { fetchTranscript, inRange } from '../utils'
 import { getCurrentLine } from './transcriptUtils'
-import TranscriptSearch from './TranscriptSearch'
+import EpisodeTranscriptSearch from './EpisodeTranscriptSearch'
 
 
 export default function Transcript({
@@ -126,7 +126,7 @@ export default function Transcript({
 
   return (
     <div className={s.transcript} ref={transcriptEl}>
-      <TranscriptSearch
+      <EpisodeTranscriptSearch
         transcript={transcript}
         fuse={fuse}
         seek={seek}

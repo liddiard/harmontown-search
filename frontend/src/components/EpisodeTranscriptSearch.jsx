@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
 import { Tooltip } from 'react-tooltip'
-import s from './TranscriptSearch.module.scss'
+import s from './EpisodeTranscriptSearch.module.scss'
 import leftChevron from '../img/left-chevron.svg'
 import magnifyingGlass from '../img/magnifying-glass.svg'
-import TranscriptSearchResults from './TranscriptSearchResults'
+import EpisodeTranscriptSearchResults from './EpisodeTranscriptSearchResults'
 
 
-export default function TranscriptSearch({
+export default function EpisodeTranscriptSearch({
   transcript,
   fuse,
   seek
@@ -67,7 +67,7 @@ export default function TranscriptSearch({
           <img src={magnifyingGlass} alt="Search" />
         </button>
       </form>
-      <TranscriptSearchResults 
+      <EpisodeTranscriptSearchResults 
         searchResults={searchResults}
         setSearchResults={setSearchResults}
         submittedQuery={submittedQuery}
