@@ -1,11 +1,9 @@
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react'
 import Fuse from 'fuse.js'
-import './Transcript.scss'
-import leftChevron from '../img/left-chevron.svg'
-import magnifyingGlass from '../img/magnifying-glass.svg'
-import { fetchTranscript, formatTimecode, highlightMatches, inRange } from '../utils'
+import s from './Transcript.module.scss'
+import { fetchTranscript, inRange } from '../utils'
 import { getCurrentLine } from './transcriptUtils'
-import { Tooltip } from 'react-tooltip'
+import EpisodeTranscriptSearch from './EpisodeTranscriptSearch'
 
 
 export default function Transcript({
@@ -17,20 +15,13 @@ export default function Transcript({
   const [transcript, setTranscript] = useState([])
   // current line of transcript matching the media timecode
   const [currentLine, setCurrentLine] = useState(0)
-  // current text in the episode search input
-  const [currentQuery, setCurrentQuery] = useState('')
-  // submitted text in the episode search input
-  const [submittedQuery, setSubmittedQuery] = useState('')
-  // results from the `submittedQuery`
-  const [searchResults, setSearchResults] = useState([])
-  // whether or not to display a "no search results" message
-  const [noResults, setNoResults] = useState(false)
 
   // whether or not the mouse cursor is currently inside the transcript element
   const cursorInTranscript = useRef(false)
   const fuse = useRef(new Fuse())
   const currentLineEl = useRef(null)
   const transcriptEl = useRef(null)
+  const progressEl = useRef(null)
 
   // fetch the episode transcript whenever the episode number changes
   useEffect(() => {
@@ -38,6 +29,9 @@ export default function Transcript({
       const { transcript, index } = await fetchTranscript(number)
       setTranscript(transcript)
       fuse.current = index
+      if (transcriptEl.current) {
+        transcriptEl.scrollTop = 0
+      }
     })()
   }, [number])
 
@@ -45,19 +39,13 @@ export default function Transcript({
   useEffect(() => {
     // do nothing if there's no transcript or timecode, or if UI is displaying
     // search results
-    if (!transcript.length || !timecode || searchResults.length) {
+    if (!transcript.length || !timecode) {
       return
     }
     setCurrentLine(
       getCurrentLine(transcript, timecode * 1000, currentLine)
     )
-  }, [transcript, timecode, currentLine, searchResults])
-
-  // when the user changes the text in the episode search input, remove the
-  // "no search results" message
-  useEffect(() => {
-    setNoResults(false)
-  }, [currentQuery])
+  }, [transcript, timecode, currentLine])
 
   // scroll the transcript element to display the current line in the middle
   // of its boundingClientRect
@@ -88,6 +76,14 @@ export default function Transcript({
     })
   }, [currentLine])
 
+  useEffect(() => {
+    const scrollListener = transcriptEl.current.addEventListener('scroll', () => {
+      const { scrollTop, scrollHeight } = transcriptEl.current
+      progressEl.current.value = scrollTop / scrollHeight
+    })
+    return transcriptEl.current.removeEventListener('scroll', scrollListener)
+  })
+
   const handleLineClick = useCallback((start, isCurrent) => {
     if (isCurrent) {
       return
@@ -103,22 +99,9 @@ export default function Transcript({
     }
   }, [handleLineClick])
 
-  const handleSearch = (ev) => {
-    ev.preventDefault()
-    setSubmittedQuery(currentQuery)
-    const results = fuse.current.search(currentQuery)
-    setSearchResults(results)
-    if (currentQuery) {
-      setNoResults(!results.length)
-    }
-    if (results.length && transcriptEl.current) {
-      transcriptEl.current.scrollTop = 0
-    }
-  }
-
   const transcriptComponent = useMemo(() => ((transcript, currentLine) => (
     <ol
-      className="lines"
+      className={s.lines}
       onMouseEnter={() => cursorInTranscript.current = true}
       onMouseLeave={() => cursorInTranscript.current = false}
     >
@@ -141,55 +124,15 @@ export default function Transcript({
     </ol>
   ))(transcript, currentLine), [transcript, currentLine, handleLineClick, handleLineKeydown])
 
-  const renderSearchResults = () => (
-    <ol className="search-results">
-      {searchResults.map(({ item: { start, text } }) => 
-        <li
-          key={start}
-          className="selectable"
-          onClick={() => {
-            seek(start, { play: true })
-            setSearchResults([])
-          }}
-        >
-          <time className="timecode">{formatTimecode(start)}</time>
-          <span dangerouslySetInnerHTML={{ __html: highlightMatches(text, submittedQuery) }} />
-        </li>
-      )}
-    </ol>
-  )
-
   return (
-    <>
-      <article className="transcript" ref={transcriptEl}>
-        <form className="episode-search" onSubmit={handleSearch}>
-          {searchResults.length ? 
-            <button 
-              type="button"
-              className="back-to-transcript"
-              data-tooltip-id="back-to-transcript"
-              data-tooltip-content="Back to transcript"
-              onClick={() => setSearchResults([])}>
-              <img src={leftChevron} alt="Back to transcript" />
-            </button>
-          : null}
-          <input
-            type="search"
-            value={currentQuery}
-            placeholder="Search this episode"
-            className={searchResults.length ? 'showing-results' : ''}
-            onChange={(ev) => setCurrentQuery(ev.target.value)}
-          />
-          {noResults ?
-            <span className="no-results" role="alert">Not found</span>
-          : null}
-          <button className="search">
-            <img src={magnifyingGlass} alt="Search" />
-          </button>
-        </form>
-        {searchResults.length ? renderSearchResults() : transcriptComponent}
-      </article>
-      <Tooltip id="back-to-transcript" place="left" />
-    </>
+    <div className={s.transcript} ref={transcriptEl}>
+      <EpisodeTranscriptSearch
+        transcript={transcript}
+        fuse={fuse}
+        seek={seek}
+      />
+      {transcriptComponent}
+      <progress max={1} ref={progressEl} />
+    </div>
   )
 }

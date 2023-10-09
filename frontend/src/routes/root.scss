@@ -7,12 +7,13 @@
   h1 {
     font-family: $logo-font;
     font-size: 4em;
+    line-height: 0.75;
     margin: 0;
 
     .search-heading {
       font-family: $body-font;
       font-weight: 200;
-      font-size: 0.65em;
+      font-size: 0.9em;
     }
   }
 
@@ -25,7 +26,7 @@
     font-size: 0.7em;
     padding: 0.25em 0.5em;
     transform: rotate(-10deg);
-    top: -5px;
+    top: -22px;
     left: -15px;
     position: absolute;
   }
@@ -33,10 +34,11 @@
 
 header {
   display: flex;
-  align-items: baseline;
+  align-items: end;
   justify-content: space-between;
   border-bottom: 1px solid $fg-gray;
   margin-bottom: 1em;
+  padding: 1em 0 0.75em;
 
   nav {
     a {
@@ -86,13 +88,18 @@ li.selectable {
   padding: 0.5em 0.75em;
   border-radius: 0.5em;
   
-  &:hover {
+  &:hover:not(.selected) {
     cursor: pointer;
     background-color: rgba(255,255,255, 0.15);
   }
-  
-  &.selected {
-    cursor: default;
-    background-color: rgba($primary-blue, 0.25);
-  }
+}
+
+li.selected {
+  cursor: default;
+  background-color: rgba($primary-blue, 0.25);
+}
+
+mark {
+  background-color: rgba($secondary-yellow, 0.5);
+  color: unset;
 }

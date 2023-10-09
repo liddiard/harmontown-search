@@ -1,0 +1,53 @@
+@import '../globals';
+
+.results {
+  & > li {
+    padding: 0.5em;
+    border-radius: 0.5em;
+  }
+
+  .timecode {
+    display: inline-block;
+    color: $fg-gray;
+    border-radius: 0.5em;
+    padding: 2px 4px;
+    font-size: 0.9em;
+    margin-right: 1em;
+  }
+
+  .hits {
+    list-style: none;
+    padding: 0;
+
+    li {
+      padding: 0.25em;
+      display: grid;
+      // fix width so that all hit text lines up vertically
+      grid-template-columns: 6.5ch 1fr;
+    }
+  }
+}
+
+.episodeInfo {
+  font-size: 0.9em;
+  margin-bottom: 0.25em;
+
+  p {
+    display: none;
+  }
+}
+
+.pagination {
+  font-weight: bold;
+  display: flex;
+  overflow-y: auto;
+
+  .pageSelected {
+    background-color: $primary-blue;
+  }
+
+  li {
+    padding: 0.5em 0.75em;
+    border-radius: 0.5em;
+  }
+}

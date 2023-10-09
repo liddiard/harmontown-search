@@ -1,0 +1,64 @@
+@import '../globals';
+
+.transcript {
+  position: relative;
+  // 16/9 (video aspect ratio) * ((1/3) / (2/3)) (ratio of this section's width vs video section's width)
+  aspect-ratio: 8/9;
+  overflow-y: scroll;
+  scrollbar-width: none; // Firefox
+
+  @include narrow {
+    aspect-ratio: 16/9;
+  }
+
+  // Chrome, Edge, Safari
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+
+  .closeResults {
+    position: sticky;
+    top: 0;
+    right: 0;
+
+    img {
+      width: 1.5em;
+    }
+  }
+
+  .lines {
+    @include transcript-line;
+    padding: 0 0.5em;
+    margin: 1em 0;
+
+    li {
+      transition: background-color 0.5s;
+    }
+  }
+
+  progress {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+     /* Reset the default appearance */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+        appearance: none;
+
+    /* Get rid of default border in Firefox. */
+    border: none;
+
+    &::-webkit-progress-bar {
+      background-color: transparent;
+    }
+
+    &::-webkit-progress-value {
+      background-color: $primary-blue;
+    }
+
+    &::-moz-progress-bar {
+      background-color: $primary-blue;
+    }
+  }
+}

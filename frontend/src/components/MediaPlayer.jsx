@@ -1,5 +1,5 @@
 import { Tooltip } from 'react-tooltip'
-import './MediaPlayer.scss'
+import s from './MediaPlayer.module.scss'
 import xIcon from '../img/x.svg'
 import shareIcon from '../img/share.svg'
 import poster from '../img/harmontown-logo-bg-poster.png'
@@ -69,16 +69,16 @@ export default function MediaPlayer({
   })(mediaType, url), [startTimecode, mediaType, url])
 
   return (
-    <div id="media-player">
+    <div id={s.mediaPlayer}>
       <button 
-        className="close-player"
+        className={s.closePlayer}
         data-tooltip-id="close-player"
         data-tooltip-content="Close player"
         onClick={closePlayer}>
         <img src={xIcon} alt="Close player" />
       </button>
-      <EpisodeInfo {...episode} />
-      <div className={`media-player ${mediaType}`}>
+      <EpisodeInfo {...episode} className={s.episodeInfo} />
+      <div className={`${s.mediaPlayer} ${mediaType}`}>
         {mediaElement}
         <Transcript
           number={episode.number}
@@ -86,16 +86,16 @@ export default function MediaPlayer({
           seek={seek}
         />
       </div>
-      <div className="media-actions">
+      <div className={s.mediaActions}>
         <button
-          className="share"
+          className={`${s.share} ${shareOpen ? s.open : ''}`}
           onClick={() => setShareOpen(!shareOpen)}
           >
           <img src={shareIcon} alt="" />
           Share
         </button>
-        <span className="disclaimer">
-          Transcript is machine generated and may contain errors.
+        <span className={s.disclaimer}>
+          Transcripts are auto generated and may contain errors.
         </span>
       </div>
       {shareOpen ?
