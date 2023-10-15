@@ -20,6 +20,10 @@ $logo-font: 'Bebas Neue', sans-serif;
   font-size: 0.9em;
 }
 
+@mixin wide {
+  @media (min-width: 800px) { @content; }
+}
+
 @mixin narrow {
   @media (max-width: 800px) { @content; }
 }

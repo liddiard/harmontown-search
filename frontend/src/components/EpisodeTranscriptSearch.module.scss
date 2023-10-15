@@ -67,10 +67,12 @@
 }
 
 :global {
-  .video {
-    input[type=search] {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
+  @include wide {
+    .video {
+      input[type=search] {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
     }
   }
 }

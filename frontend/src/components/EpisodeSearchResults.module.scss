@@ -1,4 +1,30 @@
+@import '../globals';
+
 .results {
-  max-height: min(60vh, 20em);
-  overflow-y: scroll;
+  position: relative;
+
+  ol {
+    max-height: max(10em, 33vh);
+    overflow-y: hidden;
+    transition: max-height 0.5s;
+  
+    &.scrollable {
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+  }
+
+  .moreResults {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 1em;
+
+    background: linear-gradient(
+      0deg,
+      $bg-gray-opaque 0%,
+      $bg-gray-opaque 50%,
+      rgba($bg-gray-opaque, 0) 100%
+    );
+  }
 }
