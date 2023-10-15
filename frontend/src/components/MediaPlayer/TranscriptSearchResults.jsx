@@ -1,8 +1,8 @@
 import { useRef, useEffect } from 'react'
-import s from './EpisodeTranscriptSearchResults.module.scss'
-import { formatTimecode, highlightMatches } from '../utils'
+import s from './TranscriptSearchResults.module.scss'
+import { formatTimecode, highlightMatches } from '../../utils'
 
-export default function EpisodeTranscriptSearchResults({ 
+export default function TranscriptSearchResults({ 
   searchResults = [],
   setSearchResults,
   submittedQuery,

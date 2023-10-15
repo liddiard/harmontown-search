@@ -1,6 +1,7 @@
 @import '../globals';
 
 #logo {
+  display: none;
   position: relative;
   text-decoration: none;
 
@@ -34,7 +35,7 @@
 
 header {
   display: flex;
-  align-items: end;
+  align-items: flex-end;
   justify-content: space-between;
   border-bottom: 1px solid $fg-gray;
   margin-bottom: 1em;

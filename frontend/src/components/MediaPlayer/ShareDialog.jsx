@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import s from './ShareDialog.module.scss'
-import xIcon from '../img/x.svg'
-import linkIcon from '../img/link.svg'
-import checkmarkIcon from '../img/checkmark.svg'
-import { formatTimecode } from '../utils'
+import xIcon from '../../img/x.svg'
+import linkIcon from '../../img/link.svg'
+import checkmarkIcon from '../../img/checkmark.svg'
+import { formatTimecode } from '../../utils'
 
 export default function ShareDialog({
   setOpen,

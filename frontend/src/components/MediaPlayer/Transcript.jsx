@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react'
 import Fuse from 'fuse.js'
 import s from './Transcript.module.scss'
-import { fetchTranscript, handleKeyboardSelect, inRange } from '../utils'
+import { fetchTranscript, handleKeyboardSelect, inRange } from '../../utils'
 import { getCurrentLine } from './transcriptUtils'
-import EpisodeTranscriptSearch from './EpisodeTranscriptSearch'
+import TranscriptSearch from './TranscriptSearch'
 
 
 export default function Transcript({
@@ -123,7 +123,7 @@ export default function Transcript({
 
   return (
     <div className={s.transcript} ref={transcriptEl}>
-      <EpisodeTranscriptSearch
+      <TranscriptSearch
         transcript={transcript}
         fuse={fuse}
         seek={seek}

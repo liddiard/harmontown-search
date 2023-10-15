@@ -1,4 +1,4 @@
-@import '../globals';
+@import '../../globals';
 
 .mediaPlayerContainer {
   position: relative;
@@ -63,7 +63,7 @@
     margin: 1em 0 0;
     display: flex;
     justify-content: space-between;
-    align-items: start;
+    align-items: flex-start;
     gap: 1em;
   }
 

@@ -88,3 +88,6 @@ export const handleKeyboardSelect = (ev, callback) => {
     callback()
   }
 }
+
+export const mask = (str = '') =>
+  new Array(str.length).fill('█').join('')

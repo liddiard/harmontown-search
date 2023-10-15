@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import s from './EpisodeSearchBar.module.scss'
+import s from './SearchBar.module.scss'
 import magnifyingGlass from '../img/magnifying-glass.svg'
 import { searchSuggestions } from '../constants'
 
