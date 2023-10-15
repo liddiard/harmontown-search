@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
 import Fuse from 'fuse.js'
-import EpisodeResult from './EpisodeResult'
 import s from './EpisodeSearchResults.module.scss'
 import { fuseConfig } from '../constants'
+import { handleKeyboardSelect } from '../utils';
+import EpisodeInfo from './EpisodeInfo'
 
 export default function EpisodeSearchResults({
   episodes,
@@ -53,14 +54,19 @@ export default function EpisodeSearchResults({
         className={scrollable ? s.scrollable : ''}
         ref={resultListEl}
       >
-        {results.map(result => 
-          <EpisodeResult
-            key={result.item.number}
-            query={query}
-            selected={result.item.number === currentEpisodeNumber}
-            setEpisode={setCurrentEpisode}
-            result={result.item} />
-        )}
+        {results.map(result => {
+          const selected = result.item.number === currentEpisodeNumber
+          return <li 
+            className={`selectable result ${selected ? 'selected' : ''}`}
+            onClick={() => setCurrentEpisode(currentEpisodeNumber)}
+            onKeyDown={(ev) => 
+              handleKeyboardSelect(ev, () => setCurrentEpisode(currentEpisodeNumber))}
+            role="link"
+            tabIndex={0}
+          >
+            <EpisodeInfo {...result.item} query={query} selected={selected} />
+          </li>
+        })}
       </ol>
       {contentExceedsHeight && !scrollable ?
         <button 

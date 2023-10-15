@@ -18,13 +18,16 @@
     position: absolute;
     bottom: 0;
     width: 100%;
-    padding: 1em;
-
+    padding: 1em 1em 0.5em;
     background: linear-gradient(
       0deg,
       $bg-gray-opaque 0%,
-      $bg-gray-opaque 50%,
+      rgba($bg-gray-opaque, 0.7) 70%,
       rgba($bg-gray-opaque, 0) 100%
     );
+
+    &:hover {
+      color: $primary-blue-lighter;
+    }
   }
 }

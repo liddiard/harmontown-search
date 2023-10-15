@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import Typesense from 'typesense'
 import s from './TranscriptSearchResults.module.scss'
 import { TYPESENSE_CONFIG } from '../constants'
-import { findEpisodeByNumber, formatTimecode, handleKeyboardSelect, jumpToHash, jumpToMediaPlayer } from '../utils'
+import { findEpisodeByNumber, formatTimecode, handleKeyboardSelect, jumpToMediaPlayer } from '../utils'
 import EpisodeInfo from './EpisodeInfo'
 
 const client = new Typesense.Client(TYPESENSE_CONFIG)
@@ -103,7 +103,7 @@ export default function TranscriptSearchResults({
               className={s.moreResults}
               onClick={loadMoreResults}
             >
-              {results.found - numResultsDisplayed} More results
+              {results.found - numResultsDisplayed} More results ⏷
             </button>
           </li> : null}
       </ol>

@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react'
 import Fuse from 'fuse.js'
 import s from './Transcript.module.scss'
-import { fetchTranscript, inRange } from '../utils'
+import { fetchTranscript, handleKeyboardSelect, inRange } from '../utils'
 import { getCurrentLine } from './transcriptUtils'
 import EpisodeTranscriptSearch from './EpisodeTranscriptSearch'
 
@@ -93,11 +93,7 @@ export default function Transcript({
   }, [seek])
 
   const handleLineKeydown = useCallback((ev, start, isCurrent) => {
-    // enter or space keys
-    if (ev.keyCode === 13 || ev.keyCode === 32) {
-      ev.preventDefault()
-      handleLineClick(start, isCurrent)
-    }
+    handleKeyboardSelect(ev, () => handleLineClick(start, isCurrent))
   }, [handleLineClick])
 
   const transcriptComponent = useMemo(() => ((transcript, currentLine) => (
