@@ -4,7 +4,7 @@ import Fuse from 'fuse.js'
 
 import s from './EpisodeSearchResults.module.scss'
 import { fuseConfig } from '../constants'
-import { handleKeyboardSelect } from '../utils';
+import { handleKeyboardSelect } from '../utils'
 import EpisodeInfo from './EpisodeInfo'
 
 export default function EpisodeSearchResults({

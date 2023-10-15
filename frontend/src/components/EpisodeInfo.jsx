@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { highlightMatches, mask } from '../utils';
+import { highlightMatches, mask } from '../utils'
 import playIcon from '../img/play.svg'
 import s from './EpisodeInfo.module.scss'
 

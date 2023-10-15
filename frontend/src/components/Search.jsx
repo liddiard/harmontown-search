@@ -25,14 +25,14 @@ export default function Search() {
 
   const currentEpisode = useMemo(() =>
     findEpisodeByNumber(episodes, currentEpisodeNumber),
-    [episodes, currentEpisodeNumber]);
+    [episodes, currentEpisodeNumber])
 
   useEffect(() => {
     (async () => {
       const episodes = await fetchEpisodeIndex()
       setEpisodes(episodes)
     })()
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (currentEpisode) {

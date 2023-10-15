@@ -2,7 +2,7 @@ import './root.scss'
 import { Outlet, useSearchParams } from 'react-router-dom'
 
 export default function Root() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams()
 
   return (
     <>
@@ -22,5 +22,5 @@ export default function Root() {
         </span>
       </footer>
     </>
-  );
+  )
 }
