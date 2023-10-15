@@ -1,13 +1,14 @@
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react'
+import PropTypes from 'prop-types'
 import Fuse from 'fuse.js'
+
 import s from './Transcript.module.scss'
 import { fetchTranscript, handleKeyboardSelect, inRange } from '../../utils'
 import { getCurrentLine } from './transcriptUtils'
 import TranscriptSearch from './TranscriptSearch'
 
-
 export default function Transcript({
-  number,
+  epNumber,
   timecode,
   seek
 }) {
@@ -26,7 +27,10 @@ export default function Transcript({
   // fetch the episode transcript whenever the episode number changes
   useEffect(() => {
     (async () => {
-      const { transcript, index } = await fetchTranscript(number)
+      if (!epNumber) {
+        return
+      }
+      const { transcript, index } = await fetchTranscript(epNumber)
       setCurrentLine(0)
       setTranscript(transcript)
       fuse.current = index
@@ -34,7 +38,7 @@ export default function Transcript({
         transcriptEl.scrollTop = 0
       }
     })()
-  }, [number])
+  }, [epNumber])
 
   // set the current line of the transcript based on the media timecode
   useEffect(() => {
@@ -132,4 +136,10 @@ export default function Transcript({
       <progress max={1} ref={progressEl} />
     </div>
   )
+}
+
+Transcript.propTypes = {
+  epNumber: PropTypes.number,
+  timecode: PropTypes.number.isRequired,
+  seek: PropTypes.func.isRequired
 }

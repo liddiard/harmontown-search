@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import Typesense from 'typesense'
+
 import s from './TranscriptSearchResults.module.scss'
 import { TYPESENSE_CONFIG } from '../constants'
 import { findEpisodeByNumber, formatTimecode, handleKeyboardSelect, jumpToMediaPlayer } from '../utils'
@@ -9,9 +11,9 @@ const client = new Typesense.Client(TYPESENSE_CONFIG)
 const RESULTS_PER_PAGE = 10
 
 export default function TranscriptSearchResults({
-  query,
-  episodes,
-  currentEpisodeNumber,
+  query = '',
+  episodes = [],
+  currentEpisode,
   setCurrentEpisode
 }) {
   const [results, setResults] = useState({})
@@ -69,7 +71,7 @@ export default function TranscriptSearchResults({
       <ol className={s.results}>
         {results.grouped_hits.map(({ group_key, hits }) => {
           const epNumber = group_key[0]
-          const selected = epNumber === currentEpisodeNumber
+          const selected = epNumber === currentEpisode
           const episode = findEpisodeByNumber(episodes, epNumber)
           return <li key={group_key[0]} className={selected ? 'selected' : ''}>
             <EpisodeInfo {...episode} className={s.episodeInfo} selected={selected} />
@@ -109,4 +111,11 @@ export default function TranscriptSearchResults({
       </ol>
     </>
   )
+}
+
+TranscriptSearchResults.propTypes = {
+  query: PropTypes.string.isRequired,
+  episodes: PropTypes.array.isRequired,
+  currentEpisode: PropTypes.number,
+  setCurrentEpisode: PropTypes.func.isRequired
 }

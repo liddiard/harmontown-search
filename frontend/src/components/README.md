@@ -1,4 +1,4 @@
-# Component heirarchy
+# Component hierarchy
 
 - Search
   - SearchBar

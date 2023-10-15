@@ -1,10 +1,12 @@
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import PropTypes from 'prop-types'
 import { Tooltip } from 'react-tooltip'
+
 import s from './index.module.scss'
 import xIcon from '../../img/x.svg'
 import shareIcon from '../../img/share.svg'
 import poster from '../../img/harmontown-logo-bg-poster.png'
 import EpisodeInfo from '../EpisodeInfo'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import ShareDialog from './ShareDialog'
 import Transcript from './Transcript'
 
@@ -81,7 +83,7 @@ export default function MediaPlayer({
       <div className={`${s.mediaPlayer} ${mediaType}`}>
         {mediaElement}
         <Transcript
-          number={episode.number}
+          epNumber={episode.number}
           timecode={timecode}
           seek={seek}
         />
@@ -104,4 +106,12 @@ export default function MediaPlayer({
       <Tooltip id="close-player" place="left" />
     </div>
   )
+}
+
+MediaPlayer.propTypes = {
+  episode: PropTypes.shape({
+    number: PropTypes.number.isRequired
+  }),
+  setCurrentEpisode: PropTypes.func.isRequired,
+  startTimecode: PropTypes.number
 }

@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
+
 import s from './SearchBar.module.scss'
 import magnifyingGlass from '../img/magnifying-glass.svg'
 import { searchSuggestions } from '../constants'
 
-export default function EpisodeSearchBar({
-  initialQuery,
+export default function SearchBar({
+  initialQuery = '',
   handleSearch
 }) {
   const defaultPlaceholder = 'Search'
@@ -45,4 +47,9 @@ export default function EpisodeSearchBar({
       </div>
     </form>
   )
+}
+
+SearchBar.propTypes = {
+  initialQuery: PropTypes.string.isRequired,
+  handleSearch: PropTypes.func.isRequired
 }

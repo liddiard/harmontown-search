@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useOutletContext } from 'react-router-dom'
+
 import s from './Search.module.scss'
 import { findEpisodeByNumber, fetchEpisodeIndex, jumpToMediaPlayer } from '../utils'
 import EpisodeSearchBar from './SearchBar'
@@ -8,8 +9,7 @@ import { defaultTitle } from '../constants'
 import TranscriptSearchResults from './TranscriptSearchResults'
 import EpisodeSearchResults from './EpisodeSearchResults'
 
-
-export default function EpisodeSearch() {
+export default function Search() {
   const [searchParams, setSearchParams] = useOutletContext()
 
   const queryParams = {
@@ -74,12 +74,12 @@ export default function EpisodeSearch() {
         <EpisodeSearchResults
           episodes={episodes}
           query={submittedQuery}
-          currentEpisodeNumber={currentEpisodeNumber}
+          currentEpisode={currentEpisodeNumber}
           setCurrentEpisode={setCurrentEpisode}
         />
         <TranscriptSearchResults
           query={submittedQuery}
-          currentEpisodeNumber={currentEpisodeNumber}
+          currentEpisode={currentEpisodeNumber}
           episodes={episodes}
           setCurrentEpisode={setCurrentEpisode}
         />

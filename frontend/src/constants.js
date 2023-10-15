@@ -95,5 +95,6 @@ export const searchSuggestions = [
   'boned out',
   'meltdown comics',
   'demorge brown',
-  'chevy chase'
+  'chevy chase',
+  'beef fungus bill'
 ]

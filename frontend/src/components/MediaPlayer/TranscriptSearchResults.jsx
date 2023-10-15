@@ -1,4 +1,6 @@
 import { useRef, useEffect } from 'react'
+import PropTypes from 'prop-types'
+
 import s from './TranscriptSearchResults.module.scss'
 import { formatTimecode, highlightMatches } from '../../utils'
 
@@ -36,4 +38,11 @@ export default function TranscriptSearchResults({
       )}
     </ol>
   )
+}
+
+TranscriptSearchResults.propTypes = {
+  searchResults: PropTypes.array.isRequired,
+  setSearchResults: PropTypes.func.isRequired,
+  submittedQuery: PropTypes.string.isRequired,
+  seek: PropTypes.func.isRequired
 }

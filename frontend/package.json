@@ -18,6 +18,9 @@
     "typesense": "^1.5.4",
     "web-vitals": "^2.1.4"
   },
+  "devDependencies": {
+    "prop-types": "^15.8.1"
+  },
   "engines": {
     "node": "18",
     "npm": "9"

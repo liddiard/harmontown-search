@@ -1,14 +1,16 @@
 import { useState, useRef, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import Fuse from 'fuse.js'
+
 import s from './EpisodeSearchResults.module.scss'
 import { fuseConfig } from '../constants'
 import { handleKeyboardSelect } from '../utils';
 import EpisodeInfo from './EpisodeInfo'
 
 export default function EpisodeSearchResults({
-  episodes,
+  episodes = [],
   query,
-  currentEpisodeNumber,
+  currentEpisode,
   setCurrentEpisode
 }) {
   const [results, setResults] = useState([])
@@ -55,12 +57,14 @@ export default function EpisodeSearchResults({
         ref={resultListEl}
       >
         {results.map(result => {
-          const selected = result.item.number === currentEpisodeNumber
+          const { number } = result.item
+          const selected = number === currentEpisode
           return <li 
+            key={number}
             className={`selectable result ${selected ? 'selected' : ''}`}
-            onClick={() => setCurrentEpisode(currentEpisodeNumber)}
+            onClick={() => setCurrentEpisode(currentEpisode)}
             onKeyDown={(ev) => 
-              handleKeyboardSelect(ev, () => setCurrentEpisode(currentEpisodeNumber))}
+              handleKeyboardSelect(ev, () => setCurrentEpisode(currentEpisode))}
             role="link"
             tabIndex={0}
           >
@@ -79,4 +83,11 @@ export default function EpisodeSearchResults({
       }
     </div>
   )
+}
+
+EpisodeSearchResults.propTypes = {
+  episodes: PropTypes.array.isRequired,
+  query: PropTypes.string.isRequired,
+  setCurrentEpisode: PropTypes.func.isRequired,
+  currentEpisode: PropTypes.number
 }

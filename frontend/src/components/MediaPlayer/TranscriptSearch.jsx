@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import { Tooltip } from 'react-tooltip'
+
 import s from './TranscriptSearch.module.scss'
 import leftChevron from '../../img/left-chevron.svg'
 import magnifyingGlass from '../../img/magnifying-glass.svg'
@@ -75,4 +77,13 @@ export default function TranscriptSearch({
       <Tooltip id="back-to-transcript" place="bottom" />
     </div>
   )
+}
+
+TranscriptSearch.propTypes = {
+  fuse: PropTypes.shape({
+    current: PropTypes.shape({
+      search: PropTypes.func.isRequired
+    }).isRequired
+  }).isRequired,
+  seek: PropTypes.func.isRequired
 }

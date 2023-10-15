@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
+
 import s from './ShareDialog.module.scss'
 import xIcon from '../../img/x.svg'
 import linkIcon from '../../img/link.svg'
@@ -65,4 +67,9 @@ export default function ShareDialog({
       </div>
     </dialog>
   )
+}
+
+ShareDialog.propTypes = {
+  setOpen: PropTypes.func.isRequired,
+  timecode: PropTypes.number.isRequired
 }
