@@ -82,11 +82,14 @@ export default function Transcript({
   }, [currentLine])
 
   useEffect(() => {
-    const scrollListener = transcriptEl.current.addEventListener('scroll', () => {
+    const el = transcriptEl.current
+    const scrollListener = el.addEventListener('scroll', () => {
       const { scrollTop, scrollHeight } = transcriptEl.current
       progressEl.current.value = scrollTop / scrollHeight
     })
-    return transcriptEl.current.removeEventListener('scroll', scrollListener)
+    return () => {
+      el.removeEventListener('scroll', scrollListener)
+    }
   })
 
   const handleLineClick = useCallback((start, isCurrent) => {

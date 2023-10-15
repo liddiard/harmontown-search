@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import Typesense from 'typesense'
 
@@ -8,7 +8,6 @@ import { findEpisodeByNumber, formatTimecode, handleKeyboardSelect, jumpToMediaP
 import EpisodeInfo from './EpisodeInfo'
 
 const client = new Typesense.Client(TYPESENSE_CONFIG)
-const RESULTS_PER_PAGE = 10
 
 export default function TranscriptSearchResults({
   query = '',
@@ -16,15 +15,56 @@ export default function TranscriptSearchResults({
   currentEpisode,
   setCurrentEpisode
 }) {
-  const [results, setResults] = useState({})
+  const [results, setResults] = useState([])
+  const [totalResults, setTotalResults] = useState(0)
+
+  const resultsEl = useRef(null)
+  const loading = useRef(false)
   const page = useRef(1)
+  const moreResultsToLoad = useRef(false)
 
   const transcriptId = 'transcript-search-results'
-  const numResultsDisplayed = RESULTS_PER_PAGE * page.current
+
+  const loadMoreResults = useCallback(async () => {
+    const res = await search(query, page.current + 1)
+    page.current++
+    setResults(prevResults => [...prevResults, ...res.grouped_hits])
+  }, [query])
 
   useEffect(() => {
-    page.current = 1
-  }, [query])
+    // infinte scroll
+    const scrollListener = window.addEventListener('scroll', async () => {
+      if (
+        !resultsEl.current ||
+        !moreResultsToLoad.current ||
+        loading.current
+      ) {
+        return
+      }
+      const { innerHeight } = window
+      const { y, height } = resultsEl.current.getBoundingClientRect()
+      // y: top of search results list, relative to viewport
+      // height: height of search results list
+      // innerHeight: viewport height
+      const distanceToBottomOfResults = (y + height) - innerHeight
+      if (distanceToBottomOfResults < innerHeight / 2) {
+        loading.current = true
+        await loadMoreResults()
+      }
+    })
+    return () => {
+      window.removeEventListener('scroll', scrollListener)
+    }
+  }, [moreResultsToLoad, loadMoreResults])
+
+  useEffect(() => {
+    // wait for the results to be added to the DOM for infinite scroll before
+    // considering loading complete
+    loading.current = false
+    if (results.length) {
+      moreResultsToLoad.current = results.length < totalResults
+    }
+  }, [results, totalResults])
 
   useEffect(() => {
     (async () => {
@@ -32,8 +72,10 @@ export default function TranscriptSearchResults({
         return
       }
       const res = await search(query)
-      setResults(res)
+      setResults(res.grouped_hits)
+      setTotalResults(res.found)
     })()
+    page.current = 1
   }, [query])
 
   const search = async (query, page = 1) => 
@@ -49,27 +91,18 @@ export default function TranscriptSearchResults({
     jumpToMediaPlayer()
   }
 
-  const loadMoreResults = async () => {
-    page.current++
-    const res = await search(query, page.current)
-    setResults({
-      ...results,
-      grouped_hits: results.grouped_hits.concat(res.grouped_hits)
-    })
-  }
-
-  if (!episodes.length || !results.found || !query) {
+  if (!episodes.length || !totalResults || !query) {
     return null
   }
 
   return (
     <>
       <h2 id={transcriptId}>
-        <span className="numResults">{results.found} </span>
-        Transcript{results.found > 1 ? 's' : null}
+        <span className="numResults">{totalResults} </span>
+        Transcript{totalResults > 1 ? 's' : null}
       </h2>
-      <ol className={s.results}>
-        {results.grouped_hits.map(({ group_key, hits }) => {
+      <ol className={s.results} ref={resultsEl}>
+        {results.map(({ group_key, hits }) => {
           const epNumber = group_key[0]
           const selected = epNumber === currentEpisode
           const episode = findEpisodeByNumber(episodes, epNumber)
@@ -99,15 +132,6 @@ export default function TranscriptSearchResults({
             </ol>
           </li>
         })}
-        {results.found > numResultsDisplayed ? 
-          <li>
-            <button 
-              className={s.moreResults}
-              onClick={loadMoreResults}
-            >
-              {results.found - numResultsDisplayed} More results ⏷
-            </button>
-          </li> : null}
       </ol>
     </>
   )
