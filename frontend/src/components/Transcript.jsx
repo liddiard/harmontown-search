@@ -27,6 +27,7 @@ export default function Transcript({
   useEffect(() => {
     (async () => {
       const { transcript, index } = await fetchTranscript(number)
+      setCurrentLine(0)
       setTranscript(transcript)
       fuse.current = index
       if (transcriptEl.current) {

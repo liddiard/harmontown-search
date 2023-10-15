@@ -46,7 +46,7 @@ export const getCurrentLine = (
   const twoLinesAhead = transcript[currentLineNum+2]
   const lastLine = transcript[transcript.length - 1]
 
-  if (timecode > lastLine.start) {
+  if (timecode > lastLine?.start) {
     // timecode is within or beyond the last line
     return transcript.length - 1
   }

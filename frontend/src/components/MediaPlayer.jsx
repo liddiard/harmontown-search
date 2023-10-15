@@ -69,7 +69,7 @@ export default function MediaPlayer({
   })(mediaType, url), [startTimecode, mediaType, url])
 
   return (
-    <div id={s.mediaPlayer}>
+    <div className={s.mediaPlayerContainer} id="media-player">
       <button 
         className={s.closePlayer}
         data-tooltip-id="close-player"

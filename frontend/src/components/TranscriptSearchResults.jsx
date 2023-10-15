@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Typesense from 'typesense'
 import s from './TranscriptSearchResults.module.scss'
 import { TYPESENSE_CONFIG } from '../constants'
-import { findEpisodeByNumber, formatTimecode } from '../utils'
+import { findEpisodeByNumber, formatTimecode, handleKeyboardSelect, jumpToHash, jumpToMediaPlayer } from '../utils'
 import EpisodeInfo from './EpisodeInfo'
 
 const client = new Typesense.Client(TYPESENSE_CONFIG)
@@ -15,19 +15,46 @@ export default function TranscriptSearchResults({
   setCurrentEpisode
 }) {
   const [results, setResults] = useState({})
-  const [page, setPage] = useState(1)
+  const page = useRef(1)
+
+  const transcriptId = 'transcript-search-results'
+  const numResultsDisplayed = RESULTS_PER_PAGE * page.current
+
+  useEffect(() => {
+    page.current = 1
+  }, [query])
 
   useEffect(() => {
     (async () => {
-      const res = await client.collections('transcripts').documents().search({
-        q: query,
-        query_by: 'text',
-        group_by: 'episode',
-        page
-      })
+      if (!query) {
+        return
+      }
+      const res = await search(query)
       setResults(res)
     })()
-  }, [query, page])
+  }, [query])
+
+  const search = async (query, page = 1) => 
+    await client.collections('transcripts').documents().search({
+      q: query,
+      query_by: 'text',
+      group_by: 'episode',
+      page
+    })
+
+  const handleLineSelect = (episode, timecode) => {
+    setCurrentEpisode(episode, timecode / 1000)
+    jumpToMediaPlayer()
+  }
+
+  const loadMoreResults = async () => {
+    page.current++
+    const res = await search(query, page.current)
+    setResults({
+      ...results,
+      grouped_hits: results.grouped_hits.concat(res.grouped_hits)
+    })
+  }
 
   if (!episodes.length || !results.found || !query) {
     return null
@@ -35,7 +62,7 @@ export default function TranscriptSearchResults({
 
   return (
     <>
-      <h2>
+      <h2 id={transcriptId}>
         <span className="numResults">{results.found} </span>
         Transcript{results.found > 1 ? 's' : null}
       </h2>
@@ -53,7 +80,11 @@ export default function TranscriptSearchResults({
                 <li 
                   key={document.id}
                   className="selectable"
-                  onClick={() => setCurrentEpisode(group_key[0], document.start / 1000)}
+                  tabIndex={0}
+                  role="link"
+                  onKeyDown={(ev) =>
+                    handleKeyboardSelect(ev, () => handleLineSelect(epNumber, document.start))}
+                  onClick={() => handleLineSelect(epNumber, document.start)}
                 >
                   <time className={s.timecode}>
                     {formatTimecode(document.start)}
@@ -66,20 +97,16 @@ export default function TranscriptSearchResults({
             </ol>
           </li>
         })}
-      </ol>
-      {results.found > RESULTS_PER_PAGE ? 
-        <ol className={s.pagination}>
-          {new Array(Math.ceil(results.found / RESULTS_PER_PAGE)).fill(null)
-          .map((_, index) =>
-            <li 
-              className={`selectable ${page === index + 1 ? 'selected' : null}`}
-              onClick={() => setPage(index + 1)}
-              key={index}
+        {results.found > numResultsDisplayed ? 
+          <li>
+            <button 
+              className={s.moreResults}
+              onClick={loadMoreResults}
             >
-              {index + 1}
-            </li>
-          )}
-        </ol> : null}
+              {results.found - numResultsDisplayed} More results
+            </button>
+          </li> : null}
+      </ol>
     </>
   )
 }

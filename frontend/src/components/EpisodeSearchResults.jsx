@@ -1,12 +1,30 @@
+import { useState, useRef, useEffect } from 'react'
+import Fuse from 'fuse.js'
 import EpisodeResult from './EpisodeResult'
 import s from './EpisodeSearchResults.module.scss'
+import { fuseConfig } from '../constants'
 
 export default function EpisodeSearchResults({
-  results,
+  episodes,
   query,
   currentEpisodeNumber,
   setCurrentEpisode
 }) {
+  const [results, setResults] = useState([])
+  const fuse = useRef(null)
+
+  useEffect(() => {
+    if (episodes.length) {
+      fuse.current = new Fuse(episodes, fuseConfig.episode)
+    }
+  }, [episodes])
+
+  useEffect(() => {
+    if (query && fuse.current) {
+      setResults(fuse.current.search(query))
+    }
+  }, [query])
+
   if (!results.length) {
     return null
   }

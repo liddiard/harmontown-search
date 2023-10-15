@@ -27,7 +27,7 @@ export default function EpisodeSearchBar({
 
   return (
     <form onSubmit={handleSubmit} className={s.search} id="foo">
-      <p>Search all <strong>361</strong> episodes, <strong>14,931</strong> minutes, and <strong>2,090,340</strong> words spoken in Harmontown:</p>
+      <p>Search all <strong>361</strong> episodes, <strong>14,931</strong> minutes, and <strong>6,611,981</strong> words spoken in Harmontown:</p>
       <div className={s.inputWrapper}>
         <input 
           type="search"

@@ -1,6 +1,6 @@
 @import '../globals';
 
-#mediaPlayer {
+.mediaPlayerContainer {
   position: relative;
   margin-bottom: 1em;
   border-bottom: 1px solid $fg-gray;
@@ -52,6 +52,7 @@
     grid-template-columns: 2fr 1fr;
     background: $bg-gray;
     border-radius: 0.5em;
+    border: 1px solid $bg-gray;
 
     @include narrow {
       grid-template-columns: none;
@@ -73,6 +74,7 @@
     padding: 0.5em 1.2em 0.65em;
     background-color: $bg-gray;
     border-radius: 2em;
+    border: 1px solid $bg-gray;
 
     &:hover {
       background-color: $bg-gray-lighter;
@@ -95,7 +97,7 @@
     text-shadow: none;
 
     @include narrow {
-      border-radius: 0;
+      border-radius: 0.5em 0.5em 0 0;
     }
   }
 

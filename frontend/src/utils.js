@@ -7,11 +7,7 @@ export const fetchEpisodeIndex = () => new Promise((resolve, reject) =>
   Papa.parse('/episode_list.tsv', {
     ...papaConfig,
     complete: (results) => {
-      const index = new Fuse(results.data, fuseConfig.episode)
-      resolve({ 
-        episodes: results.data,
-        index
-      })
+      resolve(results.data)
     }
   })
 )
@@ -73,4 +69,22 @@ export const formatTimecode = (ms) => {
   ]
   .filter(Boolean)
   .join(':')
+}
+
+export const jumpToHash = (id) => {
+  const { location, history } = window
+  const originalUrl = location.href;               // Save down the URL without hash
+  location.href = `#${id}`;                        // Go to the target element
+  history.replaceState(null, null, originalUrl);   // Remove the hash after jump
+}
+
+export const jumpToMediaPlayer = () => 
+  jumpToHash('media-player')
+
+export const handleKeyboardSelect = (ev, callback) => {
+  // enter or space keys
+  if (ev.keyCode === 13 || ev.keyCode === 32) {
+    ev.preventDefault()
+    callback()
+  }
 }
