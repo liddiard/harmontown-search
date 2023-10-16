@@ -105,6 +105,12 @@ export default function Transcript({
   const transcriptComponent = useMemo(() => ((transcript, currentLine) => (
     <ol
       className={s.lines}
+      // Put a slight delay on considering mouse in/out of transcript so that
+      // when a search result is clicked, the `useEffect`s to find the current
+      // transcript line and scroll to it can happen first. Doing this
+      // with arbitrary sleeps because doing otherwise would involve
+      // introducing more dependencies to memoized, performance-critical
+      // transcript functions which doesn't seem worth it.
       onMouseEnter={() => window.setTimeout(() => cursorInTranscript.current = true, 500)}
       onMouseLeave={() => window.setTimeout(() => cursorInTranscript.current = false, 500)}
     >
