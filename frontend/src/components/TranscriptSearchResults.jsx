@@ -83,6 +83,7 @@ export default function TranscriptSearchResults({
       q: query,
       query_by: 'text',
       group_by: 'episode',
+      group_limit: 10,
       page
     })
 
