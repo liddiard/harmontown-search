@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 
 import s from './ShareDialog.module.scss'
@@ -15,6 +15,15 @@ export default function ShareDialog({
   const [includeResults, setIncludeResults] = useState(false)
   const [linkCopied, setLinkCopied] = useState(false)
 
+  const dialogEl = useRef(null)
+
+  useEffect(() => {
+    dialogEl.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest'
+    })
+  }, [])
+
   const copyLink = async () => {
     const url = new URL(window.location)
     if (startCurrent) {
@@ -29,7 +38,7 @@ export default function ShareDialog({
   }
 
   return (
-    <dialog className={s.shareDialog} open>
+    <dialog className={s.shareDialog} ref={dialogEl} open>
       <label>
         <input
           type="checkbox"
