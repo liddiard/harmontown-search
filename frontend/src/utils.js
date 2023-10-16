@@ -71,6 +71,7 @@ export const formatTimecode = (ms) => {
   .join(':')
 }
 
+// jump to an anchor (element ID) on the page
 export const jumpToHash = (id) => {
   const { location, history } = window
   const originalUrl = location.href;               // Save down the URL without hash
@@ -81,6 +82,8 @@ export const jumpToHash = (id) => {
 export const jumpToMediaPlayer = () => 
   jumpToHash('media-player')
 
+// call `callback` if the passed event was a keypress that should act as a
+// selection of the focused element (keyboard accessibility)
 export const handleKeyboardSelect = (ev, callback) => {
   // enter or space keys
   if (ev.keyCode === 13 || ev.keyCode === 32) {

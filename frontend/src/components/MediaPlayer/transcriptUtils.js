@@ -36,6 +36,11 @@ const searchForLine = (transcript, timecode, lo = 0, hi = transcript.length - 1)
   }
 }
 
+// Given a transcript, current timecode, and the current line number, return
+// the updated current line of the trnascript. When called while media is
+// playing (`timeUpdate` event), this will usually be either the current line
+// or the line immediately following the current line, so these code paths are
+// optimized.
 export const getCurrentLine = (
   transcript,
   timecode,
@@ -58,7 +63,7 @@ export const getCurrentLine = (
     // timecode is within the next line
     return currentLineNum + 1
   }
-  // timecode is somewhere else (possibly due to user seek) binary search for
-  // the current line
+  // timecode is somewhere else (possibly due to user seek), so binary search
+  // for the current line
   return searchForLine(transcript, timecode)
 }
