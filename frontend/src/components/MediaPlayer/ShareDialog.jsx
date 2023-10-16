@@ -37,14 +37,26 @@ export default function ShareDialog({
     setLinkCopied(true)
   }
 
+  const handleKeydown = (ev) => {
+    if (ev.keyCode === 27) { // ESC
+      setOpen(false)
+    }
+  }
+
   return (
     <>
-      <dialog className={s.shareDialog} ref={dialogEl} open>
+      <dialog
+        className={s.shareDialog}
+        ref={dialogEl}
+        open
+        onKeyDown={handleKeydown}
+      >
         <label>
           <input
             type="checkbox"
             checked={startCurrent}
             onChange={() => setStartCurrent(!startCurrent)}
+            autoFocus
           />
           Start at <time className="timecode">{formatTimecode(timecode * 1000)}</time>
         </label>
