@@ -38,43 +38,49 @@ export default function ShareDialog({
   }
 
   return (
-    <dialog className={s.shareDialog} ref={dialogEl} open>
-      <label>
-        <input
-          type="checkbox"
-          checked={startCurrent}
-          onChange={() => setStartCurrent(!startCurrent)}
-        />
-        Start at <time className="timecode">{formatTimecode(timecode * 1000)}</time>
-      </label>
-      <label>
-        <input
-          type="checkbox" 
-          checked={includeResults}
-          onChange={() => setIncludeResults(!includeResults)}
-        />
-        Include search results
-      </label>
-      <div className={s.shareActions}>
-        <button
-            className={`${s.copyLink} ${linkCopied ? s.copied : ''}`}
-            onClick={copyLink}
+    <>
+      <dialog className={s.shareDialog} ref={dialogEl} open>
+        <label>
+          <input
+            type="checkbox"
+            checked={startCurrent}
+            onChange={() => setStartCurrent(!startCurrent)}
+          />
+          Start at <time className="timecode">{formatTimecode(timecode * 1000)}</time>
+        </label>
+        <label>
+          <input
+            type="checkbox" 
+            checked={includeResults}
+            onChange={() => setIncludeResults(!includeResults)}
+          />
+          Include search results
+        </label>
+        <div className={s.shareActions}>
+          <button
+              className={`${s.copyLink} ${linkCopied ? s.copied : ''}`}
+              onClick={copyLink}
+            >
+            <img src={linkCopied ? checkmarkIcon : linkIcon} alt="" />
+            {linkCopied ? 'Copied' : 'Copy link'}
+          </button>
+          <button
+            className={s.close}
+            onClick={() => {
+              setOpen(false)
+              setLinkCopied(false)
+            }}
           >
-          <img src={linkCopied ? checkmarkIcon : linkIcon} alt="" />
-          {linkCopied ? 'Copied' : 'Copy link'}
-        </button>
-        <button
-          className={s.close}
-          onClick={() => {
-            setOpen(false)
-            setLinkCopied(false)
-          }}
-        >
-          <img src={xIcon} alt="" />
-          Close
-        </button>
-      </div>
-    </dialog>
+            <img src={xIcon} alt="" />
+            Close
+          </button>
+        </div>
+      </dialog>
+      <div 
+        className={s.bgMask}
+        onClick={() => setOpen(false)}
+      />
+    </>
   )
 }
 
