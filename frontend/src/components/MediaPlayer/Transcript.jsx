@@ -42,8 +42,7 @@ export default function Transcript({
 
   // set the current line of the transcript based on the media timecode
   useEffect(() => {
-    // do nothing if there's no transcript or timecode, or if UI is displaying
-    // search results
+    // do nothing if there's no transcript or timecode
     if (!transcript.length || !timecode) {
       return
     }
@@ -106,8 +105,8 @@ export default function Transcript({
   const transcriptComponent = useMemo(() => ((transcript, currentLine) => (
     <ol
       className={s.lines}
-      onMouseEnter={() => cursorInTranscript.current = true}
-      onMouseLeave={() => cursorInTranscript.current = false}
+      onMouseEnter={() => window.setTimeout(() => cursorInTranscript.current = true, 500)}
+      onMouseLeave={() => window.setTimeout(() => cursorInTranscript.current = false, 500)}
     >
       {transcript.map(({ start, text }) => {
         const isCurrent = transcript[currentLine]?.start === start

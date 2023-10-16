@@ -34,7 +34,7 @@ export default function EpisodeSearchResults({
     if (resultListEl.current) {
       resultListEl.current.scrollTop = 0
     }
-  }, [query])
+  }, [query, episodes])
 
   useEffect(() => {
     const el = resultListEl.current
@@ -62,9 +62,9 @@ export default function EpisodeSearchResults({
           return <li 
             key={number}
             className={`selectable result ${selected ? 'selected' : ''}`}
-            onClick={() => setCurrentEpisode(currentEpisode)}
+            onClick={() => setCurrentEpisode(number)}
             onKeyDown={(ev) => 
-              handleKeyboardSelect(ev, () => setCurrentEpisode(currentEpisode))}
+              handleKeyboardSelect(ev, () => setCurrentEpisode(number))}
             role="link"
             tabIndex={0}
           >
