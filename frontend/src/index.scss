@@ -36,12 +36,12 @@ a {
 
 button {
   cursor: pointer;
-  border: none;
   background: none;
   color: white;
   text-transform: uppercase;
   font-family: $body-font;
   font-weight: bold;
+  border: 1px solid $bg-gray;
 }
 
 // /* Works on Firefox */

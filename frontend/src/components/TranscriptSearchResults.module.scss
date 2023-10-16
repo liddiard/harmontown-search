@@ -28,20 +28,6 @@
       grid-template-columns: 6.5ch 1fr;
     }
   }
-
-  .moreResults {
-    font-size: 1em;
-    border-radius: 2em;
-    background-color: $bg-gray;
-    padding: 0.75em 1.5em;
-    display: block;
-    text-shadow: 1px 1px black;
-    border: 1px solid $bg-gray;
-
-    &:hover {
-      background-color: $bg-gray-lighter;
-    }
-  }
 }
 
 .episodeInfo {
