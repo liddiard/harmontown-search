@@ -28,7 +28,7 @@ export default function EpisodeInfo({
           <img src={playIcon} alt="Now playing" title="Now playing" className={s.playing} />
         : null}
         <h3 dangerouslySetInnerHTML={{
-          __html: highlightMatches(mask(title), query)
+          __html: highlightMatches(title, query)
         }} />
         <span className={s.episode}>Ep. <span className={s.number}>{number}</span></span>
         <time dateTime={date}>
