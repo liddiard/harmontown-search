@@ -53,6 +53,7 @@ export default function TranscriptSearch({
         ) : null}
         <input
           type="search"
+          name="episode-search"
           value={currentQuery}
           placeholder="Search this episode"
           aria-label="Search this episode"

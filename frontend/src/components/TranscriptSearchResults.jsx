@@ -8,6 +8,7 @@ import { findEpisodeByNumber, formatTimecode, handleKeyboardSelect, jumpToMediaP
 import EpisodeInfo from './EpisodeInfo'
 
 const client = new Typesense.Client(TYPESENSE_CONFIG)
+const RESULTS_PER_PAGE = 10
 
 export default function TranscriptSearchResults({
   query = '',
@@ -16,98 +17,94 @@ export default function TranscriptSearchResults({
   setCurrentEpisode
 }) {
   const [results, setResults] = useState([])
-  const [totalResults, setTotalResults] = useState(0)
-
+  const [numFound, setNumFound] = useState(0)
+  
   const resultsEl = useRef(null)
-  const loading = useRef(false)
+  // current last page of search results
   const page = useRef(1)
-  const moreResultsToLoad = useRef(false)
+  const loading = useRef(false)
 
   const transcriptId = 'transcript-search-results'
 
-  const loadMoreResults = useCallback(async () => {
-    const res = await search(query, page.current + 1)
-    page.current++
-    setResults(prevResults => [...prevResults, ...res.grouped_hits])
-  }, [query])
-
-  useEffect(() => {
-    // infinte scroll
-    const scrollListener = window.addEventListener('scroll', async () => {
-      if (
-        !resultsEl.current ||
-        !moreResultsToLoad.current ||
-        loading.current
-      ) {
-        return
-      }
-      const { innerHeight } = window
-      const { y, height } = resultsEl.current.getBoundingClientRect()
-      // y: top of search results list, relative to viewport
-      // height: height of search results list
-      // innerHeight: viewport height
-      const distanceToBottomOfResults = (y + height) - innerHeight
-      if (distanceToBottomOfResults < innerHeight / 2) {
-        loading.current = true
-        await loadMoreResults()
-      }
-    })
-    return () => {
-      window.removeEventListener('scroll', scrollListener)
-    }
-  }, [moreResultsToLoad, loadMoreResults])
-
-  useEffect(() => {
-    // wait for the results to be added to the DOM for infinite scroll before
-    // considering loading complete
-    loading.current = false
-    if (results.length) {
-      moreResultsToLoad.current = results.length < totalResults
-    }
-  }, [results, totalResults])
-
-  useEffect(() => {
-    (async () => {
-      if (!query) {
-        return
-      }
-      const res = await search(query)
-      setResults(res.grouped_hits)
-      setTotalResults(res.found)
-    })()
-    page.current = 1
-  }, [query])
-
-  const search = async (query, page = 1) => 
-    await client.collections('transcripts').documents().search({
+  const search = useCallback(async (query, page) => {
+    loading.current = true
+    const res = await client.collections('transcripts').documents().search({
       q: query,
       query_by: 'text',
       group_by: 'episode',
       group_limit: 10,
       page
     })
+    return res
+  }, [])
+
+  const handleScroll = useCallback(async () => {
+    const currentlyDisplayed = page.current * RESULTS_PER_PAGE
+    if (
+      !resultsEl.current ||
+      currentlyDisplayed >= numFound ||
+      loading.current
+    ) {
+      return
+    }
+    const { innerHeight } = window
+    const { y, height } = resultsEl.current.getBoundingClientRect()
+    // y: top of search results list, relative to viewport
+    // height: height of search results list
+    // innerHeight: viewport height
+    const distanceToBottomOfResults = (y + height) - innerHeight
+    if (distanceToBottomOfResults < innerHeight / 2) {
+      const res = await search(query, ++page.current)
+      setResults(prevResults => [...prevResults, ...res.grouped_hits])
+    }
+  }, [query, search, numFound])
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [handleScroll])
+
+  useEffect(() => {
+    // wait for the results to be added to the DOM for infinite scroll before
+    // considering loading complete
+    loading.current = false
+  }, [results])
+
+  useEffect(() => {
+    (async () => {
+      page.current = 1
+      if (!query) {
+        return
+      }
+      const res = await search(query, page.current)
+      setResults(res.grouped_hits)
+      setNumFound(res.found)
+    })()
+  }, [query, search])
 
   const handleLineSelect = (episode, timecode) => {
     setCurrentEpisode(episode, timecode / 1000)
     jumpToMediaPlayer()
   }
 
-  if (!episodes.length || !totalResults || !query) {
+  if (!episodes.length || !query) {
     return null
   }
 
   return (
     <>
       <h2 id={transcriptId}>
-        <span className="numResults">{totalResults} </span>
-        Transcript{totalResults > 1 ? 's' : null}
+        <span className="numResults">{numFound} </span>
+        Transcript{numFound !== 1 ? 's' : null}
       </h2>
-      <ol className={s.results} ref={resultsEl}>
+      {numFound ? <ol className={s.results} ref={resultsEl}>
         {results.map(({ group_key, hits }) => {
           const epNumber = group_key[0]
           const selected = epNumber === currentEpisode
           const episode = findEpisodeByNumber(episodes, epNumber)
-          return <li key={group_key[0]} className={selected ? 'selected' : ''}>
+          return <li key={epNumber} className={selected ? 'selected' : ''}>
             <EpisodeInfo {...episode} className={s.episodeInfo} selected={selected} />
             <ol className={s.hits}>
               {hits
@@ -133,7 +130,7 @@ export default function TranscriptSearchResults({
             </ol>
           </li>
         })}
-      </ol>
+      </ol> : null}
     </>
   )
 }

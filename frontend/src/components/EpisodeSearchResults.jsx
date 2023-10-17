@@ -38,21 +38,20 @@ export default function EpisodeSearchResults({
 
   useEffect(() => {
     const el = resultListEl.current
-    if (el) {
-      setContentExceedsHeight(el.scrollHeight > el.clientHeight)
-    }
+    setContentExceedsHeight(el && el.scrollHeight > el.clientHeight)
   }, [results])
 
-  if (!results.length) {
-    return null
+  if (!query) {
+    return
   }
+
   return (
     <div className={s.results}>
       <h2>
         <span className="numResults">{results.length} </span>
-        Episode description{results.length > 1 ? 's' : null}
+        Episode description{results.length !== 1 ? 's' : null}
       </h2>
-      <ol 
+      {results.length ? <ol 
         className={scrollable ? s.scrollable : ''}
         ref={resultListEl}
       >
@@ -71,7 +70,7 @@ export default function EpisodeSearchResults({
             <EpisodeInfo {...result.item} query={query} selected={selected} />
           </li>
         })}
-      </ol>
+      </ol> : null}
       {contentExceedsHeight && !scrollable ?
         <button 
           className={s.moreResults}

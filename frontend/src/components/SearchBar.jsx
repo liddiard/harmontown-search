@@ -33,6 +33,7 @@ export default function SearchBar({
       <div className={s.inputWrapper}>
         <input 
           type="search"
+          name="main-search"
           placeholder={placeholder}
           aria-label="Search all episodes"
           value={currentQuery}
