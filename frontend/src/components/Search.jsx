@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { useOutletContext } from 'react-router-dom'
+import { useParams, useOutletContext, useNavigate } from 'react-router-dom'
 
 import s from './Search.module.scss'
 import { findEpisodeByNumber, fetchEpisodeIndex, jumpToMediaPlayer } from '../utils'
@@ -11,15 +11,15 @@ import EpisodeSearchResults from './EpisodeSearchResults'
 
 export default function Search() {
   const [searchParams, setSearchParams] = useOutletContext()
+  const navigate = useNavigate()
 
   const queryParams = {
-    episode: Number(searchParams.get('ep')) || null,
     query: searchParams.get('q') || '',
     timecode: Number(searchParams.get('t')) || 0
   }
 
   const [episodes, setEpisodes] = useState([])
-  const [currentEpisodeNumber, setCurrentEpisodeNumber] = useState(queryParams.episode)
+  const [currentEpisodeNumber, setCurrentEpisodeNumber] = useState(Number(useParams().epNumber))
   const [startTimecode, setStartTimecode] = useState(queryParams.timecode)
   const [submittedQuery, setSubmittedQuery] = useState(queryParams.query)
 
@@ -50,10 +50,10 @@ export default function Search() {
   }
 
   const setCurrentEpisode = (ep, timecode = 0) => {
+    navigate(`/episode/${ep}`)
     setCurrentEpisodeNumber(ep)
     setStartTimecode(timecode)
     searchParams.delete('t')
-    searchParams.set('ep', ep || '')
     setSearchParams(searchParams)
   }
 

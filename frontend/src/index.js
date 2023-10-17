@@ -23,6 +23,10 @@ const router = createBrowserRouter([
         element: <Search />
       },
       {
+        path: '/episode/:epNumber',
+        element: <Search />
+      },
+      {
         path: '/about',
         element: <About />
       }
