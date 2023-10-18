@@ -82,6 +82,12 @@ const jumpToHash = (id) => {
 export const jumpToMediaPlayer = () => 
   jumpToHash('media-player')
 
+export const getQueryParamsWithoutTimecode = () => {
+  const params = new URLSearchParams(window.location.search)
+  params.delete('t')
+  return params.size ? `?${params.toString()}` : ''
+}
+
 // call `callback` if the passed event was a keypress that should act as a
 // selection of the focused element (keyboard accessibility)
 export const handleKeyboardSelect = (ev, callback) => {

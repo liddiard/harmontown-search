@@ -10,6 +10,7 @@ import poster from '../../img/harmontown-logo-bg-poster.png'
 import EpisodeInfo from '../EpisodeInfo'
 import ShareDialog from './ShareDialog'
 import Transcript from './Transcript'
+import { getQueryParamsWithoutTimecode } from '../../utils'
 
 export default function MediaPlayer({
   episode = {},
@@ -34,7 +35,7 @@ export default function MediaPlayer({
   }, [episode])
 
   const closePlayer = () => {
-    navigate(`/${window.location.search}`)
+    navigate(`/${getQueryParamsWithoutTimecode()}`)
   }
 
   const updateTimecode = (ev) =>

@@ -1,11 +1,11 @@
-import { useState, useRef, useEffect, useMemo } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import Fuse from 'fuse.js'
 
 import s from './EpisodeSearchResults.module.scss'
 import { fuseConfig } from '../constants'
-import { handleKeyboardSelect } from '../utils'
+import { getQueryParamsWithoutTimecode } from '../utils'
 import EpisodeInfo from './EpisodeInfo'
 
 export default function EpisodeSearchResults({
@@ -40,12 +40,6 @@ export default function EpisodeSearchResults({
     const el = resultListEl.current
     setContentExceedsHeight(el && el.scrollHeight > el.clientHeight)
   }, [results])
-
-  const getQueryParamsWithoutTimecode = () => {
-    const params = new URLSearchParams(window.location.search)
-    params.delete('t')
-    return params.size ? `?${params.toString()}` : ''
-  }
 
   if (!query) {
     return
