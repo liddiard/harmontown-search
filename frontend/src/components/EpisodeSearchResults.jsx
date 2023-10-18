@@ -1,5 +1,6 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 import Fuse from 'fuse.js'
 
 import s from './EpisodeSearchResults.module.scss'
@@ -11,7 +12,6 @@ export default function EpisodeSearchResults({
   episodes = [],
   query,
   currentEpisode,
-  setCurrentEpisode
 }) {
   const [results, setResults] = useState([])
   const [contentExceedsHeight, setContentExceedsHeight] = useState(false)
@@ -41,6 +41,12 @@ export default function EpisodeSearchResults({
     setContentExceedsHeight(el && el.scrollHeight > el.clientHeight)
   }, [results])
 
+  const getQueryParamsWithoutTimecode = () => {
+    const params = new URLSearchParams(window.location.search)
+    params.delete('t')
+    return params.size ? `?${params.toString()}` : ''
+  }
+
   if (!query) {
     return
   }
@@ -60,14 +66,13 @@ export default function EpisodeSearchResults({
           const selected = number === currentEpisode
           return <li 
             key={number}
-            className={`selectable result ${selected ? 'selected' : ''}`}
-            onClick={() => setCurrentEpisode(number)}
-            onKeyDown={(ev) => 
-              handleKeyboardSelect(ev, () => setCurrentEpisode(number))}
-            role="link"
-            tabIndex={0}
           >
-            <EpisodeInfo {...result.item} query={query} selected={selected} />
+            <Link
+              to={`/episode/${number}${getQueryParamsWithoutTimecode()}`}
+              className={`selectable result ${selected ? 'selected' : ''}`}
+            >
+              <EpisodeInfo {...result.item} query={query} selected={selected} />
+            </Link>
           </li>
         })}
       </ol> : null}
@@ -87,6 +92,5 @@ export default function EpisodeSearchResults({
 EpisodeSearchResults.propTypes = {
   episodes: PropTypes.array.isRequired,
   query: PropTypes.string.isRequired,
-  setCurrentEpisode: PropTypes.func.isRequired,
   currentEpisode: PropTypes.number
 }

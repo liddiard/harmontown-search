@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { useParams, useOutletContext, useNavigate } from 'react-router-dom'
+import { useParams, useOutletContext } from 'react-router-dom'
 
 import s from './Search.module.scss'
 import { findEpisodeByNumber, fetchEpisodeIndex, jumpToMediaPlayer } from '../utils'
@@ -11,17 +11,16 @@ import EpisodeSearchResults from './EpisodeSearchResults'
 
 export default function Search() {
   const [searchParams, setSearchParams] = useOutletContext()
-  const navigate = useNavigate()
 
   const queryParams = {
     query: searchParams.get('q') || '',
-    timecode: Number(searchParams.get('t')) || 0
   }
 
   const [episodes, setEpisodes] = useState([])
-  const [currentEpisodeNumber, setCurrentEpisodeNumber] = useState(Number(useParams().epNumber))
-  const [startTimecode, setStartTimecode] = useState(queryParams.timecode)
   const [submittedQuery, setSubmittedQuery] = useState(queryParams.query)
+
+  const currentEpisodeNumber = Number(useParams().epNumber)
+  const startTimecode = Number(searchParams.get('t'))
 
   const currentEpisode = useMemo(() =>
     findEpisodeByNumber(episodes, currentEpisodeNumber),
@@ -49,21 +48,12 @@ export default function Search() {
     setSearchParams(searchParams)
   }
 
-  const setCurrentEpisode = (ep, timecode = 0) => {
-    navigate(`/episode/${ep}`)
-    setCurrentEpisodeNumber(ep)
-    setStartTimecode(timecode)
-    searchParams.delete('t')
-    setSearchParams(searchParams)
-  }
-
   return (
     <>
       {currentEpisode ? 
         <MediaPlayer
           episode={currentEpisode}
           startTimecode={startTimecode}
-          setCurrentEpisode={setCurrentEpisode}
         />
       : null}
       <EpisodeSearchBar
@@ -75,13 +65,11 @@ export default function Search() {
           episodes={episodes}
           query={submittedQuery}
           currentEpisode={currentEpisodeNumber}
-          setCurrentEpisode={setCurrentEpisode}
         />
         <TranscriptSearchResults
           query={submittedQuery}
           currentEpisode={currentEpisodeNumber}
           episodes={episodes}
-          setCurrentEpisode={setCurrentEpisode}
         />
       </div>
     </>

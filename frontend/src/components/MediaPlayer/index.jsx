@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Tooltip } from 'react-tooltip'
 
@@ -12,12 +13,16 @@ import Transcript from './Transcript'
 
 export default function MediaPlayer({
   episode = {},
-  setCurrentEpisode,
   startTimecode
 }) {
   const { video_link, audio_link } = episode
   const mediaType = video_link ? 'video' : 'audio'
-  const url = video_link || audio_link
+  // const url = video_link || audio_link
+  // temp: for offline development
+  const ext = mediaType === 'video' ? 'mp4' : 'mp3'
+  const url = `/episodes/${episode.number}.${ext}`
+
+  const navigate = useNavigate()
 
   const [timecode, setTimecode] = useState(0)
   const [shareOpen, setShareOpen] = useState(false)
@@ -29,7 +34,7 @@ export default function MediaPlayer({
   }, [episode])
 
   const closePlayer = () => {
-    setCurrentEpisode(null)
+    navigate(`/${window.location.search}`)
   }
 
   const updateTimecode = (ev) =>
@@ -112,6 +117,5 @@ MediaPlayer.propTypes = {
   episode: PropTypes.shape({
     number: PropTypes.number.isRequired
   }),
-  setCurrentEpisode: PropTypes.func.isRequired,
   startTimecode: PropTypes.number
 }

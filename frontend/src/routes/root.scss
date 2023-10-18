@@ -84,7 +84,7 @@ button.search {
   border: none;
 }
 
-li.selectable {
+.selectable {
   padding: 0.5em 0.75em;
   border-radius: 0.5em;
   
@@ -94,7 +94,7 @@ li.selectable {
   }
 }
 
-li.selected {
+.selected {
   cursor: default;
   background-color: rgba($primary-blue, 0.25);
 }

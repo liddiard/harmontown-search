@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Typesense from 'typesense'
 
 import s from './TranscriptSearchResults.module.scss'
 import { TYPESENSE_CONFIG } from '../constants'
-import { findEpisodeByNumber, formatTimecode, handleKeyboardSelect, jumpToMediaPlayer } from '../utils'
+import { findEpisodeByNumber, formatTimecode, jumpToMediaPlayer } from '../utils';
 import EpisodeInfo from './EpisodeInfo'
 
 const client = new Typesense.Client(TYPESENSE_CONFIG)
@@ -13,8 +14,7 @@ const RESULTS_PER_PAGE = 10
 export default function TranscriptSearchResults({
   query = '',
   episodes = [],
-  currentEpisode,
-  setCurrentEpisode
+  currentEpisode
 }) {
   const [results, setResults] = useState([])
   const [numFound, setNumFound] = useState(0)
@@ -59,6 +59,12 @@ export default function TranscriptSearchResults({
     }
   }, [query, search, numFound])
 
+  const getHitUrl = (epNumber, document) => {
+    const params = new URLSearchParams(window.location.search)
+    params.set('t', Math.floor(document.start/1000))
+    return `/episode/${epNumber}?${params.toString()}`
+  }
+
   useEffect(() => {
     window.addEventListener('scroll', handleScroll)
     return () => {
@@ -84,11 +90,6 @@ export default function TranscriptSearchResults({
     })()
   }, [query, search])
 
-  const handleLineSelect = (episode, timecode) => {
-    setCurrentEpisode(episode, timecode / 1000)
-    jumpToMediaPlayer()
-  }
-
   if (!episodes.length || !query) {
     return null
   }
@@ -112,19 +113,19 @@ export default function TranscriptSearchResults({
               .map(({ document, highlight }) => 
                 <li 
                   key={document.id}
-                  className="selectable"
-                  tabIndex={0}
-                  role="link"
-                  onKeyDown={(ev) =>
-                    handleKeyboardSelect(ev, () => handleLineSelect(epNumber, document.start))}
-                  onClick={() => handleLineSelect(epNumber, document.start)}
                 >
-                  <time className={s.timecode}>
-                    {formatTimecode(document.start)}
-                  </time>
-                  <span dangerouslySetInnerHTML={{
-                    __html: highlight.text.snippet
-                  }}/>
+                  <Link 
+                    to={getHitUrl(epNumber, document)}
+                    className="selectable"
+                    onClick={jumpToMediaPlayer}
+                  >
+                    <time className={s.timecode}>
+                      {formatTimecode(document.start)}
+                    </time>
+                    <span dangerouslySetInnerHTML={{
+                      __html: highlight.text.snippet
+                    }}/>
+                  </Link>
                 </li>
               )}
             </ol>
@@ -138,6 +139,5 @@ export default function TranscriptSearchResults({
 TranscriptSearchResults.propTypes = {
   query: PropTypes.string.isRequired,
   episodes: PropTypes.array.isRequired,
-  currentEpisode: PropTypes.number,
-  setCurrentEpisode: PropTypes.func.isRequired
+  currentEpisode: PropTypes.number
 }

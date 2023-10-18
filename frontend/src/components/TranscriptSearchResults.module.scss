@@ -21,7 +21,8 @@
     margin-bottom: 0;
     background: none;
 
-    li {
+    a {
+      text-decoration: none;
       padding: 0.25em;
       display: grid;
       // fix width so that all hit text is aligned vertically

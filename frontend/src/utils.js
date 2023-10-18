@@ -72,7 +72,7 @@ export const formatTimecode = (ms) => {
 }
 
 // jump to an anchor (element ID) on the page
-export const jumpToHash = (id) => {
+const jumpToHash = (id) => {
   const { location, history } = window
   const originalUrl = location.href;               // Save down the URL without hash
   location.href = `#${id}`;                        // Go to the target element
