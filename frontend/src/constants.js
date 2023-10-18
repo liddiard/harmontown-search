@@ -42,7 +42,7 @@ export const TYPESENSE_CONFIG = process.env.NODE_ENV === 'development' ? {
   // IMPORTANT: This is a PUBLIC API key, with read-only access to the
   // `transcripts` collection.
   apiKey: 'J0NFQhLXtu5elmr7ulOrL4m9ZGOEVvSz',
-  connectionTimeoutSeconds: 2
+  connectionTimeoutSeconds: 10
 } : {
 
 }
