@@ -118,7 +118,7 @@ export default function Transcript({
         const isCurrent = transcript[currentLine]?.start === start
         return (
           <li
-            key={start}
+            key={`${epNumber}_${start}`}
             className={`selectable ${isCurrent ? `selected` : ''}`}
             tabIndex={0}
             role="link"
@@ -131,7 +131,13 @@ export default function Transcript({
         )
       })}
     </ol>
-  ))(transcript, currentLine), [transcript, currentLine, handleLineClick, handleLineKeydown])
+  ))(transcript, currentLine), [
+    epNumber,
+    transcript,
+    currentLine,
+    handleLineClick,
+    handleLineKeydown
+  ])
 
   return (
     <div className={s.transcript} ref={transcriptEl}>
