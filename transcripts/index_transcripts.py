@@ -80,7 +80,7 @@ try:
 except typesense.exceptions.ObjectAlreadyExists:
     print(f"Collection '{COLLECTION_NAME}' already exists.")
 
-transcripts = glob("*.tsv")
+transcripts = glob("[0-9]*.tsv")
 
 errors = False
 for transcript_file in transcripts:
