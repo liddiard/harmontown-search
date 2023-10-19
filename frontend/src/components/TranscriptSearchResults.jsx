@@ -7,6 +7,7 @@ import s from './TranscriptSearchResults.module.scss'
 import { TYPESENSE_CONFIG } from '../constants'
 import { findEpisodeByNumber, formatTimecode, jumpToMediaPlayer } from '../utils';
 import EpisodeInfo from './EpisodeInfo'
+import LoadingSpinner from './LoadingSpinner'
 
 const client = new Typesense.Client(TYPESENSE_CONFIG)
 const RESULTS_PER_PAGE = 10
@@ -132,6 +133,10 @@ export default function TranscriptSearchResults({
           </li>
         })}
       </ol> : null}
+      <LoadingSpinner 
+        loading={numFound && results.length < numFound}
+        className={s.spinner}
+      />
     </>
   )
 }
