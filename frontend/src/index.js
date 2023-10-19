@@ -10,6 +10,7 @@ import Root from './routes/root'
 import EpisodeList from './routes/episodeList'
 import Search from './components/Search'
 import About from './routes/about'
+import NotFound from './routes/404'
 import ErrorPage from './error-page'
 
 
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: '/about',
         element: <About />
+      },
+      {
+        path: '*',
+        element: <NotFound />
       }
     ]
   },

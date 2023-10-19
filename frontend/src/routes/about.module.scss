@@ -1,7 +1,7 @@
 @import '../globals';
 
 .about {
-  max-width: 640px;
+  max-width: $article-width;
   margin: 0 auto 30vw;
   // background-color: $bg-gray;
   padding: 0 1em;
