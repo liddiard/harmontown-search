@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { highlightMatches, mask } from '../utils'
+import { formatDate, highlightMatches, mask } from '../utils'
 import playIcon from '../img/play.svg'
 import s from './EpisodeInfo.module.scss'
 
@@ -15,11 +15,7 @@ export default function EpisodeInfo({
   selected
 }) {
   const date = record_date || release_date
-  const formattedDate = Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric' 
-  }).formatToParts(new Date(date))
+  const formattedDate = formatDate(date, { parts: true })
 
   return (
     <div className={`${s.episodeInfo} ${className}`}>

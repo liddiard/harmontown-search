@@ -7,9 +7,10 @@ import {
 import './index.scss'
 import reportWebVitals from './reportWebVitals'
 import Root from './routes/root'
+import EpisodeList from './routes/episodeList'
+import Search from './components/Search'
 import About from './routes/about'
 import ErrorPage from './error-page'
-import Search from './components/Search'
 
 
 const router = createBrowserRouter([
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: '/episode/:epNumber',
         element: <Search />
+      },
+      {
+        path: '/episode-list',
+        element: <EpisodeList />
       },
       {
         path: '/about',

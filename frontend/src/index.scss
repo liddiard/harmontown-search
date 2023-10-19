@@ -44,23 +44,49 @@ button {
   border: 1px solid $bg-gray;
 }
 
-// /* Works on Firefox */
-// * {
-//   scrollbar-width: thin;
-//   scrollbar-color: $fg-gray transparent;
-// }
+mark {
+  background-color: rgba($secondary-yellow, 0.5);
+  color: unset;
+}
 
-// /* Works on Chrome, Edge, and Safari */
-// *::-webkit-scrollbar {
-//   width: 12px;
-// }
+input[type=search] {
+  width: 100%;
+  font-family: $body-font, sans-serif;
+  background-color: $bg-gray;
+  color: white;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 2px 0 2px 2px;
+  padding: 0.5em 1em;
 
-// *::-webkit-scrollbar-track {
-//   background: transparent;
-// }
+  &:focus {
+    outline: none;
+    border-color: $primary-blue;
+  }
 
-// *::-webkit-scrollbar-thumb {
-//   background-color: $fg-gray;
-//   border-radius: 20px;
-//   border: 1px solid black;
-// }
+  &::-webkit-search-cancel-button {
+    display: none;
+  }
+}
+
+button.search {
+  background-color: $primary-blue;
+  display: flex;
+  align-items: center;
+  border: none;
+}
+
+.selectable {
+  padding: 0.5em 0.75em;
+  border-radius: 0.5em;
+  
+  &:hover:not(.selected) {
+    cursor: pointer;
+    background-color: rgba(255,255,255, 0.15);
+  }
+}
+
+.selected {
+  cursor: default;
+  background-color: rgba($primary-blue, 0.25);
+}

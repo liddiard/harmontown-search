@@ -1,0 +1,68 @@
+@import '../globals';
+
+.episodeList {
+  table {
+    border-spacing: 1em;
+  }
+
+  thead {
+    text-align: left;
+  }
+
+  td {
+    vertical-align: top;
+  }
+
+  .title,
+  .number {
+    font-weight: bold;
+  }
+
+  .date {
+    white-space: nowrap;
+  }
+
+  @include narrow {
+    table {
+      border-spacing: 0;
+    }
+
+    thead {
+      display: none;
+    }
+
+    tr {
+      display: block;
+      margin-bottom: 1em;
+    }
+
+    td {
+      display: inline-block;
+      vertical-align: bottom;
+    }
+
+    .number {
+      margin-right: 0.25em;
+
+      &::before {
+        font-weight: normal;
+        content: '#';
+      }
+    }
+
+    .title {
+      margin-right: 0.5em;
+    }
+
+    .date {
+      color: $fg-gray;
+      font-weight: bold;
+      font-size: 0.9em;
+    }
+
+    .description {
+      display: block;
+      margin: 0.25em 0;
+    }
+  }
+}

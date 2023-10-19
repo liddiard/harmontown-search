@@ -3,4 +3,5 @@ episodes/*.mp3
 episodes/*.mp4
 transcripts/*.tsv
 frontend/public/transcripts/*.tsv
+frontend/public/episodes/
 typesense-data/

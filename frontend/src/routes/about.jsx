@@ -1,8 +1,8 @@
-import './about.scss'
+import s from './about.module.scss'
 
 export default function About() {
   return (
-    <article className="about">
+    <article className={s.about}>
       <h1>About</h1>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ac feugiat sed lectus vestibulum mattis ullamcorper. Adipiscing commodo elit at imperdiet dui accumsan sit. Faucibus interdum posuere lorem ipsum dolor sit amet. Nunc pulvinar sapien et ligula. Aliquam nulla facilisi cras fermentum odio eu feugiat pretium nibh. Amet mattis vulputate enim nulla aliquet porttitor lacus luctus. Arcu dictum varius duis at consectetur. Hac habitasse platea dictumst vestibulum rhoncus est. Iaculis urna id volutpat lacus laoreet non curabitur. Urna cursus eget nunc scelerisque viverra. Etiam dignissim diam quis enim lobortis scelerisque. Non consectetur a erat nam at. Nibh mauris cursus mattis molestie a. Laoreet sit amet cursus sit amet dictum sit. Sed egestas egestas fringilla phasellus. Malesuada fames ac turpis egestas sed tempus.</p>
       <p>Venenatis urna cursus eget nunc scelerisque viverra mauris in aliquam. Ullamcorper velit sed ullamcorper morbi tincidunt ornare. Vitae congue mauris rhoncus aenean vel. Commodo sed egestas egestas fringilla phasellus faucibus. Praesent semper feugiat nibh sed. Mattis molestie a iaculis at erat pellentesque adipiscing commodo. Blandit libero volutpat sed cras ornare arcu dui. Dolor sit amet consectetur adipiscing elit ut. Libero enim sed faucibus turpis in eu mi bibendum neque. Nunc vel risus commodo viverra maecenas accumsan lacus. Neque sodales ut etiam sit. Urna porttitor rhoncus dolor purus. Volutpat maecenas volutpat blandit aliquam etiam erat.</p>

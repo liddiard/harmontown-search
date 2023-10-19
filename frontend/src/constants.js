@@ -96,5 +96,7 @@ export const searchSuggestions = [
   'meltdown comics',
   'demorge brown',
   'chevy chase',
-  'beef fungus bill'
+  'beef fungus bill',
+  'time travel',
+  'Brisbane'
 ]

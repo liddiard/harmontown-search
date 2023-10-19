@@ -71,6 +71,15 @@ export const formatTimecode = (ms) => {
   .join(':')
 }
 
+// format a Date object like into an an array of parts which when joined make 
+// a string like "Jul 4, 2012"
+export const formatDate = (date, options = {}) => 
+  Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric' 
+  })[options.parts ? 'formatToParts' : 'format'](new Date(date))
+
 // jump to an anchor (element ID) on the page
 const jumpToHash = (id) => {
   const { location, history } = window
