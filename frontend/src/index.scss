@@ -32,6 +32,10 @@ body {
 
 a {
   color: white;
+
+  &:hover {
+    color: $primary-blue-lightest;
+  }
 }
 
 button {
@@ -69,6 +73,11 @@ input[type=search] {
   }
 }
 
+article h1 {
+  font-size: 2.5em;
+  margin: 0.5em 0;
+}
+
 button.search {
   background-color: $primary-blue;
   display: flex;
@@ -83,6 +92,7 @@ button.search {
   &:hover:not(.selected) {
     cursor: pointer;
     background-color: rgba(255,255,255, 0.15);
+    color: $primary-blue-lightest;
   }
 }
 

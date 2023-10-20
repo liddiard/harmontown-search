@@ -13,11 +13,6 @@
     vertical-align: top;
   }
 
-  .title,
-  .number {
-    font-weight: bold;
-  }
-
   .date {
     white-space: nowrap;
   }
@@ -39,6 +34,11 @@
     td {
       display: inline-block;
       vertical-align: bottom;
+    }
+
+    .number,
+    .title {
+      font-weight: bold;
     }
 
     .number {
