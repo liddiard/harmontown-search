@@ -1,3 +1,7 @@
+'''Find and replace known incorrect transcriptions (defined in
+transcription_corrections.tsv), and remove empty lines. Save corrected
+transcripts to new files.
+'''
 import os
 import csv
 import re
