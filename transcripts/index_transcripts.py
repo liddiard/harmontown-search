@@ -1,11 +1,11 @@
 '''Upload all epsiode transcripts (generated using transcribe_episodes.sh) to
 Typesense server.
 '''
+import os
 import sys
 import csv
 import re
 import argparse
-from glob import glob
 
 import typesense
 
@@ -80,7 +80,7 @@ try:
 except typesense.exceptions.ObjectAlreadyExists:
     print(f"Collection '{COLLECTION_NAME}' already exists.")
 
-transcripts = glob("[0-9]*.tsv")
+transcripts = os.listdir("corrected")
 
 errors = False
 for transcript_file in transcripts:

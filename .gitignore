@@ -1,7 +1,8 @@
 .DS_Store
 episodes/*.mp3
 episodes/*.mp4
-transcripts/*.tsv
-frontend/public/transcripts/*.tsv
+transcripts/original/
+transcripts/corrected/
 frontend/public/episodes/
+frontend/public/transcripts/
 typesense-data/
