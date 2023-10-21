@@ -16,14 +16,12 @@
     display: flex;
   }
 
-  :global {
-    button.search {
-      padding: 0.75em;
-      border-radius: 0 0.5em 0.5em 0;
-  
-      img {
-        width: 1em;
-      }
+  button.search {
+    padding: 0.75em;
+    border-radius: 0 0.5em 0.5em 0;
+
+    img {
+      width: 1em;
     }
   }
 
@@ -45,6 +43,7 @@
   .backToTranscript {
     position: absolute;
     padding: 0.6em;
+    border: none;
 
     img {
       height: 1.5em;

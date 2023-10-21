@@ -23,6 +23,10 @@ $article-width: 640px;
   font-size: 0.9em;
 }
 
+@mixin frosted-glass {
+  backdrop-filter: saturate(150%) blur(10px);
+}
+
 @mixin wide {
   @media (min-width: 800px) { @content; }
 }

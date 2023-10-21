@@ -65,7 +65,7 @@ export default function TranscriptSearch({
             Not found
           </span>
         ) : null}
-        <button className="search">
+        <button className={`${s.search} search`}>
           <img src={magnifyingGlass} alt="Search" />
         </button>
       </form>

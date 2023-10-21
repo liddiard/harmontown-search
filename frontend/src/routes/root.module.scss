@@ -5,14 +5,14 @@ header {
   align-items: flex-end;
   justify-content: space-between;
   border-bottom: 1px solid $fg-gray;
-  margin-bottom: 1em;
-  padding: 1em 0 0.75em;
+  padding: 0.5em 0 0.5em;
 
   nav {
     display: flex;
     flex-wrap: wrap;
     column-gap: 1em;
     row-gap: 0.5em;
+    margin-bottom: 0.25em;
 
     a {
       text-decoration: none;
@@ -39,17 +39,20 @@ footer {
   h1 {
     font-family: $logo-font;
     font-size: 4em;
-    line-height: 0.75;
+    line-height: 0.9;
     margin: 0;
+    letter-spacing: 1px;
 
     .searchHeading {
       font-family: $body-font;
       font-weight: 200;
-      font-size: 0.9em;
+      font-size: 0.95em;
+      letter-spacing: -1px;
     }
   }
 
-  label {
+  .unofficial {
+    position: absolute;
     background-color: $secondary-yellow;
     color: black;
     text-shadow: none;
@@ -58,8 +61,7 @@ footer {
     font-size: 0.7em;
     padding: 0.25em 0.5em;
     transform: rotate(-10deg);
-    top: -22px;
+    top: -16px;
     left: -15px;
-    position: absolute;
   }
 }

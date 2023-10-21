@@ -3,10 +3,20 @@
 .episodeList {
   table {
     border-spacing: 1em;
+    line-height: 1.3;
   }
 
   thead {
     text-align: left;
+    position: sticky;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid $fg-gray;
+    @include frosted-glass;
+
+    th {
+      padding: 0.5em 0;
+    }
   }
 
   td {

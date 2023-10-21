@@ -62,6 +62,7 @@ input[type=search] {
   border-style: solid;
   border-width: 2px 0 2px 2px;
   padding: 0.5em 1em;
+  @include frosted-glass;
 
   &:focus {
     outline: none;
@@ -92,7 +93,7 @@ button.search {
   &:hover:not(.selected) {
     cursor: pointer;
     background-color: rgba(255,255,255, 0.15);
-    color: $primary-blue-lightest;
+    color: white;
   }
 }
 
