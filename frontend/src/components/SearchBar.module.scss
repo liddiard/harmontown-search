@@ -1,5 +1,29 @@
 @import '../globals';
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 .search {
   display: flex;
   margin: 2em 0;
@@ -16,16 +40,45 @@
   .inputWrapper {
     display: flex;
     width: 100%;
+    position: relative;
+  }
+
+  .placeholders {
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
+    font-size: 1.5em;
+    color: $fg-gray;
+    height: 100%;
+    margin-left: 1.1em;
+    display: flex;
+    align-items: center;
+    left: 0;
+    right: 1em;
+    overflow: hidden;
+
+    span {
+      display: none;
+      white-space: nowrap;
+      align-items: center;
+      animation-fill-mode: forwards;
+
+      &.fadeIn {
+        display: flex;
+        animation: fadeIn 0.5s;
+      }
+
+      &.fadeInOut {
+        display: flex;
+        animation: fadeInOut 4s;
+      }
+    }
   }
 
   input[type=search] {
     flex-shrink: 1.1;
     font-size: 1.5em;
     border-radius: 2rem 0 0 2rem;
-
-    &::placeholder {
-      color: $fg-gray;
-    }
   }
 
   button {

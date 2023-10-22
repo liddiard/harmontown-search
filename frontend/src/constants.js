@@ -84,7 +84,6 @@ export const searchSuggestions = [
   'Robocop',
   'Ketel One',
   'therapy',
-  'sports corner',
   'chicken noodle man',
   'moon colony',
   'I like that hat mate',
