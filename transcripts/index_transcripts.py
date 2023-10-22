@@ -25,6 +25,7 @@ CONFIG = {
     }
 }
 COLLECTION_NAME = 'transcripts'
+TRANSCRIPT_DIR = 'corrected'
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-k', '--api-key', type=str, required=True, 
@@ -38,7 +39,7 @@ parser.add_argument('-d', '--drop-existing',
 args = parser.parse_args()
 
 if args.drop_existing:
-    proceed = input("Warning: Running with -d will drop the existing" 
+    proceed = input("Warning: Running with -d will drop the existing " 
                     "'transcripts' index and result in downtime. Are you "
                     "sure you want to proceed? [y/N]: ")
     if proceed not in ['y', 'Y', 'yes', 'Yes', 'YES']:
@@ -80,14 +81,14 @@ try:
 except typesense.exceptions.ObjectAlreadyExists:
     print(f"Collection '{COLLECTION_NAME}' already exists.")
 
-transcripts = os.listdir("corrected")
+transcripts = os.listdir(TRANSCRIPT_DIR)
 
 errors = False
 for transcript_file in transcripts:
     episode = re.search(r"(\d+)\.tsv", transcript_file).group(1)
     transcript = []
     print(f"⬆️  Starting upload for episode: {episode}")
-    with open(transcript_file, 'r') as f:
+    with open(f"{TRANSCRIPT_DIR}/{transcript_file}", 'r') as f:
         reader = csv.DictReader(f, delimiter='\t')
         for row in reader:
             transcript.append({
