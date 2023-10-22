@@ -20,7 +20,7 @@ def correct_transcript(infile, outfile):
     # writer will default to DOS-style line terminators (CRLF) unless
     # `lineterminator` is specified as LF only (Unix-style)
     writer = csv.writer(outfile, delimiter='\t', lineterminator='\n')
-    # write header row
+    # write header row (same as source)
     writer.writerow(['start', 'end', 'text'])
     for line in transcript:
         correct_line(line, writer)
