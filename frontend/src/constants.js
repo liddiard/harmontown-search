@@ -57,8 +57,8 @@ export const searchSuggestions = [
   'in god’s crosshairs',
   'giraffes',
   'earthshine',
-  '9-11',
-  'they’re coming for you barbara',
+  '9/11',
+  'they’re coming to get you barbara',
   'cheapy peepy',
   'mannequin leg',
   'adam goldberg',
@@ -97,5 +97,12 @@ export const searchSuggestions = [
   'chevy chase',
   'beef fungus bill',
   'time travel',
-  'Brisbane'
+  'Brisbane',
+  'ray of frost',
+  'critical hit',
+  'critical fail',
+  'mitch hurwitz',
+  'john lithgow',
+  'superstein',
+  'drawing room'
 ]
