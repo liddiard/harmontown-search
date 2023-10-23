@@ -6,6 +6,12 @@ import s from './SearchBar.module.scss'
 import magnifyingGlass from '../img/magnifying-glass.svg'
 import { searchSuggestions } from '../constants'
 
+
+// change the search input placeholder text every x milliseconds
+// this value must match the `fadeInOut` CSS class animation duration in the
+// associated stylesheet
+const PLACEHOLDER_CYCLE_MS = 4000
+
 export default function SearchBar({
   initialQuery = '',
   handleSearch
@@ -22,17 +28,39 @@ export default function SearchBar({
     handleSearch(currentQuery)
   }
 
-  const handleFocus = () => {
+  // setInterval to change the placeholder every `PLACEHOLDER_CYCLE_MS`
+  const startPlaceholderCycle = () => {
     setPlaceholderIndex(Math.floor(Math.random() * searchSuggestions.length))
     cycleInterval.current = window.setInterval(() => {
       setPlaceholderIndex(prevIndex => 
         prevIndex + 1 === searchSuggestions.length ? 0 : prevIndex + 1)
-    }, 4000)
+    }, PLACEHOLDER_CYCLE_MS)
   }
 
-  const handleBlur = () => {
+  // clearInterval to stop changing the placeholder
+  const endPlaceholderCycle = () => {
     window.clearInterval(cycleInterval.current)
     setPlaceholderIndex(null)
+  }
+
+  // only start the placeholder cycle if the input is empty
+  const handleFocus = () => {
+    if (currentQuery) {
+      return
+    }
+    startPlaceholderCycle()
+  }
+
+  // start the placeholder cycle if the input was cleared, or stop it if it
+  // went from empty to containing text
+  const handleChange = (ev) => {
+    const { value } = ev.target
+    if (currentQuery && !value) {
+      startPlaceholderCycle()
+    } else if (!currentQuery && value) {
+      endPlaceholderCycle()
+    } 
+    setCurrentQuery(value)
   }
 
   const renderPlaceholder = () => (
@@ -65,8 +93,8 @@ export default function SearchBar({
           value={currentQuery}
           autoFocus
           onFocus={handleFocus}
-          onBlur={handleBlur}
-          onChange={ev => setCurrentQuery(ev.target.value)}
+          onBlur={endPlaceholderCycle}
+          onChange={handleChange}
         />
         <button className="search">
           <img src={magnifyingGlass} alt="Search" />
