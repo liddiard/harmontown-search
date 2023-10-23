@@ -18,7 +18,7 @@ export default function TranscriptSearchResults({
   currentEpisode
 }) {
   const [results, setResults] = useState([])
-  const [numFound, setNumFound] = useState(0)
+  const [numFound, setNumFound] = useState(null)
   
   const resultsEl = useRef(null)
   // current last page of search results
@@ -85,6 +85,7 @@ export default function TranscriptSearchResults({
       if (!query) {
         return
       }
+      setResults([])
       const res = await search(query, page.current)
       setResults(res.grouped_hits)
       setNumFound(res.found)
@@ -98,7 +99,7 @@ export default function TranscriptSearchResults({
   return (
     <>
       <h2 id={transcriptId}>
-        <span className="numResults">{numFound} </span>
+        <span className="numResults">{numFound ?? 0} </span>
         Transcript{numFound !== 1 ? 's' : null}
       </h2>
       {numFound ? <ol className={s.results} ref={resultsEl}>
@@ -134,7 +135,7 @@ export default function TranscriptSearchResults({
         })}
       </ol> : null}
       <LoadingSpinner 
-        loading={numFound && results.length < numFound}
+        loading={results.length < (numFound ?? Infinity)}
         className={s.spinner}
       />
     </>
