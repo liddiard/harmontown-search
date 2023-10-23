@@ -44,7 +44,15 @@ export const TYPESENSE_CONFIG = process.env.NODE_ENV === 'development' ? {
   apiKey: 'J0NFQhLXtu5elmr7ulOrL4m9ZGOEVvSz',
   connectionTimeoutSeconds: 10
 } : {
-
+  nodes: [{
+    host: 'api.harmontown-search.harrisonliddiard.com',
+    port: '443',
+    protocol: 'https'
+  }],
+  // IMPORTANT: This is a PUBLIC API key, with read-only access to the
+  // `transcripts` collection.
+  apiKey: 'FbaXA81snpUIbyyTvvfgIuahg5trbk7b',
+  connectionTimeoutSeconds: 10
 }
 
 export const searchSuggestions = [
