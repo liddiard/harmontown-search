@@ -10,13 +10,13 @@ import poster from '../../img/harmontown-logo-bg-poster.png'
 import EpisodeInfo from '../EpisodeInfo'
 import ShareDialog from './ShareDialog'
 import Transcript from './Transcript'
-import { getMediaUrl, getQueryParamsWithoutTimecode } from '../../utils'
+import { getMediaData, getQueryParamsWithoutTimecode } from '../../utils'
 
 export default function MediaPlayer({
   episode = {},
   startTimecode
 }) {
-  const url = getMediaUrl(episode)
+  const { mediaType, url } = getMediaData(episode)
 
   const navigate = useNavigate()
 
