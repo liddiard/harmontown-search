@@ -20,7 +20,7 @@ export default function Root() {
       <header>
         <a href="/" id={s.logo}>
           <div className={s.unofficial}>Unofficial</div>
-          <h1>Harmontown<span className={s.searchHeading}> Search</span></h1>
+          <h1>Harmontown<span className={s.searchHeading}> Search</span></h1>
         </a>
         <nav>
           {navLinks.map(link => 
