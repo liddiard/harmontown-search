@@ -109,3 +109,15 @@ export const handleKeyboardSelect = (ev, callback) => {
 
 export const mask = (str = '') =>
   new Array(str.length).fill('█').join('')
+
+// return offline, local media urls in development and CDN urls in prod
+export const getMediaUrl = (episode) => {
+  const { video_link, audio_link } = episode
+  if (process.env.NODE_ENV === 'development') {
+    const mediaType = video_link ? 'video' : 'audio'
+    const ext = mediaType === 'video' ? 'mp4' : 'mp3'
+    return `/episodes/${episode.number}.${ext}`
+  } else {
+    return video_link || audio_link
+  }
+}
