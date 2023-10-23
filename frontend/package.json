@@ -19,8 +19,8 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "prop-types": "^15.8.1",
-    "@babel/plugin-proposal-private-property-in-object": "*"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "prop-types": "^15.8.1"
   },
   "engines": {
     "node": "18",
