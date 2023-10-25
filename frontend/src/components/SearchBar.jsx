@@ -91,6 +91,7 @@ export default function SearchBar({
           name="main-search"
           aria-label="Search all episodes"
           value={currentQuery}
+          autoCapitalize="none"
           autoFocus
           onFocus={handleFocus}
           onBlur={endPlaceholderCycle}

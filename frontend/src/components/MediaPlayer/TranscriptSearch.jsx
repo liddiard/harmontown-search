@@ -61,6 +61,7 @@ export default function TranscriptSearch({
           value={currentQuery}
           placeholder="Search this episode"
           aria-label="Search this episode"
+          autoCapitalize="none"
           className={searchResults.length ? s.showingResults : ''}
           onChange={(ev) => setCurrentQuery(ev.target.value)}
         />

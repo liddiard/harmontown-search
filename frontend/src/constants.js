@@ -114,4 +114,5 @@ export const searchSuggestions = [
   'superstein',
   'drawing room',
   'robin williams',
+  'dr ken'
 ]
