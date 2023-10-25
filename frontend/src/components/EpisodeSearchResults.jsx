@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import Fuse from 'fuse.js'
 
 import s from './EpisodeSearchResults.module.scss'
+import downArrow from '../img/triangle-down.svg'
 import { fuseConfig } from '../constants'
 import { getQueryParamsWithoutTimecode } from '../utils'
 import EpisodeInfo from './EpisodeInfo'
@@ -75,7 +76,7 @@ export default function EpisodeSearchResults({
           className={s.moreResults}
           onClick={() => setScrollable(true)}
         >
-          More episode results ⏷
+          More episode results <img src={downArrow} alt="" />
         </button>
         : null
       }

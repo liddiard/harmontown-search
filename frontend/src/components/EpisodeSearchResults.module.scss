@@ -35,6 +35,14 @@
 
     &:hover {
       color: $primary-blue-lightest;
+
+      img {
+        filter: brightness(125%);
+      }
+    }
+
+    img {
+      height: 1ch;
     }
   }
 }
