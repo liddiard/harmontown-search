@@ -3,13 +3,20 @@ import Fuse from 'fuse.js'
 import { papaConfig, fuseConfig } from './constants'
 
 // fetch and parse the TSV file of all episodes
-export const fetchEpisodeIndex = () => new Promise((resolve, reject) =>
+let episodeIndex
+export const fetchEpisodeIndex = () => new Promise((resolve, reject) => {
+  // return locally cached version if available
+  if (episodeIndex) {
+    return resolve(episodeIndex)
+  }
   Papa.parse('/episode_list.tsv', {
-    ...papaConfig,
-    complete: (results) => {
-      resolve(results.data)
-    }
-  })
+      ...papaConfig,
+      complete: (results) => {
+        episodeIndex = results.data
+        resolve(episodeIndex)
+      }
+    })
+  }
 )
 
 // fetch and parse the TSV file of a transcript with the passed episode `number`
