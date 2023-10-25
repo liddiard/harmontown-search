@@ -25,7 +25,7 @@ body {
   min-height: 100vh;
 
   @include phone-lg {
-    padding: 1rem;
+    padding: 1.5rem 1em;
     font-size: 0.9em;
   }
 }
@@ -63,7 +63,6 @@ input[type=search] {
   border-style: solid;
   border-width: 2px 0 2px 2px;
   padding: 0.5em 1em;
-  text-shadow: 1px 1px black;
   @include frosted-glass;
 
   &:focus {
