@@ -112,5 +112,6 @@ export const searchSuggestions = [
   'mitch hurwitz',
   'john lithgow',
   'superstein',
-  'drawing room'
+  'drawing room',
+  'robin williams',
 ]

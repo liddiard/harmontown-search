@@ -44,6 +44,8 @@ export default function Search() {
 
   const handleSearch = (currentQuery) => {
     setSubmittedQuery(currentQuery)
+    // remove focus from the input to hide keyboard on mobile
+    document.activeElement.blur()
     searchParams.set('q', currentQuery)
     setSearchParams(searchParams)
   }

@@ -35,6 +35,10 @@ export default function TranscriptSearch({
     if (currentQuery) {
       setNoResults(!results.length)
     }
+    if (results.length) {
+      // remove focus from the input to hide keyboard on mobile
+      document.activeElement.blur()
+    }
   }
 
   return (
