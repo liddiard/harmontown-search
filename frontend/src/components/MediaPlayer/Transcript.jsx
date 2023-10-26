@@ -80,6 +80,10 @@ export default function Transcript({
     })()
   }, [epNumber])
 
+  useEffect(() => {
+    setUserScroll(false)
+  }, [transcript])
+
   // set the current line of the transcript based on the media timecode
   useEffect(() => {
     // do nothing if there's no transcript or timecode
