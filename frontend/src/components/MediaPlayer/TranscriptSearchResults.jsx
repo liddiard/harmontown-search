@@ -8,15 +8,17 @@ export default function TranscriptSearchResults({
   searchResults = [],
   setSearchResults,
   submittedQuery,
-  seek
+  seek,
+  setScrollingProgrammatically
 }) {
   const resultsEl = useRef(null)
 
   useEffect(() => {
     if (resultsEl.current) {
+      setScrollingProgrammatically()
       resultsEl.current.scrollTop = 0
     }
-  }, [searchResults])
+  }, [searchResults, setScrollingProgrammatically])
 
   if (!searchResults.length)  {
     return
@@ -28,8 +30,9 @@ export default function TranscriptSearchResults({
           key={start}
           className="selectable"
           onClick={() => {
-            seek(start, { play: true })
             setSearchResults([])
+            setScrollingProgrammatically()
+            seek(start, { play: true })
           }}
         >
           <time className={s.timecode}>{formatTimecode(start)}</time>
@@ -44,5 +47,6 @@ TranscriptSearchResults.propTypes = {
   searchResults: PropTypes.array.isRequired,
   setSearchResults: PropTypes.func.isRequired,
   submittedQuery: PropTypes.string.isRequired,
-  seek: PropTypes.func.isRequired
+  seek: PropTypes.func.isRequired,
+  setScrollingProgrammatically: PropTypes.func.isRequired
 }

@@ -10,7 +10,8 @@ import TranscriptSearchResults from './TranscriptSearchResults'
 
 export default function TranscriptSearch({
   fuse,
-  seek
+  seek,
+  setScrollingProgrammatically
 }) {
   // current text in the episode search input
   const [currentQuery, setCurrentQuery] = useState('')
@@ -79,6 +80,7 @@ export default function TranscriptSearch({
         setSearchResults={setSearchResults}
         submittedQuery={submittedQuery}
         seek={seek}
+        setScrollingProgrammatically={setScrollingProgrammatically}
       />
       <Tooltip id="back-to-transcript" place="bottom" />
     </div>
@@ -91,5 +93,6 @@ TranscriptSearch.propTypes = {
       search: PropTypes.func.isRequired
     }).isRequired
   }).isRequired,
-  seek: PropTypes.func.isRequired
+  seek: PropTypes.func.isRequired,
+  setScrollingProgrammatically: PropTypes.func.isRequired
 }

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import Fuse from 'fuse.js'
 
 import s from './Transcript.module.scss'
+import chevronDown from '../../img/chevron-down.svg'
+import chevronUp from '../../img/chevron-up.svg'
 import { fetchTranscript, handleKeyboardSelect, inRange } from '../../utils'
 import { getCurrentLine } from './transcriptUtils'
 import TranscriptSearch from './TranscriptSearch'
@@ -16,13 +18,51 @@ export default function Transcript({
   const [transcript, setTranscript] = useState([])
   // current line of transcript matching the media timecode
   const [currentLine, setCurrentLine] = useState(0)
+  const [userScroll, setUserScroll] = useState(false)
 
-  // whether or not the mouse cursor is currently inside the transcript element
-  const cursorInTranscript = useRef(false)
+  // wheter or not the current transcript scroll was initiated by code
+  // (as opposed to user)
+  const scrollingProgrammatically = useRef(false)
+  // setTimeout value when scrolling is initiated
+  const programmaticScollingTimeout = useRef(null)
   const fuse = useRef(new Fuse())
   const currentLineEl = useRef(null)
   const transcriptEl = useRef(null)
   const progressEl = useRef(null)
+
+  // get the vertical height to scroll to within the transcript for the
+  // current line, along with other metadata
+  const getScrollTarget = () => {
+    // we need to manually calculate scroll position instead of using
+    // scrollIntoView because scrollIntoView will scroll the document body
+    // in addition to scrolling the transcript
+    const currentLineTop = currentLineEl.current.offsetTop
+    const currentLineHeight = currentLineEl.current.clientHeight
+    const transcriptHeight = transcriptEl.current.clientHeight
+    const currentScrollTop = transcriptEl.current.scrollTop
+    // vertically center the current line in the transcript window
+    const scrollTo = currentLineTop - (transcriptHeight/2) + (currentLineHeight/2)
+    return {
+      scrollTo,
+      currentScrollTop,
+      transcriptHeight
+    }
+  }
+
+  // temporarily set a ref (for `timeout` ms) to indiciate that a scroll
+  // function is code-initiated rather than directly user initiated.
+  // Intended to be called directly befrore any scrolling code
+  // Browser smooth scroll implemnetations vary, but 500ms seems to be a
+  // sufficiently long duration for this purpose.
+  const setScrollingProgrammatically = useCallback((timeout = 500) => {
+    scrollingProgrammatically.current = true
+    if (programmaticScollingTimeout.current) {
+      window.clearInterval(programmaticScollingTimeout.current)
+    }
+    programmaticScollingTimeout.current = window.setTimeout(() =>
+      scrollingProgrammatically.current = false,
+    timeout)
+  }, [])
 
   // fetch the episode transcript whenever the episode number changes
   useEffect(() => {
@@ -56,18 +96,14 @@ export default function Transcript({
   useEffect(() => {
     // return if any required element are not currently rendered in DOM, or if
     // the user's mouse is currently inside the transcript
-    if (!transcriptEl.current || !currentLineEl.current || cursorInTranscript.current) {
+    if (!transcriptEl.current || !currentLineEl.current || userScroll) {
       return
     }
-    // we need to manually calculate scroll position instead of using
-    // scrollIntoView because scrollIntoView will scroll the document body
-    // in addition to scrolling the transcript
-    const currentLineTop = currentLineEl.current.offsetTop
-    const currentLineHeight = currentLineEl.current.clientHeight
-    const transcriptHeight = transcriptEl.current.clientHeight
-    const currentScrollTop = transcriptEl.current.scrollTop
-    // vertically center the current line in the transcript window
-    const scrollTo = currentLineTop - (transcriptHeight/2) + (currentLineHeight/2)
+    const {
+      scrollTo,
+      currentScrollTop,
+      transcriptHeight
+    } = getScrollTarget()
     // smooth scroll if the new position is nearby the current scroll position
     const smoothScroll = inRange(
       scrollTo,
@@ -78,13 +114,19 @@ export default function Transcript({
       top: scrollTo,
       behavior: smoothScroll ? 'smooth' : 'instant'
     })
-  }, [currentLine])
+    setScrollingProgrammatically()
+  }, [currentLine, userScroll, setScrollingProgrammatically])
 
   useEffect(() => {
     const el = transcriptEl.current
     const scrollListener = el.addEventListener('scroll', () => {
       const { scrollTop, scrollHeight } = transcriptEl.current
       progressEl.current.value = scrollTop / scrollHeight
+      if (!scrollingProgrammatically.current) {
+        // if we're not current scrolling the transcript programmatically, then
+        // this scroll event was initiated by the user
+        setUserScroll(true)
+      }
     })
     return () => {
       el.removeEventListener('scroll', scrollListener)
@@ -95,25 +137,28 @@ export default function Transcript({
     if (isCurrent) {
       return
     }
+    setScrollingProgrammatically()
     seek(start)
-  }, [seek])
+  }, [seek, setScrollingProgrammatically])
 
   const handleLineKeydown = useCallback((ev, start, isCurrent) => {
     handleKeyboardSelect(ev, () => handleLineClick(start, isCurrent))
   }, [handleLineClick])
 
+  // when the user is scrolling, show a button with chevron pointing in the
+  // direction of the current line
+  const getUserScrollIcon = () => {
+    const {
+      scrollTo,
+      currentScrollTop
+    } = getScrollTarget()
+    return scrollTo > currentScrollTop ?
+      chevronDown : 
+      chevronUp
+  }
+
   const transcriptComponent = useMemo(() => ((transcript, currentLine) => (
-    <ol
-      className={s.lines}
-      // Put a slight delay on considering mouse in/out of transcript so that
-      // when a search result is clicked, the `useEffect`s to find the current
-      // transcript line and scroll to it can happen first. Doing this
-      // with arbitrary sleeps because doing otherwise would involve
-      // introducing more dependencies to memoized, performance-critical
-      // transcript functions which doesn't seem worth it.
-      onMouseEnter={() => window.setTimeout(() => cursorInTranscript.current = true, 500)}
-      onMouseLeave={() => window.setTimeout(() => cursorInTranscript.current = false, 500)}
-    >
+    <ol className={s.lines}>
       {transcript.map(({ start, text }) => {
         const isCurrent = transcript[currentLine]?.start === start
         return (
@@ -144,9 +189,22 @@ export default function Transcript({
       <TranscriptSearch
         transcript={transcript}
         fuse={fuse}
-        seek={seek}
+        seek={handleLineClick}
+        setScrollingProgrammatically={setScrollingProgrammatically}
       />
       {transcriptComponent}
+      {userScroll ? (
+        <button
+          className={s.jump}
+          aria-label="Jump to current transcript line"
+          onClick={() => {
+            setScrollingProgrammatically()
+            setUserScroll(false)
+          }}
+        >
+          <img src={getUserScrollIcon()} alt="" />
+        </button>
+      ) : null}
       <progress max={1} ref={progressEl} />
     </div>
   )
