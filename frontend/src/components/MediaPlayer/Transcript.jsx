@@ -52,9 +52,9 @@ export default function Transcript({
   // temporarily set a ref (for `timeout` ms) to indiciate that a scroll
   // function is code-initiated rather than directly user initiated.
   // Intended to be called directly befrore any scrolling code
-  // Browser smooth scroll implemnetations vary, but 500ms seems to be a
+  // Browser smooth scroll implemnetations vary, but 1000ms seems to be a
   // sufficiently long duration for this purpose.
-  const setScrollingProgrammatically = useCallback((timeout = 500) => {
+  const setScrollingProgrammatically = useCallback((timeout = 1000) => {
     scrollingProgrammatically.current = true
     if (programmaticScollingTimeout.current) {
       window.clearInterval(programmaticScollingTimeout.current)
