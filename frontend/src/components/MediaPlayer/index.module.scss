@@ -57,7 +57,7 @@
     border: 1px solid $bg-gray;
 
     @include narrow {
-      grid-template-columns: none;
+      display: block;
     } 
   }
 
