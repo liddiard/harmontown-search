@@ -1,3 +1,4 @@
+import React from 'react'
 import { NavLink, Outlet, useSearchParams } from 'react-router-dom'
 import s from './root.module.scss'
 

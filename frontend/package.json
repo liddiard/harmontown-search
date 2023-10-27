@@ -12,7 +12,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.1",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "react-tooltip": "^5.18.0",
     "sass": "^1.63.6",
     "typesense": "^1.5.4",
@@ -20,7 +20,12 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "prop-types": "^15.8.1"
+    "@types/jest": "^29.5.6",
+    "@types/node": "^20.8.9",
+    "@types/react": "^18.2.33",
+    "@types/react-dom": "^18.2.14",
+    "prop-types": "^15.8.1",
+    "typescript": "^5.2.2"
   },
   "engines": {
     "node": "18",
