@@ -10,7 +10,7 @@ html {
 
 body {
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0 2rem;
   font-family: $body-font;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -25,7 +25,7 @@ body {
   min-height: 100vh;
 
   @include phone-lg {
-    padding: 1.5rem 1em;
+    padding: 0 1em;
     font-size: 0.9em;
   }
 }

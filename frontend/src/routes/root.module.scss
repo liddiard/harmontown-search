@@ -5,6 +5,7 @@ header {
   align-items: flex-end;
   justify-content: space-between;
   border-bottom: 1px solid $fg-gray;
+  margin-top: 1.5rem;
   padding: 0.5em 0 0.5em;
 
   nav {
@@ -33,6 +34,13 @@ footer {
   padding: 2em 0;
   font-size: 0.9em;
   color: $fg-gray;
+}
+
+.donate {
+  img {
+    height: 1.1em;
+    vertical-align: sub;
+  }
 }
 
 #logo {
