@@ -42,7 +42,7 @@ export default function EpisodeSearchResults({
     setContentExceedsHeight(el && el.scrollHeight > el.clientHeight)
   }, [results])
 
-  if (!query) {
+  if (!query || !results.length) {
     return
   }
 
@@ -76,7 +76,7 @@ export default function EpisodeSearchResults({
           className={s.moreResults}
           onClick={() => setScrollable(true)}
         >
-          More episode results <img src={downArrow} alt="" />
+          More episodes <img src={downArrow} alt="" />
         </button>
         : null
       }
