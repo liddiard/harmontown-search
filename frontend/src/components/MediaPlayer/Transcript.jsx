@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import Fuse from 'fuse.js'
+import { Tooltip } from 'react-tooltip'
 
 import s from './Transcript.module.scss'
 import chevronDown from '../../img/chevron-down.svg'
@@ -137,12 +138,13 @@ export default function Transcript({
     }
   })
 
-  const handleLineClick = useCallback((start, isCurrent) => {
+  const handleLineClick = useCallback((start, isCurrent, seekOptions) => {
     if (isCurrent) {
       return
     }
     setScrollingProgrammatically()
-    seek(start)
+    seek(start, seekOptions)
+    window.setTimeout(() => setUserScroll(false))
   }, [seek, setScrollingProgrammatically])
 
   const handleLineKeydown = useCallback((ev, start, isCurrent) => {
@@ -200,7 +202,9 @@ export default function Transcript({
       {userScroll ? (
         <button
           className={s.jump}
-          aria-label="Jump to current transcript line"
+          aria-label="Go to current transcript line"
+          data-tooltip-id="transcript-jump"
+          data-tooltip-content="Go to current line"
           onClick={() => {
             setScrollingProgrammatically()
             setUserScroll(false)
@@ -209,6 +213,7 @@ export default function Transcript({
           <img src={getUserScrollIcon()} alt="" />
         </button>
       ) : null}
+      <Tooltip id="transcript-jump" place="left" />
       <progress max={1} ref={progressEl} />
     </div>
   )

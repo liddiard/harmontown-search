@@ -30,9 +30,8 @@ export default function TranscriptSearchResults({
           key={start}
           className="selectable"
           onClick={() => {
-            setSearchResults([])
-            setScrollingProgrammatically()
-            seek(start, { play: true })
+            seek(start, false, { play: true })
+            window.setTimeout(() => setSearchResults([]))
           }}
         >
           <time className={s.timecode}>{formatTimecode(start)}</time>
