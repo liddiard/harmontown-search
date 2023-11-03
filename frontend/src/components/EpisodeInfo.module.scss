@@ -33,6 +33,11 @@
     } 
   }
 
+  .metadata {
+    display: flex;
+    column-gap: 0.9em;
+  }
+
   .playing {
     margin-right: -0.5em; // offset flexbox `gap`
     height: 1.1em;
