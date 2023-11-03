@@ -131,3 +131,8 @@ export const getMediaData = (episode) => {
   }
   return { mediaType, url }
 }
+
+// local storage key prefix for last listened-to timecode on an episode
+// (to resume where you left off)
+export const getTimecodeLocalStorageKey = (epNumber) =>
+  `ep_timecode_${epNumber}`

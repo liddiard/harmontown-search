@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { useParams, useOutletContext } from 'react-router-dom'
 
 import s from './Search.module.scss'
-import { findEpisodeByNumber, fetchEpisodeIndex, jumpToMediaPlayer } from '../utils'
+import { findEpisodeByNumber, fetchEpisodeIndex, jumpToMediaPlayer, getTimecodeLocalStorageKey } from '../utils'
 import EpisodeSearchBar from './SearchBar'
 import MediaPlayer from './MediaPlayer'
 import { defaultTitle } from '../constants'
@@ -20,7 +20,10 @@ export default function Search() {
   const [submittedQuery, setSubmittedQuery] = useState(queryParams.query)
 
   const currentEpisodeNumber = Number(useParams().epNumber)
-  const startTimecode = Number(searchParams.get('t'))
+  const startTimecode = Number(
+    searchParams.get('t') ||
+    window.localStorage.getItem(getTimecodeLocalStorageKey(currentEpisodeNumber))
+  )
 
   const currentEpisode = useMemo(() =>
     findEpisodeByNumber(episodes, currentEpisodeNumber),

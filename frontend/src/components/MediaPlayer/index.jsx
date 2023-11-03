@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Tooltip } from 'react-tooltip'
+import debounce from 'lodash.debounce'
 
 import s from './index.module.scss'
 import xIcon from '../../img/x.svg'
@@ -10,7 +11,7 @@ import poster from '../../img/harmontown-logo-bg-poster.png'
 import EpisodeInfo from '../EpisodeInfo'
 import ShareDialog from './ShareDialog'
 import Transcript from './Transcript'
-import { getMediaData, getQueryParamsWithoutTimecode } from '../../utils'
+import { getMediaData, getQueryParamsWithoutTimecode, getTimecodeLocalStorageKey } from '../../utils'
 
 export default function MediaPlayer({
   episode = {},
@@ -33,8 +34,17 @@ export default function MediaPlayer({
     navigate(`/${getQueryParamsWithoutTimecode()}`)
   }
 
-  const updateTimecode = (ev) =>
-    setTimecode(ev.target.currentTime)
+  // update timecode in local storage and passed to transcript for current line
+  // highlight/scroll
+  // https://lodash.com/docs/4.17.15#debounce
+  const updateTimecode = debounce((ev) => {
+    const { currentTime } = ev.target
+    setTimecode(currentTime)
+    window.localStorage.setItem(
+      getTimecodeLocalStorageKey(episode.number),
+      timecode
+    )
+  }, 500, { leading: true, maxWait: 500 })
 
   const seek = useCallback((ms, options = {}) => {
     if (!mediaEl.current) {
