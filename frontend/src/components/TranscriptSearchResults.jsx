@@ -34,6 +34,7 @@ export default function TranscriptSearchResults({
       query_by: 'text',
       group_by: 'episode',
       group_limit: 10,
+      sort_by: 'episode:asc',
       page
     })
     return res

@@ -20,7 +20,8 @@ export const fuseConfig = {
     threshold: 0.2,
     ignoreLocation: true,
     fieldNormWeight: 0.2,
-    minMatchCharLength: 2
+    minMatchCharLength: 2,
+    sortFn: (a, b) => a.item.number - b.item.number
   },
   transcript: {
     keys: [
@@ -114,5 +115,6 @@ export const searchSuggestions = [
   'superstein',
   'drawing room',
   'robin williams',
-  'dr ken'
+  'dr ken',
+  'sam elliott'
 ]
