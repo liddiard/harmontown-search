@@ -42,7 +42,7 @@ export default function MediaPlayer({
     setTimecode(currentTime)
     window.localStorage.setItem(
       getTimecodeLocalStorageKey(episode.number),
-      timecode
+      currentTime
     )
   }, 500, { leading: true, maxWait: 500 })
 
