@@ -19,6 +19,7 @@ export default function Transcript({
   const [transcript, setTranscript] = useState([])
   // current line of transcript matching the media timecode
   const [currentLine, setCurrentLine] = useState(0)
+  // user is scrolling transcript independent of auto scroll to current line
   const [userScroll, setUserScroll] = useState(false)
 
   // wheter or not the current transcript scroll was initiated by code
@@ -122,21 +123,29 @@ export default function Transcript({
     setScrollingProgrammatically()
   }, [currentLine, userScroll, setScrollingProgrammatically])
 
+  const handleScroll = () => {
+    const { scrollTop, scrollHeight } = transcriptEl.current
+    progressEl.current.value = scrollTop / scrollHeight
+    if (!scrollingProgrammatically.current) {
+      // if we're not current scrolling the transcript programmatically, then
+      // this scroll event was initiated by the user
+      setUserScroll(true)
+    }
+  }
+
+  const handleDocumentFocus = () => {
+    setUserScroll(false)
+  }
+
   useEffect(() => {
     const el = transcriptEl.current
-    const scrollListener = el.addEventListener('scroll', () => {
-      const { scrollTop, scrollHeight } = transcriptEl.current
-      progressEl.current.value = scrollTop / scrollHeight
-      if (!scrollingProgrammatically.current) {
-        // if we're not current scrolling the transcript programmatically, then
-        // this scroll event was initiated by the user
-        setUserScroll(true)
-      }
-    })
+    document.addEventListener('visibilitychange', handleDocumentFocus)
+    el.addEventListener('scroll', handleScroll)
     return () => {
-      el.removeEventListener('scroll', scrollListener)
+      document.removeEventListener('visibilitychange', handleDocumentFocus)
+      el.removeEventListener('scroll', handleScroll)
     }
-  })
+  }, [])
 
   const handleLineClick = useCallback((start, isCurrent, seekOptions) => {
     if (isCurrent) {
