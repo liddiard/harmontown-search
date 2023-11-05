@@ -7,8 +7,12 @@
   padding-bottom: 1em;
 
   .episodeInfo {
-    margin: 0 2.5em 1em 0;
+    margin-bottom: 1em;
     padding-top: 1rem;
+
+    & > div {
+      margin-right: 2.5em;
+    }
 
     h3 {
       font-size: 2.5em;
