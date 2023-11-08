@@ -79,7 +79,7 @@ export default function MediaPlayer({
       default:
         throw Error(`Unrecognized media type: ${mediaType}`)
     }
-  })(mediaType, url), [startTimecode, mediaType, url])
+  })(mediaType, url), [startTimecode, mediaType, url, updateTimecode])
 
   return (
     <div className={s.mediaPlayerContainer} id="media-player">
