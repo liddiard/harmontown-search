@@ -14,16 +14,17 @@ export default function Search() {
 
   const queryParams = {
     query: searchParams.get('q') || '',
+    timecode: searchParams.get('t') || ''
   }
 
   const [episodes, setEpisodes] = useState([])
   const [submittedQuery, setSubmittedQuery] = useState(queryParams.query)
 
   const currentEpisodeNumber = Number(useParams().epNumber)
-  const startTimecode = useRef(Number(
-    searchParams.get('t') ||
+  const startTimecode = useMemo(() => Number(
+    queryParams.timecode ||
     window.localStorage.getItem(getTimecodeLocalStorageKey(currentEpisodeNumber))
-  ))
+  ), [currentEpisodeNumber, queryParams.timecode])
 
   const currentEpisode = useMemo(() =>
     findEpisodeByNumber(episodes, currentEpisodeNumber),
@@ -58,7 +59,7 @@ export default function Search() {
       {currentEpisode ? 
         <MediaPlayer
           episode={currentEpisode}
-          startTimecode={startTimecode.current}
+          startTimecode={startTimecode}
         />
       : null}
       <EpisodeSearchBar
