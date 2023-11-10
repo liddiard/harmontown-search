@@ -27,7 +27,7 @@ export default function EpisodeList() {
         </thead>
         <tbody>
           {episodes.map(ep => 
-            <tr key={ep.number}>
+            <tr key={ep.number} id={`ep${ep.number}`}>
               <td className={s.number}>
                 {ep.number}
               </td>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useParams, useOutletContext } from 'react-router-dom'
 
 import s from './Search.module.scss'

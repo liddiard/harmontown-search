@@ -97,7 +97,7 @@ export const searchSuggestions = [
   'chicken noodle man',
   'moon colony',
   'I like that hat mate',
-  'duncan trussel',
+  'duncan trussell',
   'norman lear',
   'it’s in the way that you use it',
   'come on down to harmontown',
