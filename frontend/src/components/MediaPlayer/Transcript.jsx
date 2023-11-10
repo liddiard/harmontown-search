@@ -223,7 +223,7 @@ export default function Transcript({
         </button>
       ) : null}
       <Tooltip id="transcript-jump" place="left" />
-      <progress max={1} ref={progressEl} />
+      <progress ref={progressEl} max={1} defaultValue={0} />
     </div>
   )
 }
