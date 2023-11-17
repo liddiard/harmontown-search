@@ -117,5 +117,9 @@ export const searchSuggestions = [
   'drawing room',
   'robin williams',
   'dr ken',
-  'sam elliott'
+  'sam elliott',
+  'agony spell',
+  'achieve weightlessness',
+  'play magic with your wife',
+  'deadpool'
 ]
