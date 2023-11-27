@@ -1,0 +1,77 @@
+@import '../../../globals';
+
+.transcriptSearch {
+  width: 100%;
+  max-height: 100%;
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+
+  &.showingResults {
+    height: 100%;
+  }
+
+  form {
+    display: flex;
+  }
+
+  button.search {
+    padding: 0.75em;
+    border-radius: 0 0.5em 0.5em 0;
+
+    img {
+      width: 1em;
+    }
+  }
+
+  input[type=search] {
+    font-size: 0.9rem;
+    border-radius: 0.5em 0 0 0.5em;
+    background-color: $bg-gray-lighter-opaque;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+
+    &::placeholder {
+      color: $fg-gray;
+    }
+
+    &.showingResults {
+      padding-left: 2.5em;
+    }
+  }
+
+  .backToTranscript {
+    position: absolute;
+    padding: 0.6em;
+    border: none;
+
+    img {
+      height: 1.5em;
+    }
+  }
+
+  .noResults {
+    font-size: 0.8em;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: $secondary-red-lighter;
+    background-color: $bg-gray-lighter-opaque;
+    position: absolute;
+    right: 3em;
+    padding: 0.5em 1em;
+    top: 50%;
+    text-shadow: none;
+    transform: translateY(-50%);
+  }
+}
+
+:global {
+  @include wide {
+    .video {
+      input[type=search] {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,181 @@
+@import './globals';
+
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0 auto;
+  padding: 0 2rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: black;
+  color: white;
+  text-shadow: 1px 1px black;
+  background-image: url('./img/harmontown-crew-bg.webp');
+  background-size: 90%;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  max-width: 1440px;
+  min-height: 100vh;
+
+  @include phone-lg {
+    padding: 0 1em;
+    font-size: 0.9em;
+  }
+}
+
+a {
+  color: white;
+
+  &:hover {
+    color: $primary-blue-lightest;
+  }
+}
+
+button {
+  z-index: 1;
+  cursor: pointer;
+  background: none;
+  color: white;
+  text-transform: uppercase;
+  font-family: $body-font;
+  font-weight: bold;
+  border: 1px solid $bg-gray;
+}
+
+mark {
+  background-color: rgba($secondary-yellow, 0.5);
+  color: unset;
+}
+
+input[type=search] {
+  width: 100%;
+  font-family: $body-font, sans-serif;
+  background-color: $bg-gray;
+  color: white;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 2px 0 2px 2px;
+  padding: 0.5em 1em;
+  @include frosted-glass;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-blue;
+  }
+
+  &::-webkit-search-cancel-button {
+    display: none;
+  }
+}
+
+article h1 {
+  font-size: 2.5em;
+  margin: 0.5em 0;
+}
+
+button.search {
+  background-color: $primary-blue;
+  display: flex;
+  align-items: center;
+  border: none;
+}
+
+.selectable {
+  padding: 0.5em 0.75em;
+  border-radius: 0.5em;
+  
+  &:hover {
+    color: white;
+  
+    &:not(.selected) {
+      cursor: pointer;
+      background-color: rgba(255,255,255, 0.15);
+    }
+  }
+}
+
+.selected {
+  cursor: default;
+  background-color: rgba($primary-blue, 0.25);
+}
+
+header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-bottom: 1px solid $fg-gray;
+  margin-top: 1.5rem;
+  padding: 0.5em 0 0.5em;
+
+  nav {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    column-gap: 1em;
+    row-gap: 0.5em;
+    margin: 0 0 0.25em 1em;
+    font-size: 1rem;
+    text-align: right;
+
+    a {
+      text-decoration: none;
+
+      &.active {
+        font-weight: bold;
+        border-bottom: 2px solid white;
+        padding-bottom: 2px;
+      }
+    }
+  }
+}
+
+footer {
+  padding: 2em 0;
+  font-size: 0.9em;
+  color: $fg-gray;
+}
+
+.donate {
+  img {
+    height: 1.1em;
+    vertical-align: sub;
+  }
+}
+
+#logo {
+  position: relative;
+  text-decoration: none;
+
+  h1 {
+    font-weight: bold;
+    font-size: 4em;
+    line-height: 0.9;
+    margin: 0;
+    letter-spacing: 0.01em;
+
+    .searchHeading {
+      font-weight: 200;
+      font-size: 0.95em;
+      letter-spacing: normal;
+    }
+  }
+
+  .unofficial {
+    position: absolute;
+    background-color: $secondary-yellow;
+    color: black;
+    text-shadow: none;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 0.7em;
+    padding: 0.25em 0.5em;
+    transform: rotate(-10deg);
+    top: -16px;
+    left: -15px;
+  }
+}

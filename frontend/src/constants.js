@@ -117,5 +117,8 @@ export const searchSuggestions = [
   'drawing room',
   'robin williams',
   'dr ken',
-  'sam elliott'
+  'sam elliott',
+  'four agreements',
+  'teen wolf',
+  'curtis armstrong'
 ]
