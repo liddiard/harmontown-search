@@ -1,68 +1,50 @@
-'use client'
-
 import { useState, useMemo, useEffect } from 'react'
-import { useSearchParams, usePathname, useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 import s from './page.module.scss'
-import { findEpisodeByNumber, fetchEpisodeIndex, jumpToMediaPlayer, getTimecodeLocalStorageKey } from '../utils'
+import { findEpisodeByNumber, jumpToMediaPlayer, getTimecodeLocalStorageKey } from '../utils'
+import { fetchEpisodeIndex } from '@/episodeIndex'
 import EpisodeSearchBar from './SearchBar'
 import MediaPlayer from './MediaPlayer'
 import TranscriptSearchResults from './TranscriptSearchResults'
 import EpisodeSearchResults from './EpisodeSearchResults'
 
 
-export default function Search({
+export default async function Search({
   children,
-  params
+  params,
+  searchParams
 } : {
   children: React.ReactNode,
-  params: { number: 'string' }
+  params: { number: 'string' },
+  searchParams?: {
+    q?: string,
+    t?: string,
+  },
 }) {
-  const searchParams = useSearchParams()
-  const pathname = usePathname()
-  const { replace } = useRouter()
-  const [episodes, setEpisodes] = useState([])
+  const episodes = await fetchEpisodeIndex()
 
   const queryParams = {
-    query: searchParams.get('q') || '',
-    timecode: searchParams.get('t') || ''
+    query: searchParams.q || '',
+    timecode: searchParams.t || ''
   }
-
-  useEffect(() => {
-    (async () => {
-      const episodes = await fetchEpisodeIndex()
-      setEpisodes(episodes)
-    })()
-  }, [])
 
   const currentEpisodeNumber = Number(params.number)
-  const startTimecode = useMemo(() => Number(
-    queryParams.timecode ||
-    (typeof window !== 'undefined' && window.localStorage.getItem(getTimecodeLocalStorageKey(currentEpisodeNumber)))
-  ), [currentEpisodeNumber, queryParams.timecode])
+  // const startTimecode = useMemo(() => Number(
+  //   queryParams.timecode ||
+  //   (typeof window !== 'undefined' && window.localStorage.getItem(getTimecodeLocalStorageKey(currentEpisodeNumber)))
+  // ), [currentEpisodeNumber, queryParams.timecode])
 
-  const currentEpisode = useMemo(() =>
-    findEpisodeByNumber(episodes, currentEpisodeNumber),
-    [episodes, currentEpisodeNumber])
-
-  const handleSearch = (term) => {
-    const params = new URLSearchParams(searchParams)
-    if (term) {
-      params.set('q', term)
-    } else {
-      params.delete('q')
-    }
-    replace(`${pathname}?${params.toString()}`)
-    // remove focus from the input to hide keyboard on mobile
-    document.activeElement.blur()
-  }
+  // const currentEpisode = useMemo(() =>
+  //   findEpisodeByNumber(episodes, currentEpisodeNumber),
+  //   [episodes, currentEpisodeNumber])
 
   return (
     <>
       {children}
       <EpisodeSearchBar
         initialQuery={queryParams.query}
-        handleSearch={handleSearch}
+        searchParams={searchParams}
       />
       <div className={s.results}>
         <EpisodeSearchResults

@@ -18,6 +18,7 @@
     "@types/lodash.debounce": "^4.0.9",
     "@types/lodash.shuffle": "^4.2.9",
     "@types/node": "^20",
+    "@types/papaparse": "^5.3.14",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",

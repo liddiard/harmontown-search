@@ -14,8 +14,14 @@ import poster from 'img/harmontown-logo-bg-poster.png'
 import EpisodeInfo from 'EpisodeInfo'
 import ShareDialog from './ShareDialog'
 import Transcript from './Transcript'
-import { fetchEpisodeIndex, findEpisodeByNumber, getMediaData, getQueryParamsWithoutTimecode, getTimecodeLocalStorageKey } from '../../../utils'
+import { findEpisodeByNumber, getMediaData, getQueryParamsWithoutTimecode, getTimecodeLocalStorageKey } from 'utils'
+import { fetchEpisodeIndex } from '@/episodeIndex'
 
+
+export async function generateStaticParams() {
+  const episodes = await fetchEpisodeIndex()
+  return episodes.map(({ number }) => ({ number }))
+}
 
 export default function MediaPlayer({
   number,
@@ -104,6 +110,7 @@ export default function MediaPlayer({
           epNumber={episode.number}
           timecode={timecode}
           seek={seek}
+          mediaType={mediaType}
         />
       </div>
       <div className={s.mediaActions}>

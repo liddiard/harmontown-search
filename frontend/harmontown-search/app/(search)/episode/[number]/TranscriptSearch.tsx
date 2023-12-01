@@ -7,12 +7,14 @@ import s from './TranscriptSearch.module.scss'
 import leftChevron from 'img/left-chevron.svg'
 import magnifyingGlass from 'img/magnifying-glass.svg'
 import TranscriptSearchResults from './TranscriptSearchResults'
+import classNames from 'classnames'
 
 
 export default function TranscriptSearch({
   fuse,
   seek,
-  setScrollingProgrammatically
+  setScrollingProgrammatically,
+  mediaType
 }) {
   // current text in the episode search input
   const [currentQuery, setCurrentQuery] = useState('')
@@ -64,7 +66,9 @@ export default function TranscriptSearch({
           placeholder="Search this episode"
           aria-label="Search this episode"
           autoCapitalize="none"
-          className={searchResults.length ? s.showingResults : ''}
+          className={classNames(s[mediaType], {
+            [s.showingResults]: searchResults.length
+          })}
           onChange={(ev) => setCurrentQuery(ev.target.value)}
         />
         {noResults ? (

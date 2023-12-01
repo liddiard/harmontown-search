@@ -14,7 +14,8 @@ import TranscriptSearch from './TranscriptSearch'
 export default function Transcript({
   epNumber,
   timecode,
-  seek
+  seek,
+  mediaType
 }) {
   // transcript: array of lines
   const [transcript, setTranscript] = useState([])
@@ -207,6 +208,7 @@ export default function Transcript({
         fuse={fuse}
         seek={handleLineClick}
         setScrollingProgrammatically={setScrollingProgrammatically}
+        mediaType={mediaType}
       />
       {transcriptComponent}
       {userScroll ? (

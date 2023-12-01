@@ -38,6 +38,13 @@
     &.showingResults {
       padding-left: 2.5em;
     }
+
+    @include wide {
+      &.video {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
   }
 
   .backToTranscript {
@@ -62,16 +69,5 @@
     top: 50%;
     text-shadow: none;
     transform: translateY(-50%);
-  }
-}
-
-:global {
-  @include wide {
-    .video {
-      input[type=search] {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-      }
-    }
   }
 }

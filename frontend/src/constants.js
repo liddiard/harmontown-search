@@ -120,5 +120,6 @@ export const searchSuggestions = [
   'sam elliott',
   'four agreements',
   'teen wolf',
-  'curtis armstrong'
+  'curtis armstrong',
+  'flew too close to the sun'
 ]

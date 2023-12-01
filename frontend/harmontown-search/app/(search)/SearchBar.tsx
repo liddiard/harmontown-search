@@ -2,13 +2,12 @@
 
 import Image from 'next/image'
 import { useState, useRef, useEffect } from 'react'
-import PropTypes from 'prop-types'
+import { usePathname, useRouter } from 'next/navigation'
 import shuffle from 'lodash.shuffle'
 
 import s from './SearchBar.module.scss'
 import magnifyingGlass from '../img/magnifying-glass.svg'
 import { searchSuggestions } from '@/constants'
-import { Search } from 'react-router-dom'
 
 
 // change the search input placeholder text every x milliseconds
@@ -16,20 +15,17 @@ import { Search } from 'react-router-dom'
 // associated stylesheet
 const PLACEHOLDER_CYCLE_MS = 4000
 
-interface SearchBarProps {
-  initialQuery?: string,
-  handleSearch: (query: string) => void
-}
-
 export default function SearchBar({
   initialQuery = '',
-  handleSearch
-}: SearchBarProps) {
+  searchParams
+}) {
   const defaultPlaceholder = 'Search'
   const [currentQuery, setCurrentQuery] = useState(initialQuery)
-  const [placeholderIndex, setPlaceholderIndex] = useState(0)
+  const [placeholderIndex, setPlaceholderIndex] = useState(null)
   const cycleInterval = useRef<number>()
   const placeholders = useRef<string[]>([])
+  const pathname = usePathname()
+  const router = useRouter()
 
   useEffect(() => {
     // only do randomization on client side to prevent hydration mismatch errors
@@ -37,8 +33,17 @@ export default function SearchBar({
   }, [])
 
   const handleSubmit = (ev: React.FormEvent) => {
+    console.log('here')
     ev?.preventDefault()
-    handleSearch(currentQuery)
+    const params = new URLSearchParams(searchParams)
+    if (currentQuery) {
+      params.set('q', currentQuery)
+    } else {
+      params.delete('q')
+    }
+    router.push(`${pathname}?${params.toString()}`)
+    // remove focus from the input to hide keyboard on mobile
+    document.activeElement.blur()
   }
 
   // setInterval to change the placeholder every `PLACEHOLDER_CYCLE_MS`
@@ -53,7 +58,7 @@ export default function SearchBar({
   // clearInterval to stop changing the placeholder
   const endPlaceholderCycle = () => {
     window.clearInterval(cycleInterval.current)
-    setPlaceholderIndex(0)
+    setPlaceholderIndex(null)
   }
 
   // only start the placeholder cycle if the input is empty

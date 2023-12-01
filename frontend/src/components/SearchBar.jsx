@@ -65,7 +65,7 @@ export default function SearchBar({
 
   const renderPlaceholder = () => (
     <div className={s.placeholders}>
-      <span 
+      <span
         className={placeholderIndex === null ? s.fadeIn : ''}
       >
         {defaultPlaceholder}
