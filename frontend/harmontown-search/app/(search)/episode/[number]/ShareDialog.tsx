@@ -16,7 +16,7 @@ export default function ShareDialog({
   const [includeResults, setIncludeResults] = useState(false)
   const [linkCopied, setLinkCopied] = useState(false)
 
-  const dialogEl = useRef(null)
+  const dialogEl = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
     dialogEl.current?.scrollIntoView({
@@ -26,9 +26,9 @@ export default function ShareDialog({
   }, [])
 
   const copyLink = async () => {
-    const url = new URL(window.location)
+    const url = new URL(window.location.href)
     if (startCurrent) {
-      url.searchParams.set('t', Math.floor(timecode))
+      url.searchParams.set('t', Math.floor(timecode).toString())
     }
     if (!includeResults) {
       url.searchParams.delete('q')

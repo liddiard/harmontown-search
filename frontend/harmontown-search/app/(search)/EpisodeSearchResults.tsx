@@ -8,7 +8,7 @@ import Fuse from 'fuse.js'
 
 import s from './EpisodeSearchResults.module.scss'
 import downArrow from 'img/triangle-down.svg'
-import { fuseConfig } from '@/constants'
+import { Episode, fuseConfig } from '@/constants'
 import { getQueryParamsWithoutTimecode } from 'utils'
 import EpisodeInfo from 'EpisodeInfo'
 
@@ -17,12 +17,12 @@ export default function EpisodeSearchResults({
   query,
   currentEpisode,
 }) {
-  const [results, setResults] = useState([])
+  const [results, setResults] = useState<Fuse.FuseResult<Episode>[]>([])
   const [contentExceedsHeight, setContentExceedsHeight] = useState(false)
   const [scrollable, setScrollable] = useState(false)
   
-  const resultListEl = useRef(null)
-  const fuse = useRef(null)
+  const resultListEl = useRef<HTMLOListElement>(null)
+  const fuse = useRef<Fuse<Episode> | null>(null)
 
   useEffect(() => {
     if (episodes.length) {
@@ -42,7 +42,9 @@ export default function EpisodeSearchResults({
 
   useEffect(() => {
     const el = resultListEl.current
-    setContentExceedsHeight(el && el.scrollHeight > el.clientHeight)
+    if (el) {
+      setContentExceedsHeight(el && el.scrollHeight > el.clientHeight)
+    }
   }, [results])
 
   if (!query || !results.length) {

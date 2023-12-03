@@ -21,7 +21,7 @@ export default function SearchBar({
 }) {
   const defaultPlaceholder = 'Search'
   const [currentQuery, setCurrentQuery] = useState(initialQuery)
-  const [placeholderIndex, setPlaceholderIndex] = useState(null)
+  const [placeholderIndex, setPlaceholderIndex] = useState<number | null>(null)
   const cycleInterval = useRef<number>()
   const placeholders = useRef<string[]>([])
   const pathname = usePathname()
@@ -33,7 +33,6 @@ export default function SearchBar({
   }, [])
 
   const handleSubmit = (ev: React.FormEvent) => {
-    console.log('here')
     ev?.preventDefault()
     const params = new URLSearchParams(searchParams)
     if (currentQuery) {
@@ -42,8 +41,10 @@ export default function SearchBar({
       params.delete('q')
     }
     router.push(`${pathname}?${params.toString()}`)
-    // remove focus from the input to hide keyboard on mobile
-    document.activeElement.blur()
+    if (document.activeElement instanceof HTMLElement) {
+      // remove focus from the input to hide keyboard on mobile
+      document.activeElement.blur()
+    }
   }
 
   // setInterval to change the placeholder every `PLACEHOLDER_CYCLE_MS`
@@ -51,7 +52,7 @@ export default function SearchBar({
     setPlaceholderIndex(Math.floor(Math.random() * searchSuggestions.length))
     cycleInterval.current = window.setInterval(() => {
       setPlaceholderIndex(prevIndex => 
-        prevIndex + 1 === searchSuggestions.length ? 0 : prevIndex + 1)
+        prevIndex! + 1 === searchSuggestions.length ? 0 : prevIndex! + 1)
     }, PLACEHOLDER_CYCLE_MS)
   }
 

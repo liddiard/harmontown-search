@@ -28,15 +28,18 @@ export default function Transcript({
   // (as opposed to user)
   const scrollingProgrammatically = useRef(false)
   // setTimeout value when scrolling is initiated
-  const programmaticScollingTimeout = useRef(null)
-  const fuse = useRef(new Fuse())
-  const currentLineEl = useRef(null)
-  const transcriptEl = useRef(null)
-  const progressEl = useRef(null)
+  const programmaticScollingTimeout = useRef<number | null>(null)
+  const fuse = useRef(new Fuse([]))
+  const currentLineEl = useRef<HTMLLIElement>(null)
+  const transcriptEl = useRef<HTMLDivElement>(null)
+  const progressEl = useRef<HTMLProgressElement>(null)
 
   // get the vertical height to scroll to within the transcript for the
   // current line, along with other metadata
   const getScrollTarget = () => {
+    if (!currentLineEl.current || !transcriptEl.current) {
+      return
+    }
     // we need to manually calculate scroll position instead of using
     // scrollIntoView because scrollIntoView will scroll the document body
     // in addition to scrolling the transcript
@@ -126,8 +129,8 @@ export default function Transcript({
   }, [currentLine, userScroll, setScrollingProgrammatically])
 
   const handleScroll = () => {
-    const { scrollTop, scrollHeight } = transcriptEl.current
-    progressEl.current.value = scrollTop / scrollHeight
+    const { scrollTop, scrollHeight } = transcriptEl.current!
+    progressEl.current!.value = scrollTop / scrollHeight
     if (!scrollingProgrammatically.current) {
       // if we're not current scrolling the transcript programmatically, then
       // this scroll event was initiated by the user
@@ -142,14 +145,14 @@ export default function Transcript({
   useEffect(() => {
     const el = transcriptEl.current
     document.addEventListener('visibilitychange', handleDocumentFocus)
-    el.addEventListener('scroll', handleScroll)
+    el!.addEventListener('scroll', handleScroll)
     return () => {
       document.removeEventListener('visibilitychange', handleDocumentFocus)
-      el.removeEventListener('scroll', handleScroll)
+      el!.removeEventListener('scroll', handleScroll)
     }
   }, [])
 
-  const handleLineClick = useCallback((start, isCurrent, seekOptions) => {
+  const handleLineClick = useCallback((start, isCurrent, seekOptions = {}) => {
     if (isCurrent) {
       return
     }

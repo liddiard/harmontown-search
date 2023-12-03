@@ -31,7 +31,7 @@ export default function TranscriptSearch({
     setNoResults(false)
   }, [currentQuery])
 
-  const handleSearch = (ev) => {
+  const handleSearch = (ev: React.FormEvent) => {
     ev.preventDefault()
     setSubmittedQuery(currentQuery)
     const results = fuse.current.search(currentQuery)
@@ -39,7 +39,7 @@ export default function TranscriptSearch({
     if (currentQuery) {
       setNoResults(!results.length)
     }
-    if (results.length) {
+    if (results.length && document.activeElement instanceof HTMLElement) {
       // remove focus from the input to hide keyboard on mobile
       document.activeElement.blur()
     }

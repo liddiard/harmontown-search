@@ -1,3 +1,19 @@
+export interface Episode {
+  number: number
+  title: string
+  description: string
+  record_date?: string
+  release_date: string
+  audio_link: string
+  video_link?: string
+}
+
+export interface TranscriptLine {
+  start: number,
+  end: number,
+  text: string
+}
+
 // default page title
 export const defaultTitle = 'Harmontown Podcast Search'
 
@@ -38,7 +54,7 @@ export const fuseConfig = {
 export const TYPESENSE_CONFIG = process.env.NODE_ENV === 'development' ? {
   nodes: [{
     host: 'localhost',
-    port: '8108',
+    port: 8108,
     protocol: 'http'
   }],
   // IMPORTANT: This is a PUBLIC API key, with read-only access to the
@@ -48,7 +64,7 @@ export const TYPESENSE_CONFIG = process.env.NODE_ENV === 'development' ? {
 } : {
   nodes: [{
     host: 'api.harmontown-search.harrisonliddiard.com',
-    port: '443',
+    port: 443,
     protocol: 'https'
   }],
   // IMPORTANT: This is a PUBLIC API key, with read-only access to the

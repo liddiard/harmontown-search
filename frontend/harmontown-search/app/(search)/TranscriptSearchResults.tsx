@@ -20,7 +20,7 @@ export default function TranscriptSearchResults({
   currentEpisode
 }) {
   const [results, setResults] = useState([])
-  const [numFound, setNumFound] = useState(null)
+  const [numFound, setNumFound] = useState<number | null>(null)
   
   const resultsEl = useRef(null)
   // current last page of search results
@@ -65,7 +65,7 @@ export default function TranscriptSearchResults({
 
   const getHitUrl = (epNumber, document) => {
     const params = new URLSearchParams(window.location.search)
-    params.set('t', Math.floor(document.start/1000))
+    params.set('t', Math.floor(document.start/1000).toString())
     return `/episode/${epNumber}?${params.toString()}`
   }
 
