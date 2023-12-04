@@ -3,9 +3,13 @@
 import { useEffect } from 'react'
 import s from './error.module.scss'
 
+interface ErrorProps {
+  error: Error
+}
+
 export default function Error({
   error
-}) {
+}: ErrorProps) {
   useEffect(() => {
     console.error(error)
   }, [error])

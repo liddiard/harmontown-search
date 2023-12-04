@@ -1,18 +1,10 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import s from './page.module.scss'
-import { fetchEpisodeIndex, formatDate } from 'utils'
+import { formatDate } from 'utils'
+import episodes from '@/episode_list.tsv'
 
 export default function EpisodeList() {
-  const [episodes, setEpisodes] = useState([])
-
-  useEffect(() => {
-    (async () => {
-      const episodes = await fetchEpisodeIndex()
-      setEpisodes(episodes)
-    })()
-  }, [])
-
   return (
     <article className={s.episodeList}>
       <h1>Episode List</h1>

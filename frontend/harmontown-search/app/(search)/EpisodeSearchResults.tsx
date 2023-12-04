@@ -1,5 +1,3 @@
-'use client'
-
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useRef, useEffect } from 'react'
@@ -68,7 +66,7 @@ export default function EpisodeSearchResults({
             key={number}
           >
             <Link
-              href={`/episode/${number}${getQueryParamsWithoutTimecode()}`}
+              href={`/episode/${number}${getQueryParamsWithoutTimecode(window.location.search)}`}
               className={`selectable result ${selected ? 'selected' : ''}`}
             >
               <EpisodeInfo {...result.item} query={query} selected={selected} />

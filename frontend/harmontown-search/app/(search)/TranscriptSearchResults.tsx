@@ -1,5 +1,3 @@
-'use client'
-
 import Link from 'next/link'
 import { useState, useRef, useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
