@@ -29,7 +29,7 @@ export default function EpisodeList() {
                 </Link>
               </td>
               <td className={s.date}>
-                {formatDate(ep.record_date || ep.release_date)}
+                {formatDate(ep.record_date || ep.release_date).toString()}
               </td>
               <td className={s.description}>
                 {ep.description}

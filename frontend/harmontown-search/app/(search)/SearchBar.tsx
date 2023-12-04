@@ -13,10 +13,17 @@ import { searchSuggestions } from '@/constants'
 // associated stylesheet
 const PLACEHOLDER_CYCLE_MS = 4000
 
+interface SearchBarProps {
+  initialQuery: string,
+  searchParams: {
+    [key: string]: string
+  }
+}
+
 export default function SearchBar({
   initialQuery = '',
   searchParams
-}) {
+} : SearchBarProps) {
   const defaultPlaceholder = 'Search'
   const [currentQuery, setCurrentQuery] = useState(initialQuery)
   const [placeholderIndex, setPlaceholderIndex] = useState<number | null>(null)

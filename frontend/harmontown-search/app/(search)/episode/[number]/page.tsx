@@ -7,20 +7,27 @@ import s from './page.module.scss'
 import xIcon from 'img/x.svg'
 import EpisodeInfo from 'EpisodeInfo'
 import { fetchEpisodeIndex, findEpisodeByNumber, getMediaData, getQueryParamsWithoutTimecode, getTimecodeLocalStorageKey } from 'utils'
-import { Episode } from '@/constants'
+import { Episode, QueryParams } from '@/constants'
 import MediaPlayer from './MediaPlayer'
 import episodes from '@/episode_list.tsv'
 
 
 export async function generateStaticParams() {
-  return episodes.map(({ number }) => ({ number: number.toString() }))
+  return episodes.map(({ number } : { number: number }) =>
+    ({ number: number.toString() }))
+}
+
+interface EpisodePlayerProps {
+  params: { number: number },
+  startTimecode: number,
+  searchParams: QueryParams
 }
 
 export default async function EpisodePlayer({
   params,
   startTimecode,
   searchParams
-}) {
+}: EpisodePlayerProps) {
   const { number } = params
   const episode = findEpisodeByNumber(episodes, Number(number))
 
@@ -42,7 +49,6 @@ export default async function EpisodePlayer({
       <EpisodeInfo {...episode} className={s.episodeInfo} />
       <MediaPlayer
         episode={episode}
-        startTimecode={startTimecode}
       />
     </div>
   )

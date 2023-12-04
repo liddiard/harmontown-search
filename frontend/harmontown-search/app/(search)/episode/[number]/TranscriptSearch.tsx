@@ -2,20 +2,26 @@ import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Tooltip } from 'react-tooltip'
+import Fuse from 'fuse.js'
 
 import s from './TranscriptSearch.module.scss'
 import leftChevron from 'img/left-chevron.svg'
 import magnifyingGlass from 'img/magnifying-glass.svg'
 import TranscriptSearchResults from './TranscriptSearchResults'
 import classNames from 'classnames'
+import { TranscriptLine } from '@/constants'
 
+
+interface TranscriptSearchProps {
+  fuse: Fuse<TranscriptLine>
+}
 
 export default function TranscriptSearch({
   fuse,
   seek,
   setScrollingProgrammatically,
   mediaType
-}) {
+}: TranscriptSearchProps) {
   // current text in the episode search input
   const [currentQuery, setCurrentQuery] = useState('')
   // submitted text in the episode search input

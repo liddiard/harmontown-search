@@ -8,10 +8,16 @@ import linkIcon from 'img/link.svg'
 import checkmarkIcon from 'img/checkmark.svg'
 import { formatTimecode } from 'utils'
 
+
+interface ShareDialogProps {
+  setOpen: (open: boolean) => void,
+  timecode: number
+}
+
 export default function ShareDialog({
   setOpen,
   timecode
-}) {
+}: ShareDialogProps) {
   const [startCurrent, setStartCurrent] = useState(true)
   const [includeResults, setIncludeResults] = useState(false)
   const [linkCopied, setLinkCopied] = useState(false)
@@ -38,8 +44,8 @@ export default function ShareDialog({
     setLinkCopied(true)
   }
 
-  const handleKeydown = (ev) => {
-    if (ev.keyCode === 27) { // ESC
+  const handleKeydown = (ev: React.KeyboardEvent) => {
+    if (ev.key === 'Escape') {
       setOpen(false)
     }
   }

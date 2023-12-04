@@ -14,6 +14,10 @@ export interface TranscriptLine {
   text: string
 }
 
+export interface QueryParams {
+  [key: string]: string;
+}
+
 // default page title
 export const defaultTitle = 'Harmontown Podcast Search'
 
@@ -24,6 +28,12 @@ export const papaConfig = {
   dynamicTyping: true,
   delimiter: '\t',
   skipEmptyLines: true
+}
+
+interface EpisodeSort {
+  item: {
+    start: number
+  }
 }
 
 // https://www.fusejs.io/api/options.html
@@ -47,7 +57,7 @@ export const fuseConfig = {
     threshold: 0.2,
     ignoreLocation: true,
     minMatchCharLength: 2,
-    sortFn: (a, b) => a.item.start - b.item.start
+    sortFn: (a: EpisodeSort, b: EpisodeSort) => a.item.start - b.item.start
   }
 }
 

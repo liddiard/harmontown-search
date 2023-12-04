@@ -11,12 +11,20 @@ import { fetchTranscript, handleKeyboardSelect, inRange } from 'utils'
 import { getCurrentLine } from './transcriptUtils'
 import TranscriptSearch from './TranscriptSearch'
 
+
+interface TranscriptProps {
+  epNumber: number,
+  timecode: number,
+  seek: (position: number) => void,
+  mediaType: 'video' | 'audio'
+}
+
 export default function Transcript({
   epNumber,
   timecode,
   seek,
   mediaType
-}) {
+}: TranscriptProps) {
   // transcript: array of lines
   const [transcript, setTranscript] = useState([])
   // current line of transcript matching the media timecode

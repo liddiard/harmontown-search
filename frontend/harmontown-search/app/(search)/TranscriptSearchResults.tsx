@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import Typesense from 'typesense'
 
 import s from './TranscriptSearchResults.module.scss'
-import { TYPESENSE_CONFIG } from '@/constants'
+import { TYPESENSE_CONFIG, Episode } from '@/constants'
 import { findEpisodeByNumber, formatTimecode, jumpToMediaPlayer } from '../utils';
 import EpisodeInfo from '../EpisodeInfo'
 import LoadingSpinner from '../LoadingSpinner'
@@ -12,15 +12,21 @@ import LoadingSpinner from '../LoadingSpinner'
 const client = new Typesense.Client(TYPESENSE_CONFIG)
 const RESULTS_PER_PAGE = 10
 
+interface TranscriptSearchResultsProps {
+  query: string
+  episodes: Episode[],
+  currentEpisode: Episode
+}
+
 export default function TranscriptSearchResults({
   query = '',
   episodes = [],
   currentEpisode
-}) {
+}: TranscriptSearchResultsProps) {
   const [results, setResults] = useState([])
   const [numFound, setNumFound] = useState<number | null>(null)
   
-  const resultsEl = useRef(null)
+  const resultsEl = useRef<HTMLOListElement>(null)
   // current last page of search results
   const page = useRef(1)
   const loading = useRef(false)

@@ -4,6 +4,13 @@ import PropTypes from 'prop-types'
 import { formatDate, highlightMatches, mask } from 'utils'
 import playIcon from 'img/play.svg'
 import s from './EpisodeInfo.module.scss'
+import { Episode } from '@/constants'
+
+type EpisodeInfoProps = Episode & {
+  className?: string,
+  query?: string,
+  selected?: boolean
+}
 
 export default function EpisodeInfo({
   className = '',
@@ -14,7 +21,7 @@ export default function EpisodeInfo({
   release_date,
   query,
   selected
-}) {
+}: EpisodeInfoProps) {
   const date = record_date || release_date
   const formattedDate = formatDate(date, { parts: true })
 
@@ -42,15 +49,4 @@ export default function EpisodeInfo({
       }} />
     </div>
   )
-}
-
-EpisodeInfo.propTypes = {
-  className: PropTypes.string,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  number: PropTypes.number.isRequired,
-  release_date: PropTypes.string.isRequired,
-  record_date: PropTypes.string,
-  query: PropTypes.string,
-  selected: PropTypes.bool
 }
