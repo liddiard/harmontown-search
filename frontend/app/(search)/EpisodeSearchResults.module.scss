@@ -1,0 +1,49 @@
+@import '../globals';
+
+.results {
+  position: relative;
+
+  ol {
+    max-height: max(10em, 33vh);
+    overflow-y: hidden;
+    transition: max-height 0.5s;
+  
+    &.scrollable {
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+
+    a {
+      display: block;
+      text-decoration: none;
+    }
+  }
+
+  .moreResults {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 1em 1em 0.5em;
+    border: none;
+    background: linear-gradient(
+      0deg,
+      $bg-gray-opaque 0%,
+      rgba($bg-gray-opaque, 0.7) 70%,
+      rgba($bg-gray-opaque, 0) 100%
+    );
+    color: $primary-blue-lighter;
+
+    &:hover {
+      color: $primary-blue-lightest;
+
+      img {
+        filter: brightness(125%);
+      }
+    }
+
+    img {
+      height: 1ch;
+      width: auto;
+    }
+  }
+}

@@ -1,55 +1,35 @@
 {
-  "name": "harmontown-search-frontend",
+  "name": "harmontown-search",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "fuse.js": "^6.6.2",
+    "classnames": "^2.3.2",
+    "fuse.js": "^7.0.0",
     "lodash.debounce": "^4.0.8",
     "lodash.shuffle": "^4.2.0",
-    "papaparse": "^5.4.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.14.1",
-    "react-scripts": "5.0.1",
-    "react-tooltip": "^5.18.0",
-    "sass": "^1.63.6",
-    "typesense": "^1.5.4",
-    "web-vitals": "^2.1.4"
+    "next": "14.0.2",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-tooltip": "^5.25.0",
+    "sass": "^1.69.5",
+    "typesense": "^1.7.2"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "prop-types": "^15.8.1"
-  },
-  "engines": {
-    "node": "18",
-    "npm": "9"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "deploy": "./deploy.sh"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "@types/lodash.debounce": "^4.0.9",
+    "@types/lodash.shuffle": "^4.2.9",
+    "@types/node": "^20",
+    "@types/papaparse": "^5.3.14",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "csv-loader": "^3.0.5",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.2",
+    "typescript": "^5"
   }
 }
