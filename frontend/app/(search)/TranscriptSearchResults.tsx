@@ -32,7 +32,7 @@ export default function TranscriptSearchResults({
 
   const transcriptId = 'transcript-search-results'
 
-  const search = useCallback(async (query, page) => {
+  const search = useCallback(async (query: string, page: number) => {
     loading.current = true
     const res = await client.collections('transcripts').documents().search({
       q: query,

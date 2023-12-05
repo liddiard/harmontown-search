@@ -1,13 +1,12 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
-import PropTypes from 'prop-types'
 
 import s from './page.module.scss'
 import xIcon from 'img/x.svg'
 import EpisodeInfo from 'EpisodeInfo'
-import { fetchEpisodeIndex, findEpisodeByNumber, getMediaData, getQueryParamsWithoutTimecode, getTimecodeLocalStorageKey } from 'utils'
-import { Episode, QueryParams } from '@/constants'
+import { findEpisodeByNumber, getQueryParamsWithoutTimecode } from 'utils'
+import { QueryParams } from '@/constants'
 import MediaPlayer from './MediaPlayer'
 import episodes from '@/episode_list.tsv'
 
@@ -19,13 +18,11 @@ export async function generateStaticParams() {
 
 interface EpisodePlayerProps {
   params: { number: number },
-  startTimecode: number,
   searchParams: QueryParams
 }
 
 export default async function EpisodePlayer({
   params,
-  startTimecode,
   searchParams
 }: EpisodePlayerProps) {
   const { number } = params
@@ -52,11 +49,4 @@ export default async function EpisodePlayer({
       />
     </div>
   )
-}
-
-EpisodePlayer.propTypes = {
-  episode: PropTypes.shape({
-    number: PropTypes.number.isRequired
-  }),
-  startTimecode: PropTypes.number
 }

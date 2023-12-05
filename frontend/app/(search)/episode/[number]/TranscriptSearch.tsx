@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Tooltip } from 'react-tooltip'
-import Fuse from 'fuse.js'
+import Fuse, { FuseResult } from 'fuse.js'
 
 import s from './TranscriptSearch.module.scss'
 import leftChevron from 'img/left-chevron.svg'
@@ -13,7 +13,7 @@ import { MediaType, TranscriptLine } from '@/constants'
 
 
 interface TranscriptSearchProps {
-  fuse: Fuse<TranscriptLine>,
+  fuse?: Fuse<TranscriptLine>,
   mediaType: MediaType
 }
 
@@ -28,7 +28,7 @@ export default function TranscriptSearch({
   // submitted text in the episode search input
   const [submittedQuery, setSubmittedQuery] = useState('')
   // results from the `submittedQuery`
-  const [searchResults, setSearchResults] = useState([])
+  const [searchResults, setSearchResults] = useState<FuseResult<TranscriptLine>[]>([])
   // whether or not to display a "no search results" message
   const [noResults, setNoResults] = useState(false)
 
@@ -41,7 +41,10 @@ export default function TranscriptSearch({
   const handleSearch = (ev: React.FormEvent) => {
     ev.preventDefault()
     setSubmittedQuery(currentQuery)
-    const results = fuse.current.search(currentQuery)
+    if (!fuse) {
+      return
+    }
+    const results = fuse.search(currentQuery)
     setSearchResults(results)
     if (currentQuery) {
       setNoResults(!results.length)

@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useRef, useEffect } from 'react'
-import Fuse from 'fuse.js'
+import Fuse, { FuseResult } from 'fuse.js'
 
 import s from './EpisodeSearchResults.module.scss'
 import downArrow from 'img/triangle-down.svg'
@@ -21,7 +21,7 @@ export default function EpisodeSearchResults({
   query,
   currentEpisode,
 }: EpisodeSearchResultsProps) {
-  const [results, setResults] = useState<Fuse.FuseResult<Episode>[]>([])
+  const [results, setResults] = useState<FuseResult<Episode>[]>([])
   const [contentExceedsHeight, setContentExceedsHeight] = useState(false)
   const [scrollable, setScrollable] = useState(false)
   
