@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react'
-import PropTypes from 'prop-types'
 import Fuse from 'fuse.js'
 import { Tooltip } from 'react-tooltip'
 
@@ -10,13 +9,21 @@ import chevronUp from 'img/chevron-up.svg'
 import { fetchTranscript, handleKeyboardSelect, inRange } from 'utils'
 import { getCurrentLine } from './transcriptUtils'
 import TranscriptSearch from './TranscriptSearch'
-import { MediaType, TranscriptLine } from '@/constants'
+import { MediaType, SeekFunc, TranscriptLine } from '@/constants'
 
+
+export type HandleLineClickFunc = (
+  start: number,
+  isCurrent: boolean,
+  seekOptions?: { play?: boolean }
+) => void
+
+export type SetScrollingProgrammaticallyFunc = (timeout?: number) => void
 
 interface TranscriptProps {
   epNumber: number,
   timecode: number,
-  seek: (position: number) => void,
+  seek: SeekFunc
   mediaType: MediaType
 }
 
@@ -38,7 +45,7 @@ export default function Transcript({
   const scrollingProgrammatically = useRef(false)
   // setTimeout value when scrolling is initiated
   const programmaticScollingTimeout = useRef<number | null>(null)
-  const fuse = useRef(new Fuse([]))
+  const fuse = useRef<Fuse<TranscriptLine>>(new Fuse([]))
   const currentLineEl = useRef<HTMLLIElement>(null)
   const transcriptEl = useRef<HTMLDivElement>(null)
   const progressEl = useRef<HTMLProgressElement>(null)
@@ -47,7 +54,7 @@ export default function Transcript({
   // current line, along with other metadata
   const getScrollTarget = () => {
     if (!currentLineEl.current || !transcriptEl.current) {
-      return
+      return {}
     }
     // we need to manually calculate scroll position instead of using
     // scrollIntoView because scrollIntoView will scroll the document body
@@ -70,7 +77,7 @@ export default function Transcript({
   // Intended to be called directly befrore any scrolling code
   // Browser smooth scroll implemnetations vary, but 1000ms seems to be a
   // sufficiently long duration for this purpose.
-  const setScrollingProgrammatically = useCallback((timeout = 1000) => {
+  const setScrollingProgrammatically: SetScrollingProgrammaticallyFunc = useCallback((timeout = 1000) => {
     scrollingProgrammatically.current = true
     if (programmaticScollingTimeout.current) {
       window.clearInterval(programmaticScollingTimeout.current)
@@ -91,7 +98,7 @@ export default function Transcript({
       setTranscript(transcript)
       fuse.current = index
       if (transcriptEl.current) {
-        transcriptEl.scrollTop = 0
+        transcriptEl.current.scrollTop = 0
       }
     })()
   }, [epNumber])
@@ -107,7 +114,7 @@ export default function Transcript({
       return
     }
     setCurrentLine(
-      getCurrentLine(transcript, timecode * 1000, currentLine)
+      getCurrentLine(transcript, timecode * 1000, currentLine) ?? 0
     )
   }, [transcript, timecode, currentLine])
 
@@ -124,6 +131,9 @@ export default function Transcript({
       currentScrollTop,
       transcriptHeight
     } = getScrollTarget()
+    if (!scrollTo || !currentScrollTop || !transcriptHeight) {
+      return
+    }
     // smooth scroll if the new position is nearby the current scroll position
     const smoothScroll = inRange(
       scrollTo,
@@ -161,7 +171,7 @@ export default function Transcript({
     }
   }, [])
 
-  const handleLineClick = useCallback((start, isCurrent, seekOptions = {}) => {
+  const handleLineClick: HandleLineClickFunc = useCallback((start, isCurrent, seekOptions = {}) => {
     if (isCurrent) {
       return
     }
@@ -170,7 +180,7 @@ export default function Transcript({
     window.setTimeout(() => setUserScroll(false))
   }, [seek, setScrollingProgrammatically])
 
-  const handleLineKeydown = useCallback((ev, start, isCurrent) => {
+  const handleLineKeydown = useCallback((ev: React.KeyboardEvent, start: number, isCurrent: boolean) => {
     handleKeyboardSelect(ev, () => handleLineClick(start, isCurrent))
   }, [handleLineClick])
 
@@ -181,9 +191,10 @@ export default function Transcript({
       scrollTo,
       currentScrollTop
     } = getScrollTarget()
-    return scrollTo > currentScrollTop ?
-      chevronDown : 
-      chevronUp
+    return (scrollTo && currentScrollTop) &&
+      scrollTo < currentScrollTop ?
+        chevronUp : 
+        chevronDown
   }
 
   const transcriptComponent = useMemo(() => ((transcript, currentLine) => (
@@ -217,7 +228,7 @@ export default function Transcript({
     <div className={s.transcript} ref={transcriptEl}>
       <TranscriptSearch
         fuse={fuse.current}
-        seek={handleLineClick}
+        handleLineClick={handleLineClick}
         setScrollingProgrammatically={setScrollingProgrammatically}
         mediaType={mediaType}
       />
@@ -240,10 +251,4 @@ export default function Transcript({
       <progress ref={progressEl} max={1} defaultValue={0} />
     </div>
   )
-}
-
-Transcript.propTypes = {
-  epNumber: PropTypes.number,
-  timecode: PropTypes.number.isRequired,
-  seek: PropTypes.func.isRequired
 }

@@ -1,3 +1,5 @@
+import { IFuseOptions } from 'fuse.js'
+
 export interface Episode {
   number: number
   title: string
@@ -15,12 +17,10 @@ export interface TranscriptLine {
 }
 
 export interface QueryParams {
-  [key: string]: string;
+  [key: string]: string
 }
 
-export interface SeekParams {
-  
-}
+export type SeekFunc = (ms: number, options: { play?: boolean }) => void
 
 export enum MediaType {
   Audio,
@@ -39,14 +39,11 @@ export const papaConfig = {
   skipEmptyLines: true
 }
 
-interface EpisodeSort {
-  item: {
-    start: number
-  }
-}
-
 // https://www.fusejs.io/api/options.html
-export const fuseConfig = {
+export const fuseConfig: {
+  episode: IFuseOptions<Episode>,
+  transcript: IFuseOptions<TranscriptLine>
+} = {
   episode: {
     keys: [
       'number',
@@ -57,7 +54,7 @@ export const fuseConfig = {
     ignoreLocation: true,
     fieldNormWeight: 0.2,
     minMatchCharLength: 2,
-    sortFn: (a, b) => a.item.number - b.item.number
+    sortFn: (a, b) => Number(a.item.number) - Number(b.item.number)
   },
   transcript: {
     keys: [
@@ -66,7 +63,7 @@ export const fuseConfig = {
     threshold: 0.2,
     ignoreLocation: true,
     minMatchCharLength: 2,
-    sortFn: (a: EpisodeSort, b: EpisodeSort) => a.item.start - b.item.start
+    sortFn: (a, b) => Number(a.item.start) - Number(b.item.start)
   }
 }
 

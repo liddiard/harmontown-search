@@ -3,13 +3,18 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import Typesense from 'typesense'
 
 import s from './TranscriptSearchResults.module.scss'
-import { TYPESENSE_CONFIG, Episode } from '@/constants'
-import { findEpisodeByNumber, formatTimecode, jumpToMediaPlayer } from '../utils';
+import { TYPESENSE_CONFIG, Episode, TranscriptLine } from '@/constants'
+import { findEpisodeByNumber, formatTimecode, jumpToMediaPlayer } from '../utils'
 import EpisodeInfo from '../EpisodeInfo'
 import LoadingSpinner from '../LoadingSpinner'
+import { SearchResponse } from 'typesense/lib/Typesense/Documents'
 
 const client = new Typesense.Client(TYPESENSE_CONFIG)
 const RESULTS_PER_PAGE = 10
+
+interface TranscriptLineIndexed extends TranscriptLine {
+  id: 'string'
+}
 
 interface TranscriptSearchResultsProps {
   query: string
@@ -22,8 +27,8 @@ export default function TranscriptSearchResults({
   episodes = [],
   currentEpisode
 }: TranscriptSearchResultsProps) {
-  const [results, setResults] = useState([])
-  const [numFound, setNumFound] = useState<number | null>(null)
+  const [results, setResults] = useState<SearchResponse<TranscriptLineIndexed>['grouped_hits']>([])
+  const [numFound, setNumFound] = useState<number>(0)
   
   const resultsEl = useRef<HTMLOListElement>(null)
   // current last page of search results
@@ -42,7 +47,7 @@ export default function TranscriptSearchResults({
       sort_by: 'episode:asc',
       page
     })
-    return res
+    return res as SearchResponse<TranscriptLineIndexed>
   }, [])
 
   const handleScroll = useCallback(async () => {
@@ -62,11 +67,11 @@ export default function TranscriptSearchResults({
     const distanceToBottomOfResults = (y + height) - innerHeight
     if (distanceToBottomOfResults < innerHeight / 2) {
       const res = await search(query, ++page.current)
-      setResults(prevResults => [...prevResults, ...res.grouped_hits])
+      setResults(prevResults => [...prevResults!, ...res.grouped_hits!])
     }
   }, [query, search, numFound])
 
-  const getHitUrl = (epNumber, document) => {
+  const getHitUrl = (epNumber: number, document: { start: number }) => {
     const params = new URLSearchParams(window.location.search)
     params.set('t', Math.floor(document.start/1000).toString())
     return `/episode/${epNumber}?${params.toString()}`
@@ -93,7 +98,7 @@ export default function TranscriptSearchResults({
       }
       setResults([])
       const res = await search(query, page.current)
-      setResults(res.grouped_hits)
+      setResults(res.grouped_hits!)
       setNumFound(res.found)
     })()
   }, [query, search])
@@ -109,10 +114,13 @@ export default function TranscriptSearchResults({
         Transcript{numFound !== 1 ? 's' : null}
       </h2>
       {numFound ? <ol className={s.results} ref={resultsEl}>
-        {results.map(({ group_key, hits }) => {
-          const epNumber = group_key[0]
+        {results!.map(({ group_key, hits }) => {
+          const epNumber = Number(group_key[0])
           const selected = epNumber === currentEpisode
           const episode = findEpisodeByNumber(episodes, epNumber)
+          if (!episode) {
+            return
+          }
           return <li key={epNumber} className={selected ? 'selected' : ''}>
             <EpisodeInfo {...episode} className={s.episodeInfo} selected={selected} />
             <ol className={s.hits}>
@@ -130,9 +138,11 @@ export default function TranscriptSearchResults({
                     <time className={s.timecode}>
                       {formatTimecode(document.start)}
                     </time>
-                    <span dangerouslySetInnerHTML={{
-                      __html: highlight.text.snippet
-                    }}/>
+                    {highlight.text?.snippet ? 
+                      <span dangerouslySetInnerHTML={{
+                        __html: highlight.text.snippet
+                      }}/>
+                    : null}
                   </Link>
                 </li>
               )}
@@ -141,7 +151,7 @@ export default function TranscriptSearchResults({
         })}
       </ol> : null}
       <LoadingSpinner 
-        loading={results.length < (numFound ?? Infinity)}
+        loading={results!.length < (numFound ?? Infinity)}
         className={s.spinner}
       />
     </>

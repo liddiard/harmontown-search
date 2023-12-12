@@ -87,26 +87,26 @@ export const formatTimecode = (ms: number) => {
   .join(':')
 }
 
-interface DatePart {
-  type: string,
-  value: string
+const dateFormat: Intl.DateTimeFormatOptions = {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric' 
 }
 
-// format a Date object like into an an array of parts which when joined make 
-// a string like "Jul 4, 2012"
-export const formatDate = (date: Date | string, options = { parts: false }): string | DatePart[]  => 
-  Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric' 
-  })[options.parts ? 'formatToParts' : 'format'](new Date(date))
+// format a Date object into an an array of parts which when joined make a
+// string like "Jul 4, 2012"
+export const formatDateToParts = (date: string | Date) => 
+  Intl.DateTimeFormat('en-US', dateFormat).formatToParts(new Date(date))
+
+export const formatDateToString = (date: string | Date) => 
+  Intl.DateTimeFormat('en-US', dateFormat).format(new Date(date))
 
 // jump to an anchor (element ID) on the page
 const jumpToHash = (id: string) => {
   const { location, history } = window
-  const originalUrl = location.href;              // Save down the URL without hash
-  location.href = `#${id}`;                       // Go to the target element
-  history.replaceState(null, '', originalUrl)     // Remove the hash after jump
+  const originalUrl = location.href              // Save down the URL without hash
+  location.href = `#${id}`                       // Go to the target element
+  history.replaceState(null, '', originalUrl)    // Remove the hash after jump
 }
 
 export const jumpToMediaPlayer = () => 

@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
 import { Tooltip } from 'react-tooltip'
 import Fuse, { FuseResult } from 'fuse.js'
 
@@ -10,18 +9,21 @@ import magnifyingGlass from 'img/magnifying-glass.svg'
 import TranscriptSearchResults from './TranscriptSearchResults'
 import classNames from 'classnames'
 import { MediaType, TranscriptLine } from '@/constants'
+import { HandleLineClickFunc, SetScrollingProgrammaticallyFunc } from './Transcript'
 
 
 interface TranscriptSearchProps {
   fuse?: Fuse<TranscriptLine>,
-  mediaType: MediaType
+  mediaType: MediaType,
+  handleLineClick: HandleLineClickFunc
+  setScrollingProgrammatically: SetScrollingProgrammaticallyFunc
 }
 
 export default function TranscriptSearch({
   fuse,
-  seek,
-  setScrollingProgrammatically,
-  mediaType
+  mediaType,
+  handleLineClick,
+  setScrollingProgrammatically
 }: TranscriptSearchProps) {
   // current text in the episode search input
   const [currentQuery, setCurrentQuery] = useState('')
@@ -96,20 +98,10 @@ export default function TranscriptSearch({
         searchResults={searchResults}
         setSearchResults={setSearchResults}
         submittedQuery={submittedQuery}
-        seek={seek}
+        handleLineClick={handleLineClick}
         setScrollingProgrammatically={setScrollingProgrammatically}
       />
       <Tooltip id="back-to-transcript" place="bottom" />
     </div>
   )
-}
-
-TranscriptSearch.propTypes = {
-  fuse: PropTypes.shape({
-    current: PropTypes.shape({
-      search: PropTypes.func.isRequired
-    }).isRequired
-  }).isRequired,
-  seek: PropTypes.func.isRequired,
-  setScrollingProgrammatically: PropTypes.func.isRequired
 }

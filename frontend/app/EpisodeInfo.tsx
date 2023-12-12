@@ -1,12 +1,11 @@
 import Image from 'next/image'
-import PropTypes from 'prop-types'
 
-import { formatDate, highlightMatches, mask } from 'utils'
+import { formatDateToParts, highlightMatches, mask } from 'utils'
 import playIcon from 'img/play.svg'
 import s from './EpisodeInfo.module.scss'
 import { Episode } from '@/constants'
 
-type EpisodeInfoProps = Episode & {
+interface EpisodeInfoProps extends Episode {
   className?: string,
   query?: string,
   selected?: boolean
@@ -23,7 +22,7 @@ export default function EpisodeInfo({
   selected
 }: EpisodeInfoProps) {
   const date = record_date || release_date
-  const formattedDate = formatDate(date, { parts: true })
+  const formattedDate = formatDateToParts(date)
 
   return (
     <div className={`${s.episodeInfo} ${className}`}>

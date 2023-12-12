@@ -1,7 +1,6 @@
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
 import s from './page.module.scss'
-import { formatDate } from 'utils'
+import { formatDateToString } from 'utils'
 import episodes from '@/episode_list.tsv'
 
 export default function EpisodeList() {
@@ -29,7 +28,7 @@ export default function EpisodeList() {
                 </Link>
               </td>
               <td className={s.date}>
-                {formatDate(ep.record_date || ep.release_date).toString()}
+                {formatDateToString(ep.record_date || ep.release_date)}
               </td>
               <td className={s.description}>
                 {ep.description}

@@ -1,16 +1,26 @@
 import { useRef, useEffect } from 'react'
-import PropTypes from 'prop-types'
+import { FuseResult } from 'fuse.js'
 
 import s from './TranscriptSearchResults.module.scss'
 import { formatTimecode, highlightMatches } from 'utils'
+import { TranscriptLine } from '@/constants'
+import { HandleLineClickFunc, SetScrollingProgrammaticallyFunc } from './Transcript'
+
+interface TranscriptSearchResultsProps {
+  searchResults: FuseResult<TranscriptLine>[],
+  setSearchResults: (results: FuseResult<TranscriptLine>[]) => void,
+  submittedQuery: string,
+  handleLineClick: HandleLineClickFunc,
+  setScrollingProgrammatically: SetScrollingProgrammaticallyFunc
+}
 
 export default function TranscriptSearchResults({ 
   searchResults = [],
   setSearchResults,
   submittedQuery,
-  seek,
+  handleLineClick,
   setScrollingProgrammatically
-}) {
+}: TranscriptSearchResultsProps) {
   const resultsEl = useRef<HTMLOListElement>(null)
 
   useEffect(() => {
@@ -30,7 +40,7 @@ export default function TranscriptSearchResults({
           key={start}
           className="selectable"
           onClick={() => {
-            seek(start, false, { play: true })
+            handleLineClick(start, false, { play: true })
             window.setTimeout(() => setSearchResults([]))
           }}
         >
@@ -40,12 +50,4 @@ export default function TranscriptSearchResults({
       )}
     </ol>
   )
-}
-
-TranscriptSearchResults.propTypes = {
-  searchResults: PropTypes.array.isRequired,
-  setSearchResults: PropTypes.func.isRequired,
-  submittedQuery: PropTypes.string.isRequired,
-  seek: PropTypes.func.isRequired,
-  setScrollingProgrammatically: PropTypes.func.isRequired
 }

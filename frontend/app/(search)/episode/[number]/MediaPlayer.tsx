@@ -5,14 +5,14 @@ import { useSearchParams } from 'next/navigation'
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import { Tooltip } from 'react-tooltip'
 import debounce from 'lodash.debounce'
-import { Episode, MediaType } from '@/constants'
+import { Episode, MediaType, SeekFunc } from '@/constants'
 import { getMediaData, getTimecodeLocalStorageKey } from '@/utils'
 import ShareDialog from './ShareDialog'
 import Transcript from './Transcript'
 import shareIcon from 'img/share.svg'
 import poster from 'img/harmontown-logo-bg-poster.png'
 
-import s from './page.module.scss'
+import s from './MediaPlayer.module.scss'
 
 
 interface MediaPlayerProps {
@@ -54,7 +54,7 @@ export default function MediaPlayer({
     )
   }, 500, { leading: true, maxWait: 500 })
 
-  const seek = useCallback((ms: number, options = { play: false }) => {
+  const seek: SeekFunc = useCallback((ms, options = {}) => {
     if (!mediaEl.current) {
       return
     }
@@ -86,30 +86,30 @@ export default function MediaPlayer({
   return (
     <>
       <div className={s.mediaPlayer}>
-          {mediaElement}
+        {mediaElement}
           <Transcript
             epNumber={episode.number}
             timecode={timecode}
             seek={seek}
             mediaType={mediaType}
           />
-        </div>
-        <div className={s.mediaActions}>
-          <button
-            className={`${s.share} ${shareOpen ? s.open : ''}`}
-            onClick={() => setShareOpen(!shareOpen)}
-            >
-            <Image src={shareIcon} alt="" />
-            Share
-          </button>
-          <span className={s.disclaimer}>
-            Transcripts are auto generated and may contain errors.
-          </span>
-        </div>
-        {shareOpen ?
-          <ShareDialog timecode={timecode} setOpen={setShareOpen} />
-          : null}
-        <Tooltip id="close-player" place="left" />
+      </div>
+      <div className={s.mediaActions}>
+        <button
+          className={`${s.share} ${shareOpen ? s.open : ''}`}
+          onClick={() => setShareOpen(!shareOpen)}
+          >
+          <Image src={shareIcon} alt="" />
+          Share
+        </button>
+        <span className={s.disclaimer}>
+          Transcripts are auto generated and may contain errors.
+        </span>
+      </div>
+      {shareOpen ?
+        <ShareDialog timecode={timecode} setOpen={setShareOpen} />
+        : null}
+      <Tooltip id="close-player" place="left" />
     </>
   )
 }

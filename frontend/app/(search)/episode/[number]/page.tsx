@@ -1,4 +1,4 @@
-import Head from 'next/head'
+import { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -11,13 +11,30 @@ import MediaPlayer from './MediaPlayer'
 import episodes from '@/episode_list.tsv'
 
 
+interface PageParams {
+  params: {
+    number: number
+  }
+}
+
 export async function generateStaticParams() {
-  return episodes.map(({ number } : { number: number }) =>
+  return episodes.map(({ number }: PageParams['params']) =>
     ({ number: number.toString() }))
 }
 
-interface EpisodePlayerProps {
-  params: { number: number },
+export function generateMetadata({ params: { number } }: PageParams) {
+  const episode = findEpisodeByNumber(episodes, Number(number))
+  if (!episode) {
+    throw Error(`Missing episode for number: ${number}`)
+  }
+  const { title, description } = episode
+  return {
+    title,
+    description
+  }
+}
+
+interface EpisodePlayerProps extends PageParams {
   searchParams: QueryParams
 }
 
@@ -34,7 +51,6 @@ export default async function EpisodePlayer({
 
   return (
     <div className={s.mediaPlayerContainer} id="media-player">
-      <Head>{episode.title}</Head>
       <Link 
         href={`/${getQueryParamsWithoutTimecode(searchParams)}`}
         className={s.closePlayer}
