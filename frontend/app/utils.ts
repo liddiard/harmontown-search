@@ -4,6 +4,7 @@ import Fuse from 'fuse.js'
 import { papaConfig, fuseConfig } from '@/constants'
 import { Episode, EpisodeList, Transcript, TranscriptLine, QueryParams, MediaType } from '@/types'
 
+
 interface TranscriptResponse {
   transcript: Transcript,
   index: Fuse<TranscriptLine>

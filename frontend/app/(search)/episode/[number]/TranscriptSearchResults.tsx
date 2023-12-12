@@ -2,9 +2,10 @@ import { useRef, useEffect } from 'react'
 import { FuseResult } from 'fuse.js'
 
 import s from './TranscriptSearchResults.module.scss'
-import { formatTimecode, highlightMatches } from 'utils'
-import {  TranscriptLine } from '@/types'
+import { formatTimecode, highlightMatches } from '@/utils'
+import { TranscriptLine } from '@/types'
 import { HandleLineClickFunc, SetScrollingProgrammaticallyFunc } from './Transcript'
+
 
 interface TranscriptSearchResultsProps {
   searchResults: FuseResult<TranscriptLine>[],

@@ -2,12 +2,12 @@ import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { Tooltip } from 'react-tooltip'
 import Fuse, { FuseResult } from 'fuse.js'
+import classNames from 'classnames'
 
 import s from './TranscriptSearch.module.scss'
 import leftChevron from 'img/left-chevron.svg'
 import magnifyingGlass from 'img/magnifying-glass.svg'
 import TranscriptSearchResults from './TranscriptSearchResults'
-import classNames from 'classnames'
 import { MediaType, TranscriptLine } from '@/types'
 import { HandleLineClickFunc, SetScrollingProgrammaticallyFunc } from './Transcript'
 

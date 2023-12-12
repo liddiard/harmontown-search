@@ -6,6 +6,7 @@ import 'layout.scss'
 import Nav from 'nav'
 import heartIcon from 'img/heart.svg'
 
+
 const inter = Inter({
   subsets: ['latin'],
   fallback: ['system-ui']

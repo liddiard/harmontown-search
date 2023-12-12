@@ -1,7 +1,9 @@
 'use client'
 
 import { useEffect } from 'react'
+
 import s from './error.module.scss'
+
 
 interface ErrorProps {
   error: Error

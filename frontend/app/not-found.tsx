@@ -1,5 +1,7 @@
 import Link from 'next/link'
+
 import s from './not-found.module.scss'
+
 
 export default function NotFound() {
   return (

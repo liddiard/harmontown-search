@@ -1,5 +1,6 @@
 import { Transcript } from '@/types'
-import { inRange } from 'utils'
+import { inRange } from '@/utils'
+
 
 // Given a `transcript` and a `timecode`, binary search for the line in
 // transcript that matches the timecode. If timecode is between two lines or

@@ -1,9 +1,10 @@
 import Image from 'next/image'
 
-import { formatDateToParts, highlightMatches, mask } from 'utils'
-import playIcon from 'img/play.svg'
 import s from './EpisodeInfo.module.scss'
+import { formatDateToParts, highlightMatches, mask } from '@/utils'
+import playIcon from 'img/play.svg'
 import { Episode } from '@/types'
+
 
 interface EpisodeInfoProps extends Episode {
   className?: string,

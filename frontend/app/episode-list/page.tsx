@@ -1,7 +1,9 @@
 import Link from 'next/link'
+
 import s from './page.module.scss'
-import { formatDateToString } from 'utils'
+import { formatDateToString } from '@/utils'
 import episodes from '@/episode_list.tsv'
+
 
 export default function EpisodeList() {
   return (

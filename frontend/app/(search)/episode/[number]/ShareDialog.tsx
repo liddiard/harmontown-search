@@ -5,7 +5,7 @@ import s from './ShareDialog.module.scss'
 import xIcon from 'img/x.svg'
 import linkIcon from 'img/link.svg'
 import checkmarkIcon from 'img/checkmark.svg'
-import { formatTimecode } from 'utils'
+import { formatTimecode } from '@/utils'
 
 
 interface ShareDialogProps {
