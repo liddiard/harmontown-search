@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Tooltip } from 'react-tooltip'
 import Fuse, { FuseResult } from 'fuse.js'
 import classNames from 'classnames'
@@ -8,19 +8,20 @@ import s from './TranscriptSearch.module.scss'
 import leftChevron from 'img/left-chevron.svg'
 import magnifyingGlass from 'img/magnifying-glass.svg'
 import TranscriptSearchResults from './TranscriptSearchResults'
-import { MediaType, TranscriptLine } from '@/types'
+import { MediaType, Transcript, TranscriptLine } from '@/types'
 import { HandleLineClickFunc, SetScrollingProgrammaticallyFunc } from './Transcript'
+import { fuseConfig } from '@/constants'
 
 
 interface TranscriptSearchProps {
-  fuse?: Fuse<TranscriptLine>,
+  transcript: Transcript
   mediaType: MediaType,
   handleLineClick: HandleLineClickFunc
   setScrollingProgrammatically: SetScrollingProgrammaticallyFunc
 }
 
 export default function TranscriptSearch({
-  fuse,
+  transcript,
   mediaType,
   handleLineClick,
   setScrollingProgrammatically
@@ -34,19 +35,25 @@ export default function TranscriptSearch({
   // whether or not to display a "no search results" message
   const [noResults, setNoResults] = useState(false)
 
+  const fuse = useRef<Fuse<TranscriptLine>>(new Fuse([]))
+
   // when the user changes the text in the episode search input, remove the
   // "no search results" message
   useEffect(() => {
     setNoResults(false)
   }, [currentQuery])
 
+  useEffect(() => {
+    fuse.current = new Fuse(transcript, fuseConfig.transcript)
+  }, [transcript])
+
   const handleSearch = (ev: React.FormEvent) => {
     ev.preventDefault()
     setSubmittedQuery(currentQuery)
-    if (!fuse) {
+    if (!fuse.current) {
       return
     }
-    const results = fuse.search(currentQuery)
+    const results = fuse.current.search(currentQuery)
     setSearchResults(results)
     if (currentQuery) {
       setNoResults(!results.length)

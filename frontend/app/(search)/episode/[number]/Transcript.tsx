@@ -1,16 +1,17 @@
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react'
-import Fuse from 'fuse.js'
 import { Tooltip } from 'react-tooltip'
 
 import s from './Transcript.module.scss'
 import chevronDown from 'img/chevron-down.svg'
 import chevronUp from 'img/chevron-up.svg'
-import { fetchTranscript, handleKeyboardSelect, inRange } from '@/utils'
+import { handleKeyboardSelect, inRange } from '@/utils'
 import { getCurrentLine } from './transcriptUtils'
 import TranscriptSearch from './TranscriptSearch'
-import { MediaType, Transcript, TranscriptLine } from '@/types'
+import { MediaType, Transcript } from '@/types'
 import { SeekFunc } from './MediaPlayer'
+
 
 
 export type HandleLineClickFunc = (
@@ -46,7 +47,6 @@ export default function Transcript({
   const scrollingProgrammatically = useRef(false)
   // setTimeout value when scrolling is initiated
   const programmaticScollingTimeout = useRef<number | null>(null)
-  const fuse = useRef<Fuse<TranscriptLine>>(new Fuse([]))
   const currentLineEl = useRef<HTMLLIElement>(null)
   const transcriptEl = useRef<HTMLDivElement>(null)
   const progressEl = useRef<HTMLProgressElement>(null)
@@ -94,10 +94,8 @@ export default function Transcript({
       if (!epNumber) {
         return
       }
-      const { transcript, index } = await fetchTranscript(epNumber)
+      setTranscript((await import(`@/transcripts/${epNumber}.tsv`)).default)
       setCurrentLine(0)
-      setTranscript(transcript)
-      fuse.current = index
       if (transcriptEl.current) {
         transcriptEl.current.scrollTop = 0
       }
@@ -228,7 +226,7 @@ export default function Transcript({
   return (
     <div className={s.transcript} ref={transcriptEl}>
       <TranscriptSearch
-        fuse={fuse.current}
+        transcript={transcript}
         handleLineClick={handleLineClick}
         setScrollingProgrammatically={setScrollingProgrammatically}
         mediaType={mediaType}

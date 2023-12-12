@@ -6,15 +6,6 @@ import { Episode, TranscriptLine } from './types'
 // default page title
 export const defaultTitle = 'Harmontown Podcast Search'
 
-// https://www.papaparse.com/docs#config
-export const papaConfig = {
-  download: true,
-  header: true,
-  dynamicTyping: true,
-  delimiter: '\t',
-  skipEmptyLines: true
-}
-
 // https://www.fusejs.io/api/options.html
 export const fuseConfig: {
   episode: IFuseOptions<Episode>,

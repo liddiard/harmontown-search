@@ -1,49 +1,5 @@
-import Papa from 'papaparse'
-import Fuse from 'fuse.js'
+import { Episode, EpisodeList, QueryParams, MediaType } from '@/types'
 
-import { papaConfig, fuseConfig } from '@/constants'
-import { Episode, EpisodeList, Transcript, TranscriptLine, QueryParams, MediaType } from '@/types'
-
-
-interface TranscriptResponse {
-  transcript: Transcript,
-  index: Fuse<TranscriptLine>
-}
-
-// fetch and parse the TSV file of all episodes
-let episodeIndex: EpisodeList
-export const fetchEpisodeIndex = (): Promise<EpisodeList> => new Promise((resolve, reject) => {
-  // return locally cached version if available
-  if (episodeIndex) {
-    return resolve(episodeIndex)
-  }
-  Papa.parse('/episode_list.tsv', {
-    ...papaConfig as Papa.ParseRemoteConfig,
-    complete: (results) => {
-      episodeIndex = results.data as EpisodeList
-      resolve(episodeIndex)
-    }
-  })
-})
-
-// fetch and parse the TSV file of a transcript with the passed episode `number`
-export const fetchTranscript = (number: number): Promise<TranscriptResponse> => new Promise((resolve, reject) =>
-  // I believe TypeScript is not able to read `download: true` from the
-  // `papaConfig` which causes it to complain that I'm using a `complete`
-  // function without downloading. The error goes away if I move the
-  // `download: true` into the second argument here (i.e. the exact same code).
-  Papa.parse(`/transcripts/${number}.tsv`, {
-    ...papaConfig as Papa.ParseRemoteConfig,
-    complete: (results) => {
-      const transcript = results.data
-      const index = new Fuse(transcript, fuseConfig.transcript)
-      resolve({ 
-        transcript,
-        index
-      })
-    }
-  })
-)
 
 // given some search `result` text and the original `query`, return a markup
 // string with whole words in `query` that match a substring of the `result`

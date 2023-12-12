@@ -13,6 +13,7 @@ const nextConfig = {
         defaultLoaders.babel,
         {
           loader: 'csv-loader',
+          // https://www.papaparse.com/docs#config
           options: {
             header: true,
             dynamicTyping: true,
