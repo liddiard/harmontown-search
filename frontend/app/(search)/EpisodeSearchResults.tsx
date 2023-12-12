@@ -8,7 +8,7 @@ import downArrow from 'img/triangle-down.svg'
 import { fuseConfig } from '@/constants'
 import { Episode, EpisodeList } from '@/types'
 import { getQueryParamsWithoutTimecode } from '@/utils'
-import EpisodeInfo from 'EpisodeInfo'
+import EpisodeInfo from '@/components/EpisodeInfo'
 
 
 interface EpisodeSearchResultsProps {

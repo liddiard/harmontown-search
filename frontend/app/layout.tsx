@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { Inter, Bebas_Neue } from 'next/font/google'
 
 import 'layout.scss'
-import Nav from 'nav'
+import Nav from '@/components/nav'
 import heartIcon from 'img/heart.svg'
 
 

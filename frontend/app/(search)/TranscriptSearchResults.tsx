@@ -6,9 +6,9 @@ import { SearchResponse } from 'typesense/lib/Typesense/Documents'
 import s from './TranscriptSearchResults.module.scss'
 import { TYPESENSE_CONFIG } from '@/constants'
 import { EpisodeList, TranscriptLine } from '@/types'
-import { findEpisodeByNumber, formatTimecode, jumpToMediaPlayer } from '../utils'
-import EpisodeInfo from '../EpisodeInfo'
-import LoadingSpinner from '../LoadingSpinner'
+import { findEpisodeByNumber, formatTimecode, jumpToMediaPlayer } from '@/utils'
+import EpisodeInfo from '@/components/EpisodeInfo'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 
 const client = new Typesense.Client(TYPESENSE_CONFIG)

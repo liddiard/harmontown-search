@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import s from './page.module.scss'
 import xIcon from 'img/x.svg'
-import EpisodeInfo from 'EpisodeInfo'
+import EpisodeInfo from '@/components/EpisodeInfo'
 import { findEpisodeByNumber, getQueryParamsWithoutTimecode } from '@/utils'
 import { QueryParams } from '@/types'
 import MediaPlayer from './MediaPlayer'
