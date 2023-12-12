@@ -9,7 +9,8 @@ import chevronUp from 'img/chevron-up.svg'
 import { fetchTranscript, handleKeyboardSelect, inRange } from 'utils'
 import { getCurrentLine } from './transcriptUtils'
 import TranscriptSearch from './TranscriptSearch'
-import { MediaType, SeekFunc, TranscriptLine } from '@/constants'
+import { MediaType, Transcript, TranscriptLine } from '@/types'
+import { SeekFunc } from './MediaPlayer'
 
 
 export type HandleLineClickFunc = (
@@ -34,7 +35,7 @@ export default function Transcript({
   mediaType
 }: TranscriptProps) {
   // transcript: array of lines
-  const [transcript, setTranscript] = useState<TranscriptLine[]>([])
+  const [transcript, setTranscript] = useState<Transcript>([])
   // current line of transcript matching the media timecode
   const [currentLine, setCurrentLine] = useState(0)
   // user is scrolling transcript independent of auto scroll to current line

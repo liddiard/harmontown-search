@@ -5,13 +5,14 @@ import Fuse, { FuseResult } from 'fuse.js'
 
 import s from './EpisodeSearchResults.module.scss'
 import downArrow from 'img/triangle-down.svg'
-import { Episode, fuseConfig } from '@/constants'
+import { fuseConfig } from '@/constants'
+import { Episode, EpisodeList } from '@/types'
 import { getQueryParamsWithoutTimecode } from 'utils'
 import EpisodeInfo from 'EpisodeInfo'
 
 
 interface EpisodeSearchResultsProps {
-  episodes: Episode[],
+  episodes: EpisodeList,
   query: string,
   currentEpisode: number
 }

@@ -1,15 +1,17 @@
 import Papa from 'papaparse'
 import Fuse from 'fuse.js'
-import { Episode, TranscriptLine, papaConfig, fuseConfig, QueryParams, MediaType } from '@/constants'
+
+import { papaConfig, fuseConfig } from '@/constants'
+import { Episode, EpisodeList, Transcript, TranscriptLine, QueryParams, MediaType } from '@/types'
 
 interface TranscriptResponse {
-  transcript: TranscriptLine[],
+  transcript: Transcript,
   index: Fuse<TranscriptLine>
 }
 
 // fetch and parse the TSV file of all episodes
-let episodeIndex: Episode[]
-export const fetchEpisodeIndex = (): Promise<Episode[]> => new Promise((resolve, reject) => {
+let episodeIndex: EpisodeList
+export const fetchEpisodeIndex = (): Promise<EpisodeList> => new Promise((resolve, reject) => {
   // return locally cached version if available
   if (episodeIndex) {
     return resolve(episodeIndex)
@@ -17,7 +19,7 @@ export const fetchEpisodeIndex = (): Promise<Episode[]> => new Promise((resolve,
   Papa.parse('/episode_list.tsv', {
     ...papaConfig as Papa.ParseRemoteConfig,
     complete: (results) => {
-      episodeIndex = results.data as Episode[]
+      episodeIndex = results.data as EpisodeList
       resolve(episodeIndex)
     }
   })
@@ -58,7 +60,7 @@ export const highlightMatches = (result = '', query = '') => {
 
 // given the `episodes` list and an episode `number`, return the episode
 // metadata object matching the passed `number`
-export const findEpisodeByNumber = (episodes: Episode[], number: number) =>
+export const findEpisodeByNumber = (episodes: EpisodeList, number: number) =>
   episodes.find(ep => ep.number === number) || null
 
 // returns if `value` is between `start` (inclusive) and `end` (exclusive)

@@ -5,7 +5,8 @@ import { useSearchParams } from 'next/navigation'
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import { Tooltip } from 'react-tooltip'
 import debounce from 'lodash.debounce'
-import { Episode, MediaType, SeekFunc } from '@/constants'
+
+import { Episode, MediaType } from '@/types'
 import { getMediaData, getTimecodeLocalStorageKey } from '@/utils'
 import ShareDialog from './ShareDialog'
 import Transcript from './Transcript'
@@ -14,6 +15,8 @@ import poster from 'img/harmontown-logo-bg-poster.png'
 
 import s from './MediaPlayer.module.scss'
 
+
+export type SeekFunc = (ms: number, options: { play?: boolean }) => void
 
 interface MediaPlayerProps {
   episode: Episode

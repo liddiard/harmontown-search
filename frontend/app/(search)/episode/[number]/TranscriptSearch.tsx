@@ -8,7 +8,7 @@ import leftChevron from 'img/left-chevron.svg'
 import magnifyingGlass from 'img/magnifying-glass.svg'
 import TranscriptSearchResults from './TranscriptSearchResults'
 import classNames from 'classnames'
-import { MediaType, TranscriptLine } from '@/constants'
+import { MediaType, TranscriptLine } from '@/types'
 import { HandleLineClickFunc, SetScrollingProgrammaticallyFunc } from './Transcript'
 
 

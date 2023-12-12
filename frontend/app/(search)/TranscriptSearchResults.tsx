@@ -1,24 +1,26 @@
 import Link from 'next/link'
 import { useState, useRef, useEffect, useCallback } from 'react'
 import Typesense from 'typesense'
+import { SearchResponse } from 'typesense/lib/Typesense/Documents'
 
 import s from './TranscriptSearchResults.module.scss'
-import { TYPESENSE_CONFIG, Episode, TranscriptLine } from '@/constants'
+import { TYPESENSE_CONFIG } from '@/constants'
+import { EpisodeList, TranscriptLine } from '@/types'
 import { findEpisodeByNumber, formatTimecode, jumpToMediaPlayer } from '../utils'
 import EpisodeInfo from '../EpisodeInfo'
 import LoadingSpinner from '../LoadingSpinner'
-import { SearchResponse } from 'typesense/lib/Typesense/Documents'
+
 
 const client = new Typesense.Client(TYPESENSE_CONFIG)
 const RESULTS_PER_PAGE = 10
 
-interface TranscriptLineIndexed extends TranscriptLine {
+interface IndexedTranscriptLine extends TranscriptLine {
   id: 'string'
 }
 
 interface TranscriptSearchResultsProps {
   query: string
-  episodes: Episode[],
+  episodes: EpisodeList,
   currentEpisode: number
 }
 
@@ -27,7 +29,7 @@ export default function TranscriptSearchResults({
   episodes = [],
   currentEpisode
 }: TranscriptSearchResultsProps) {
-  const [results, setResults] = useState<SearchResponse<TranscriptLineIndexed>['grouped_hits']>([])
+  const [results, setResults] = useState<SearchResponse<IndexedTranscriptLine>['grouped_hits']>([])
   const [numFound, setNumFound] = useState<number>(0)
   
   const resultsEl = useRef<HTMLOListElement>(null)
@@ -47,7 +49,7 @@ export default function TranscriptSearchResults({
       sort_by: 'episode:asc',
       page
     })
-    return res as SearchResponse<TranscriptLineIndexed>
+    return res as SearchResponse<IndexedTranscriptLine>
   }, [])
 
   const handleScroll = useCallback(async () => {

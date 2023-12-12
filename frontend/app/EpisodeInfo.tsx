@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { formatDateToParts, highlightMatches, mask } from 'utils'
 import playIcon from 'img/play.svg'
 import s from './EpisodeInfo.module.scss'
-import { Episode } from '@/constants'
+import { Episode } from '@/types'
 
 interface EpisodeInfoProps extends Episode {
   className?: string,

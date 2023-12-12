@@ -6,7 +6,7 @@ import s from './page.module.scss'
 import xIcon from 'img/x.svg'
 import EpisodeInfo from 'EpisodeInfo'
 import { findEpisodeByNumber, getQueryParamsWithoutTimecode } from 'utils'
-import { QueryParams } from '@/constants'
+import { QueryParams } from '@/types'
 import MediaPlayer from './MediaPlayer'
 import episodes from '@/episode_list.tsv'
 

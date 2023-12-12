@@ -3,7 +3,7 @@ import { FuseResult } from 'fuse.js'
 
 import s from './TranscriptSearchResults.module.scss'
 import { formatTimecode, highlightMatches } from 'utils'
-import { TranscriptLine } from '@/constants'
+import {  TranscriptLine } from '@/types'
 import { HandleLineClickFunc, SetScrollingProgrammaticallyFunc } from './Transcript'
 
 interface TranscriptSearchResultsProps {

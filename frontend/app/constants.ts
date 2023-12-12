@@ -1,31 +1,7 @@
 import { IFuseOptions } from 'fuse.js'
 
-export interface Episode {
-  number: number
-  title: string
-  description: string
-  record_date?: string
-  release_date: string
-  audio_link: string
-  video_link?: string
-}
+import { Episode, TranscriptLine } from './types'
 
-export interface TranscriptLine {
-  start: number,
-  end: number,
-  text: string
-}
-
-export interface QueryParams {
-  [key: string]: string
-}
-
-export type SeekFunc = (ms: number, options: { play?: boolean }) => void
-
-export enum MediaType {
-  Audio,
-  Video
-}
 
 // default page title
 export const defaultTitle = 'Harmontown Podcast Search'
