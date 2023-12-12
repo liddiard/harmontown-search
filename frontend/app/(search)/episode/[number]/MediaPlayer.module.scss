@@ -1,0 +1,65 @@
+@import '../../../globals';
+
+.mediaPlayer {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  background: $bg-gray;
+  border-radius: 0.5em;
+  border: 1px solid $bg-gray;
+
+  @include narrow {
+    display: block;
+  }
+
+  audio,
+  video {
+    width: 100%;
+    border-radius: 0.5em 0 0 0.5em;
+    align-self: center;
+    text-shadow: none;
+
+    @include narrow {
+      border-radius: 0.5em 0.5em 0 0;
+    }
+  }
+
+  audio {
+    padding: 0 1em;
+    margin: 1em 0;
+  }
+}
+
+.mediaActions {
+  margin: 1em 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1em;
+}
+
+button.share {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.25em;
+  padding: 0.5em 1.2em 0.65em;
+  background-color: $bg-gray;
+  border-radius: 2em;
+
+  &:hover {
+    background-color: $bg-gray-lighter;
+  }
+
+  &.open {
+    background-color: $bg-gray-lighter;
+  }
+
+  img {
+    height: 1.3em;
+    width: auto;
+  }
+}
+
+.disclaimer {
+  font-size: 0.9em;
+  color: $fg-gray;
+}
