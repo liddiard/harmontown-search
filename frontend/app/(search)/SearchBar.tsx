@@ -1,11 +1,11 @@
 import Image from 'next/image'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import shuffle from 'lodash.shuffle'
 
 import s from './SearchBar.module.scss'
-import magnifyingGlass from '../img/magnifying-glass.svg'
-import { searchSuggestions } from '@/constants'
+import magnifyingGlass from 'img/magnifying-glass.svg'
+import searchSuggestions from './searchSuggestions.json'
 
 
 // change the search input placeholder text every x milliseconds
@@ -31,14 +31,6 @@ export default function SearchBar({
   const pathname = usePathname()
   const router = useRouter()
 
-  useEffect(() => {
-    // only do randomization on client side to prevent hydration mismatch errors
-    placeholders.current = shuffle(searchSuggestions)
-    // input is autofocused on page load, but focus event isn't fired
-    // call it manually here
-    handleFocus()
-  }, [])
-
   const handleSubmit = (ev: React.FormEvent) => {
     ev?.preventDefault()
     const params = new URLSearchParams(searchParams)
@@ -55,14 +47,14 @@ export default function SearchBar({
   }
 
   // setInterval to change the placeholder every `PLACEHOLDER_CYCLE_MS`
-  const startPlaceholderCycle = () => {
+  const startPlaceholderCycle = useCallback(() => {
     window.clearInterval(cycleInterval.current)
     setPlaceholderIndex(Math.floor(Math.random() * searchSuggestions.length))
     cycleInterval.current = window.setInterval(() => {
       setPlaceholderIndex(prevIndex => 
         prevIndex! + 1 === searchSuggestions.length ? 0 : prevIndex! + 1)
     }, PLACEHOLDER_CYCLE_MS)
-  }
+  }, [])
 
   // clearInterval to stop changing the placeholder
   const endPlaceholderCycle = () => {
@@ -71,12 +63,12 @@ export default function SearchBar({
   }
 
   // only start the placeholder cycle if the input is empty
-  const handleFocus = () => {
+  const handleFocus = useCallback(() => {
     if (currentQuery) {
       return
     }
     startPlaceholderCycle()
-  }
+  }, [currentQuery, startPlaceholderCycle])
 
   // start the placeholder cycle if the input was cleared, or stop it if it
   // went from empty to containing text
@@ -107,6 +99,14 @@ export default function SearchBar({
       )}
     </div>
   )
+
+  useEffect(() => {
+    // only do randomization on client side to prevent hydration mismatch errors
+    placeholders.current = shuffle(searchSuggestions)
+    // input is autofocused on page load, but focus event isn't fired
+    // call it manually here
+    handleFocus()
+  }, [handleFocus])
 
   return (
     <form onSubmit={handleSubmit} className={s.search}>
