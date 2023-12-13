@@ -1,0 +1,27 @@
+@import './globals';
+
+.notFound {
+  max-width: $article-width;
+  text-align: center;
+  margin: 0 auto 30vw;
+  padding: 0 1em;
+
+  h1 {
+    margin-top: 0;
+  }
+
+  .number {
+    font-weight: 200;
+    font-size: 6em;
+  }
+
+  .search {
+    font-size: 1.2em;
+  }
+
+  .narration {
+    font-style: italic;
+    line-height: 1.4;
+    text-wrap: balance;
+  }
+}
