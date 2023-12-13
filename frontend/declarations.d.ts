@@ -2,6 +2,11 @@ import { EpisodeList, Transcript } from '@/types'
 
 // https://stackoverflow.com/a/59728984/2487925
 declare global {
+  declare module '*.md' {
+    const content: string
+    export default content
+  }
+
   declare module '*/episode_list.tsv' {
     const content: EpisodeList
     export default content
