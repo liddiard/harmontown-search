@@ -2,17 +2,20 @@ import { Episode, EpisodeList, QueryParams, MediaType } from '@/types'
 
 
 // given some search `result` text and the original `query`, return a markup
-// string with whole words in `query` that match a substring of the `result`
+// string with whole words in `result` that contain one of the words in `query`
 // wrapped in an <mark> tag
 export const highlightMatches = (result = '', query = '') => {
   if (!query) {
     return result
   }
-  return query
-  .trim()
-  .split(/\s+/)
-  .reduce((acc, cur) =>
-    acc.replace(new RegExp(`(${cur})`, 'gi'), '<mark>$1</mark>'), result)
+  const queryWords = query.split(' ')
+  const resultContainsQuery = (resultWord: string) => 
+    queryWords.some(queryWord => new RegExp(queryWord, 'i').test(resultWord))
+  
+  return result
+  .split(' ')
+  .map(word => resultContainsQuery(word) ? `<mark>${word}</mark>` : word)
+  .join(' ')
 }
 
 // given the `episodes` list and an episode `number`, return the episode
