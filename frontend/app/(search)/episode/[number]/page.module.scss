@@ -11,7 +11,7 @@
     padding-top: 1rem;
 
     & > div {
-      margin-right: 2.5em;
+      margin-right: 3em;
     }
 
     h3 {
@@ -39,13 +39,15 @@
     border-radius: 100%;
     aspect-ratio: 1;
     line-height: 0;
+    padding: 0.35em;
+    border: 1px solid $bg-gray;
     
     &:hover {
       background-color: $bg-gray-lighter;
     }
     
     img {
-      width: 2em;
+      width: 1.75em;
       height: auto;
     }
   }

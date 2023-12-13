@@ -8,6 +8,10 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "engines": {
+    "node": "18",
+    "npm": "9"
+  },
   "dependencies": {
     "classnames": "^2.3.2",
     "fuse.js": "^7.0.0",

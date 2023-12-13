@@ -24,7 +24,8 @@ export default function SearchBar({
 } : SearchBarProps) {
   const defaultPlaceholder = 'Search'
   const [currentQuery, setCurrentQuery] = useState(initialQuery)
-  const [placeholderIndex, setPlaceholderIndex] = useState<number | null>(null)
+  // if the input is empty, show the first placeholder suggestion on first render
+  const [placeholderIndex, setPlaceholderIndex] = useState<number | null>(currentQuery ? null : 0)
   const cycleInterval = useRef<number>()
   const placeholders = useRef<string[]>([])
   const pathname = usePathname()
@@ -33,6 +34,9 @@ export default function SearchBar({
   useEffect(() => {
     // only do randomization on client side to prevent hydration mismatch errors
     placeholders.current = shuffle(searchSuggestions)
+    // input is autofocused on page load, but focus event isn't fired
+    // call it manually here
+    handleFocus()
   }, [])
 
   const handleSubmit = (ev: React.FormEvent) => {
@@ -52,6 +56,7 @@ export default function SearchBar({
 
   // setInterval to change the placeholder every `PLACEHOLDER_CYCLE_MS`
   const startPlaceholderCycle = () => {
+    window.clearInterval(cycleInterval.current)
     setPlaceholderIndex(Math.floor(Math.random() * searchSuggestions.length))
     cycleInterval.current = window.setInterval(() => {
       setPlaceholderIndex(prevIndex => 

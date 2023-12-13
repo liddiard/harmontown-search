@@ -130,7 +130,7 @@ export default function Transcript({
       currentScrollTop,
       transcriptHeight
     } = getScrollTarget()
-    if (!scrollTo || !currentScrollTop || !transcriptHeight) {
+    if (scrollTo === undefined) {
       return
     }
     // smooth scroll if the new position is nearby the current scroll position
