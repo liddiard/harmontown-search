@@ -19,7 +19,7 @@ const bebas = Bebas_Neue({
 
 export const metadata: Metadata = {
   title: 'Harmontown Podcast Search',
-  description: 'Search the transcript archives of Harmontown, the podcast featuring Dan Harmon, Jeff Davis, and Spencer Crittenden.',
+  description: 'Search the transcripts from every episode of Harmontown, a podcast featuring Dan Harmon, Jeff B. Davis, and Spencer Crittenden.',
 }
 
 export default function RootLayout({
@@ -44,7 +44,7 @@ export default function RootLayout({
         {children}
         <footer>
           <p className="donate">
-            <Image src={heartIcon} alt="love" /> Harmontown Search? <a href="https://www.buymeacoffee.com/liddiard" target="_blank" rel="noreferrer">Donate a few bucks</a> for the <a href="#">web hosting</a> to keep it running!
+            <Image src={heartIcon} alt="love" /> Harmontown Search? <a href="https://www.buymeacoffee.com/liddiard" target="_blank" rel="noreferrer">Donate</a> toward the <a href="#">web hosting</a> to keep it running!
           </p>
           <p className="disclaimer">
             This is a fan-made site. It is not affiliated with Harmontown Productions LLC nor with anyone involved in the podcast.
