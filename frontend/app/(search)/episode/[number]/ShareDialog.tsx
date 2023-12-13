@@ -8,6 +8,8 @@ import checkmarkIcon from 'img/checkmark.svg'
 import { formatTimecode } from '@/utils'
 
 
+enum ShareOption { StartCurrent, IncludeResults }
+
 interface ShareDialogProps {
   setOpen: (open: boolean) => void,
   timecode: number
@@ -17,8 +19,12 @@ export default function ShareDialog({
   setOpen,
   timecode
 }: ShareDialogProps) {
-  const [startCurrent, setStartCurrent] = useState(true)
-  const [includeResults, setIncludeResults] = useState(false)
+  const { StartCurrent, IncludeResults } = ShareOption
+
+  const [options, setOptions] = useState({
+    [StartCurrent]: true,
+    [IncludeResults]: false
+  })
   const [linkCopied, setLinkCopied] = useState(false)
 
   const dialogEl = useRef<HTMLDialogElement>(null)
@@ -30,12 +36,20 @@ export default function ShareDialog({
     })
   }, [])
 
+  const toggleOption = (option: ShareOption) => {
+    setOptions({
+      ...options,
+      [option]: !options[option]
+    })
+    setLinkCopied(false)
+  }
+
   const copyLink = async () => {
     const url = new URL(window.location.href)
-    if (startCurrent) {
+    if (options[StartCurrent]) {
       url.searchParams.set('t', Math.floor(timecode).toString())
     }
-    if (!includeResults) {
+    if (!options[IncludeResults]) {
       url.searchParams.delete('q')
     }
     const cb = navigator.clipboard
@@ -60,8 +74,8 @@ export default function ShareDialog({
         <label>
           <input
             type="checkbox"
-            checked={startCurrent}
-            onChange={() => setStartCurrent(!startCurrent)}
+            checked={options[StartCurrent]}
+            onChange={() => toggleOption(StartCurrent)}
             autoFocus
           />
           Start at <time className="timecode">{formatTimecode(timecode * 1000)}</time>
@@ -69,8 +83,8 @@ export default function ShareDialog({
         <label>
           <input
             type="checkbox" 
-            checked={includeResults}
-            onChange={() => setIncludeResults(!includeResults)}
+            checked={options[IncludeResults]}
+            onChange={() => toggleOption(IncludeResults)}
           />
           Include search results
         </label>
