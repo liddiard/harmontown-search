@@ -39,16 +39,15 @@
       display: none;
       white-space: nowrap;
       align-items: center;
-      animation-fill-mode: forwards;
 
       &.fadeIn {
         display: flex;
-        animation: fadeIn 0.5s;
+        animation: fadeIn 0.5s forwards;
       }
 
       &.fadeInOut {
         display: flex;
-        animation: fadeInOut 4s;
+        animation: fadeInOut 4s forwards;
       }
     }
   }

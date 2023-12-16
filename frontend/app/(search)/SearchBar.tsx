@@ -10,11 +10,6 @@ import searchSuggestions from './searchSuggestions.json'
 import { jumpToHash } from '@/utils'
 
 
-// change the search input placeholder text every x milliseconds
-// this value must match the `fadeInOut` CSS class animation duration in the
-// associated stylesheet
-const PLACEHOLDER_CYCLE_MS = 4000
-
 interface SearchBarProps {
   initialQuery: string,
   searchParams: URLSearchParams,
@@ -32,6 +27,7 @@ export default function SearchBar({
 
   const [currentQuery, setCurrentQuery] = useState(initialQuery)
   // if the input is empty, show the first placeholder suggestion on first render
+  // `null` corresponds to showing the `defaultPlaceholder`
   const [placeholderIndex, setPlaceholderIndex] = useState<number | null>(currentQuery || !autoFocus ? null : 0)
   const cycleInterval = useRef<number>()
   const placeholders = useRef<string[]>([])
@@ -57,19 +53,17 @@ export default function SearchBar({
     jumpToHash(searchBarId)
   }
 
-  // setInterval to change the placeholder every `PLACEHOLDER_CYCLE_MS`
-  const startPlaceholderCycle = useCallback(() => {
-    window.clearInterval(cycleInterval.current)
+  const cyclePlaceholder = () => {
+    setPlaceholderIndex(prevIndex =>
+      prevIndex === null ||
+      prevIndex + 1 === searchSuggestions.length ?
+        0 :
+        prevIndex! + 1
+    )
     setPlaceholderIndex(Math.floor(Math.random() * searchSuggestions.length))
-    cycleInterval.current = window.setInterval(() => {
-      setPlaceholderIndex(prevIndex => 
-        prevIndex! + 1 === searchSuggestions.length ? 0 : prevIndex! + 1)
-    }, PLACEHOLDER_CYCLE_MS)
-  }, [])
+  }
 
-  // clearInterval to stop changing the placeholder
   const endPlaceholderCycle = () => {
-    window.clearInterval(cycleInterval.current)
     setPlaceholderIndex(null)
   }
 
@@ -81,15 +75,15 @@ export default function SearchBar({
     if (currentQuery) {
       return
     }
-    startPlaceholderCycle()
-  }, [currentQuery, startPlaceholderCycle])
+    cyclePlaceholder()
+  }, [currentQuery])
 
   // start the placeholder cycle if the input was cleared, or stop it if it
   // went from empty to containing text
   const handleChange = (ev: { target: HTMLInputElement }) => {
     const { value } = ev.target
     if (currentQuery && !value) {
-      startPlaceholderCycle()
+      cyclePlaceholder()
     } else if (!currentQuery && value) {
       endPlaceholderCycle()
     } 
@@ -107,6 +101,7 @@ export default function SearchBar({
         <span 
           className={classNames({ [s.fadeInOut]: index === placeholderIndex })}
           key={placeholder}
+          onAnimationEnd={cyclePlaceholder}
         >
           {placeholder}
         </span>
