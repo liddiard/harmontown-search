@@ -3,16 +3,17 @@
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react'
-import { Tooltip } from 'react-tooltip'
+import { Tooltip, removeStyle } from 'react-tooltip'
 import debounce from 'lodash.debounce'
 
 import s from './MediaPlayer.module.scss'
 import { Episode, MediaType } from '@/types'
-import { getMediaData, getTimecodeLocalStorageKey } from '@/utils'
+import { formatTimecode, getMediaData, getTimecodeLocalStorageKey } from '@/utils'
 import ShareDialog from './ShareDialog'
 import Transcript from './Transcript'
 import shareIcon from 'img/share.svg'
 import poster from 'img/harmontown-logo-bg-poster.png'
+import Toast from '@/components/Toast'
 
 
 export type SeekFunc = (ms: number, options: { play?: boolean }) => void
@@ -32,15 +33,16 @@ export default function MediaPlayer({
   const [shareOpen, setShareOpen] = useState(false)
   
   const mediaEl = useRef<HTMLVideoElement>(null)
+  const resumePlaybackTimecode = useRef<number | null>(null)
   
   const { mediaType, url } = getMediaData(episode)
 
   useEffect(() => {
+    resumePlaybackTimecode.current = typeof window === 'undefined' ?
+      null :
+      Number(window.localStorage.getItem(getTimecodeLocalStorageKey(episode.number)))
     setStartTimecode(
-      start ||
-      (typeof window !== 'undefined' &&
-      Number(window.localStorage.getItem(getTimecodeLocalStorageKey(episode.number)))) ||
-      0
+      start || resumePlaybackTimecode.current || 0
     )
   }, [episode.number, start])
 
@@ -112,6 +114,17 @@ export default function MediaPlayer({
         <ShareDialog timecode={timecode} setOpen={setShareOpen} />
         : null}
       <Tooltip id="close-player" place="left" />
+      {!start && resumePlaybackTimecode.current ? 
+        <Toast 
+          message={`Resuming playback from ${formatTimecode(resumePlaybackTimecode.current * 1000)}`}
+          buttonText='Start at beginning'
+          duration={10000}
+          buttonAction={() => {
+            resumePlaybackTimecode.current = null
+            setStartTimecode(0)
+          }}
+        />
+      : null}
     </>
   )
 }
