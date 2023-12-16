@@ -9,11 +9,11 @@ export default function Nav() {
   const pathname = usePathname()
   const navLinks = [
     {
-      url: '/episode-list',
+      url: '/episode-list/',
       text: 'Episode List'
     },
     {
-      url: '/about',
+      url: '/about/',
       text: 'About'
     },
   ]

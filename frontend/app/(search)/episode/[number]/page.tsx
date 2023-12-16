@@ -52,6 +52,7 @@ export default async function EpisodePlayer({
     <div className={s.mediaPlayerContainer} id="media-player">
       <Link 
         href={`/${getQueryParamsWithoutTimecode(searchParams)}`}
+        scroll={false}
         className={s.closePlayer}
         data-tooltip-id="close-player"
         data-tooltip-content="Close player"
