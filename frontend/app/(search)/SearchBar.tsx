@@ -17,19 +17,22 @@ const PLACEHOLDER_CYCLE_MS = 4000
 
 interface SearchBarProps {
   initialQuery: string,
-  searchParams: URLSearchParams
+  searchParams: URLSearchParams,
+  currentEpisode: number
 }
 
 export default function SearchBar({
   initialQuery = '',
-  searchParams
+  searchParams,
+  currentEpisode
 } : SearchBarProps) {
   const defaultPlaceholder = 'Search'
   const searchBarId = 'search-bar'
+  const autoFocus = !currentEpisode
 
   const [currentQuery, setCurrentQuery] = useState(initialQuery)
   // if the input is empty, show the first placeholder suggestion on first render
-  const [placeholderIndex, setPlaceholderIndex] = useState<number | null>(currentQuery ? null : 0)
+  const [placeholderIndex, setPlaceholderIndex] = useState<number | null>(currentQuery || !autoFocus ? null : 0)
   const cycleInterval = useRef<number>()
   const placeholders = useRef<string[]>([])
   const pathname = usePathname()
@@ -116,8 +119,10 @@ export default function SearchBar({
     placeholders.current = shuffle(searchSuggestions)
     // input is autofocused on page load, but focus event isn't fired
     // call it manually here
-    handleFocus()
-  }, [handleFocus])
+    if (autoFocus) {
+      handleFocus()
+    }
+  }, [handleFocus, autoFocus])
 
   return (
     <form onSubmit={handleSubmit} className={s.search} id={searchBarId}>
@@ -130,7 +135,7 @@ export default function SearchBar({
           aria-label="Search all episodes"
           value={currentQuery}
           autoCapitalize="none"
-          autoFocus
+          autoFocus={autoFocus}
           onFocus={handleFocus}
           onBlur={endPlaceholderCycle}
           onChange={handleChange}

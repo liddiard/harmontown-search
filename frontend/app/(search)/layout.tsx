@@ -29,6 +29,7 @@ export default function Search({
       <EpisodeSearchBar
         initialQuery={queryParams.query}
         searchParams={searchParams}
+        currentEpisode={currentEpisode}
       />
       <div className={s.results}>
         <EpisodeSearchResults

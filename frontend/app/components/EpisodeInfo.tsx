@@ -36,7 +36,11 @@ export default function EpisodeInfo({
           __html: highlightMatches(title, query)
         }} />
         <div className={s.metadata}>
-          <span className={s.episode}>Ep. <span className={s.number}>{number}</span></span>
+          <span className={s.episode}>
+            Ep. <span className={s.number} dangerouslySetInnerHTML={{
+              __html: highlightMatches(number.toString(), query) }}
+            />
+          </span>
           <time dateTime={date}>
             {formattedDate.slice(0, -1).map(p => p.value).join('')}
             <span className={s.year}>
