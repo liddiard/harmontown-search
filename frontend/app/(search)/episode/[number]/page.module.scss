@@ -9,7 +9,6 @@
   .episodeInfo {
     margin-bottom: 1em;
     padding-top: 1rem;
-    text-wrap: balance;
 
     & > div {
       margin-right: 3em;
@@ -18,6 +17,7 @@
     h3 {
       font-size: 2.5em;
       line-height: 1.1;
+      text-wrap: balance;
     }
 
     p {
