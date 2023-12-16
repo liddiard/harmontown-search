@@ -7,7 +7,7 @@ import classNames from 'classnames'
 import s from './TranscriptSearchResults.module.scss'
 import { TYPESENSE_CONFIG } from '@/constants'
 import { EpisodeList, TranscriptLine } from '@/types'
-import { findEpisodeByNumber, formatTimecode, jumpToMediaPlayer } from '@/utils'
+import { findEpisodeByNumber, formatTimecode } from '@/utils'
 import EpisodeInfo from '@/components/EpisodeInfo'
 import LoadingSpinner from '@/components/LoadingSpinner'
 
@@ -136,7 +136,6 @@ export default function TranscriptSearchResults({
                   <Link 
                     href={getHitUrl(epNumber, document)}
                     className="selectable"
-                    onClick={jumpToMediaPlayer}
                   >
                     <time className={s.timecode}>
                       {formatTimecode(document.start)}

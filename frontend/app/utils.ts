@@ -64,15 +64,12 @@ export const formatDateToString = (date: string | Date) =>
   Intl.DateTimeFormat('en-US', dateFormat).format(new Date(date))
 
 // jump to an anchor (element ID) on the page
-const jumpToHash = (id: string) => {
+export const jumpToHash = (id: string) => {
   const { location, history } = window
   const originalUrl = location.href              // Save down the URL without hash
   location.href = `#${id}`                       // Go to the target element
   history.replaceState(null, '', originalUrl)    // Remove the hash after jump
 }
-
-export const jumpToMediaPlayer = () => 
-  jumpToHash('media-player')
 
 export const getQueryParamsWithoutTimecode = (querystring: string | QueryParams) => {
   const params = new URLSearchParams(querystring)

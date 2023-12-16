@@ -91,6 +91,7 @@ export default function TranscriptSearch({
             [s.audio]: mediaType === MediaType.Audio
           })}
           onChange={(ev) => setCurrentQuery(ev.target.value)}
+          onFocus={(ev) => ev.target.select()}
         />
         {noResults ? (
           <span className={s.noResults} role="alert">

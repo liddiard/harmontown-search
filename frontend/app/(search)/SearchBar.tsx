@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { useState, useRef, useEffect, useCallback } from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import shuffle from 'lodash.shuffle'
 import classNames from 'classnames'
@@ -7,6 +7,7 @@ import classNames from 'classnames'
 import s from './SearchBar.module.scss'
 import magnifyingGlass from 'img/magnifying-glass.svg'
 import searchSuggestions from './searchSuggestions.json'
+import { jumpToHash } from '@/utils'
 
 
 // change the search input placeholder text every x milliseconds
@@ -24,6 +25,8 @@ export default function SearchBar({
   searchParams
 } : SearchBarProps) {
   const defaultPlaceholder = 'Search'
+  const searchBarId = 'search-bar'
+
   const [currentQuery, setCurrentQuery] = useState(initialQuery)
   // if the input is empty, show the first placeholder suggestion on first render
   const [placeholderIndex, setPlaceholderIndex] = useState<number | null>(currentQuery ? null : 0)
@@ -40,11 +43,15 @@ export default function SearchBar({
     } else {
       params.delete('q')
     }
-    router.push(`${pathname}?${params.toString()}`)
+    router.push(
+      `${pathname}?${params.toString()}`,
+      { scroll: false }
+    )
     if (document.activeElement instanceof HTMLElement) {
       // remove focus from the input to hide keyboard on mobile
       document.activeElement.blur()
     }
+    jumpToHash(searchBarId)
   }
 
   // setInterval to change the placeholder every `PLACEHOLDER_CYCLE_MS`
@@ -64,7 +71,10 @@ export default function SearchBar({
   }
 
   // only start the placeholder cycle if the input is empty
-  const handleFocus = useCallback(() => {
+  const handleFocus = useCallback((ev?: React.FocusEvent<HTMLInputElement>) => {
+    if (ev) {
+      ev.target.select()
+    }
     if (currentQuery) {
       return
     }
@@ -110,7 +120,7 @@ export default function SearchBar({
   }, [handleFocus])
 
   return (
-    <form onSubmit={handleSubmit} className={s.search}>
+    <form onSubmit={handleSubmit} className={s.search} id={searchBarId}>
       <p>Search all <strong>361</strong> episodes, <strong>14,931</strong> minutes, and <strong>6,611,981</strong> words spoken in Harmontown:</p>
       <div className={s.inputWrapper}>
         {currentQuery ? null : renderPlaceholder()}
