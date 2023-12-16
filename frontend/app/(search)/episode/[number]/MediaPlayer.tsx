@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react'
-import { Tooltip, removeStyle } from 'react-tooltip'
+import { Tooltip } from 'react-tooltip'
 import debounce from 'lodash.debounce'
 import classNames from 'classnames'
 
@@ -14,6 +14,7 @@ import ShareDialog from './ShareDialog'
 import Transcript from './Transcript'
 import shareIcon from 'img/share.svg'
 import poster from 'img/harmontown-logo-bg-poster.png'
+import refreshIcon from 'img/refresh.svg'
 import Toast from '@/components/Toast'
 
 
@@ -116,15 +117,18 @@ export default function MediaPlayer({
         : null}
       <Tooltip id="close-player" place="left" />
       {!start && resumePlaybackTimecode.current ? 
-        <Toast 
-          message={`Resuming playback from ${formatTimecode(resumePlaybackTimecode.current * 1000)}`}
-          buttonText='Start from beginning'
-          duration={10000}
-          buttonAction={() => {
+        <Toast duration={10000} className={s.resumeToast}>
+          <span>
+            Resuming playback from <time>{formatTimecode(resumePlaybackTimecode.current * 1000)}</time>
+          </span>
+          <button onClick={() => {
             resumePlaybackTimecode.current = null
             setStartTimecode(0)
-          }}
-        />
+          }}>
+            <Image src={refreshIcon} alt="" />
+            Restart
+          </button>
+        </Toast>
       : null}
     </>
   )

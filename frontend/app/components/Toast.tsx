@@ -1,28 +1,26 @@
+import { ReactNode } from 'react'
+import classNames from 'classnames'
+
 import s from './Toast.module.scss'
 
 
 interface ToastProps {
-  message: string,
-  buttonText: string,
   duration: number,
-  buttonAction: () => void
+  children: ReactNode
+  className?: string
 }
 
 export default function Toast({
-  message,
-  buttonText,
   duration,
-  buttonAction
+  children,
+  className = ''
 } : ToastProps) {
   return (
     <output
-      className={s.toast}
+      className={classNames(s.toast, className)}
       style={{ animationDuration: `${duration}ms` }}
     >
-      {message}
-      <button onClick={buttonAction}>
-        {buttonText}
-      </button>
+      {children}
     </output>
   )
 }

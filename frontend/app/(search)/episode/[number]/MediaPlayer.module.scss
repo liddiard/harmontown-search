@@ -63,3 +63,27 @@ button.share {
   font-size: 0.9em;
   color: $fg-gray;
 }
+
+.resumeToast {
+  time {
+    font-weight: bold;
+  }
+
+  button {
+    border-radius: 2em;
+    padding: 0.5em 1em;
+    background-color: $bg-gray;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+
+    &:hover {
+      background-color: $bg-gray-lighter;
+    }
+
+    img {
+      height: 1em;
+      width: 1em;
+    }
+  }
+}

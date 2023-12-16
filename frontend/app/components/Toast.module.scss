@@ -2,7 +2,7 @@
 
 @keyframes toast {
   0% {
-    translate: 0 150%;
+    translate: 0 200%;
     opacity: 0;
   }
   5% {
@@ -14,43 +14,33 @@
     opacity: 1;
   }
   100% {
-    translate: 0 150%;
+    translate: 0 200%;
     opacity: 0;
   }
 }
 
 .toast {
   position: fixed;
-  inset-block-end: 0;
-  margin: 1em;
   right: 0;
+  bottom: 0;
+  margin: 1em;
   padding-block-end: 5vh;
   border-radius: 0.5em;
   background-color: $bg-gray-opaque;
   z-index: 2;
   padding: 1em;
-  display: grid;
+  display: flex;
   gap: 1em;
-  grid-template-columns: fit-content(60%) 1fr;
   align-items: center;
+  justify-content: space-between;
   animation-name: toast;
   animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 
-  @include tablet {
+  @include phone-lg {
     margin: 0;
     border-radius: 0;
     width: 100%;
-  }
-
-  button {
-    border-radius: 2em;
-    padding: 0.5em 1em;
-    background-color: $bg-gray-lighter;
-
-    &:hover {
-      background-color: $bg-gray-lightest;
-    }
   }
 }

@@ -79,7 +79,7 @@ export default function ShareDialog({
             onChange={() => toggleOption(StartCurrent)}
             autoFocus
           />
-          Start at <time className="timecode">{formatTimecode(timecode * 1000)}</time>
+          Start at <time>{formatTimecode(timecode * 1000)}</time>
         </label>
         <label>
           <input
