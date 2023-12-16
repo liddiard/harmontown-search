@@ -2,14 +2,15 @@
 
 .search {
   display: flex;
-  margin: 2em 0;
+  gap: 1em;
+  margin: 3em 0 2em;
 
   @include narrow {
     flex-wrap: wrap;
   }
 
   p {
-    margin: 0.5em;
+    margin: 0.5em 0;
     line-height: 1.35;
     font-size: 1.1em;
   }
