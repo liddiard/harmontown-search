@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { useState, useEffect, useRef } from 'react'
+import classNames from 'classnames'
 
 import s from './ShareDialog.module.scss'
 import xIcon from 'img/x.svg'
@@ -90,7 +91,7 @@ export default function ShareDialog({
         </label>
         <div className={s.shareActions}>
           <button
-              className={`${s.copyLink} ${linkCopied ? s.copied : ''}`}
+              className={classNames(s.copyLink, { [s.copied]: linkCopied })}
               onClick={copyLink}
             >
             <Image src={linkCopied ? checkmarkIcon : linkIcon} alt="" />

@@ -1,5 +1,9 @@
 @import '../globals';
 
+.numResults {
+  font-weight: normal;
+}
+
 .results {
   & > li {
     padding: 0.5em;

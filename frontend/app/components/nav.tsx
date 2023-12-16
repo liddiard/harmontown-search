@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
+import classNames from 'classnames'
 
 
 export default function Nav() {
@@ -23,7 +24,9 @@ export default function Nav() {
         <Link 
           key={link.url}
           href={link.url}
-          className={pathname === link.url ? 'active' : ''}
+          className={classNames({
+            active: pathname === link.url
+          })}
         >
           {link.text}
         </Link>

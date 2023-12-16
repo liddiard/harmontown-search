@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import { Tooltip, removeStyle } from 'react-tooltip'
 import debounce from 'lodash.debounce'
+import classNames from 'classnames'
 
 import s from './MediaPlayer.module.scss'
 import { Episode, MediaType } from '@/types'
@@ -100,7 +101,7 @@ export default function MediaPlayer({
       </div>
       <div className={s.mediaActions}>
         <button
-          className={`${s.share} ${shareOpen ? s.open : ''}`}
+          className={classNames(s.share, { [s.open]: shareOpen })}
           onClick={() => setShareOpen(!shareOpen)}
           >
           <Image src={shareIcon} alt="" />
@@ -117,7 +118,7 @@ export default function MediaPlayer({
       {!start && resumePlaybackTimecode.current ? 
         <Toast 
           message={`Resuming playback from ${formatTimecode(resumePlaybackTimecode.current * 1000)}`}
-          buttonText='Start at beginning'
+          buttonText='Start from beginning'
           duration={10000}
           buttonAction={() => {
             resumePlaybackTimecode.current = null

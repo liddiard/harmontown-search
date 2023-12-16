@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { useState, useRef, useEffect, useCallback } from 'react'
 import Typesense from 'typesense'
 import { SearchResponse } from 'typesense/lib/Typesense/Documents'
+import classNames from 'classnames'
 
 import s from './TranscriptSearchResults.module.scss'
 import { TYPESENSE_CONFIG } from '@/constants'
@@ -112,7 +113,7 @@ export default function TranscriptSearchResults({
   return (
     <>
       <h2 id={transcriptId}>
-        <span className="numResults">{numFound ?? 0} </span>
+        <span className={s.numResults}>{numFound ?? 0} </span>
         Transcript{numFound !== 1 ? 's' : null}
       </h2>
       {numFound ? <ol className={s.results} ref={resultsEl}>
@@ -123,7 +124,7 @@ export default function TranscriptSearchResults({
           if (!episode) {
             return
           }
-          return <li key={epNumber} className={selected ? 'selected' : ''}>
+          return <li key={epNumber} className={classNames({ selected })}>
             <EpisodeInfo {...episode} className={s.episodeInfo} selected={selected} />
             <ol className={s.hits}>
               {hits

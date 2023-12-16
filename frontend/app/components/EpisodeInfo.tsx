@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import classNames from 'classnames'
 
 import s from './EpisodeInfo.module.scss'
 import { formatDateToParts, highlightMatches, mask } from '@/utils'
@@ -26,7 +27,7 @@ export default function EpisodeInfo({
   const formattedDate = formatDateToParts(date)
 
   return (
-    <div className={`${s.episodeInfo} ${className}`}>
+    <div className={classNames(s.episodeInfo, className)}>
       <div className={s.title}>
         {selected ?
           <Image src={playIcon} alt="Now playing" title="Now playing" className={s.playing} />

@@ -1,3 +1,5 @@
+import classNames from 'classnames'
+
 import s from './LoadingSpinner.module.scss'
 
 
@@ -11,6 +13,6 @@ export default function LoadingSpinner({
   className = ''
 } : LoadingSpinnerProps) {
   return loading ?
-    <div className={`${s.loadingSpinner} ${className}`} />
+    <div className={classNames(s.loadingSpinner, className)} />
     : null
 }

@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useRef, useEffect } from 'react'
 import Fuse, { FuseResult } from 'fuse.js'
+import classNames from 'classnames'
 
 import s from './EpisodeSearchResults.module.scss'
 import downArrow from 'img/triangle-down.svg'
@@ -59,11 +60,11 @@ export default function EpisodeSearchResults({
   return (
     <div className={s.results}>
       <h2>
-        <span className="numResults">{results.length} </span>
+        <span className={s.numResults}>{results.length} </span>
         Episode description{results.length !== 1 ? 's' : null}
       </h2>
       {results.length ? <ol 
-        className={scrollable ? s.scrollable : ''}
+        className={classNames({ [s.scrollable]: scrollable })}
         ref={resultListEl}
       >
         {results.map(result => {
@@ -74,7 +75,7 @@ export default function EpisodeSearchResults({
           >
             <Link
               href={`/episode/${number}${getQueryParamsWithoutTimecode(window.location.search)}`}
-              className={`selectable result ${selected ? 'selected' : ''}`}
+              className={classNames('selectable', 'result', { selected })}
             >
               <EpisodeInfo {...result.item} query={query} selected={selected} />
             </Link>

@@ -1,7 +1,7 @@
-import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react'
 import { Tooltip } from 'react-tooltip'
+import classNames from 'classnames'
 
 import s from './Transcript.module.scss'
 import chevronDown from 'img/chevron-down.svg'
@@ -203,7 +203,7 @@ export default function Transcript({
         return (
           <li
             key={`${epNumber}_${start}`}
-            className={`selectable ${isCurrent ? `selected` : ''}`}
+            className={classNames('selectable', { selected: isCurrent })}
             tabIndex={0}
             role="link"
             ref={isCurrent ? currentLineEl : null}

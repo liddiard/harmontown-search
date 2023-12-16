@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import shuffle from 'lodash.shuffle'
+import classNames from 'classnames'
 
 import s from './SearchBar.module.scss'
 import magnifyingGlass from 'img/magnifying-glass.svg'
@@ -85,13 +86,13 @@ export default function SearchBar({
   const renderPlaceholder = () => (
     <div className={s.placeholders}>
       <span 
-        className={placeholderIndex === null ? s.fadeIn : ''}
+        className={classNames({ [s.fadeIn]: placeholderIndex === null })}
       >
         {defaultPlaceholder}
       </span>
       {placeholders.current.map((placeholder, index) => 
         <span 
-          className={index === placeholderIndex ? s.fadeInOut : ''}
+          className={classNames({ [s.fadeInOut]: index === placeholderIndex })}
           key={placeholder}
         >
           {placeholder}

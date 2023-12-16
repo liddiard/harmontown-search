@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import { Inter, Bebas_Neue } from 'next/font/google'
+import classNames from 'classnames'
 
 import 'layout.scss'
 import Nav from '@/components/nav'
@@ -36,7 +37,7 @@ export default function RootLayout({
           <a href="/" id="logo">
             <div className="unofficial">Unofficial</div>
             <h1 className={bebas.className}>
-              Harmontown<span className={`${inter.className} searchHeading`}> Search</span>
+              Harmontown<span className={classNames(inter.className, 'searchHeading')}> Search</span>
             </h1>
           </a>
           <Nav />

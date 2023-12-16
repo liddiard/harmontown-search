@@ -65,7 +65,7 @@ export default function TranscriptSearch({
   }
 
   return (
-    <div className={`${s.transcriptSearch} ${searchResults.length ? s.showingResults : ''}`}>
+    <div className={classNames(s.transcriptSearch, { [s.showingResults]: searchResults.length })}>
       <form onSubmit={handleSearch}>
         {searchResults.length ? (
           <button
@@ -97,7 +97,7 @@ export default function TranscriptSearch({
             Not found
           </span>
         ) : null}
-        <button className={`${s.search} search`}>
+        <button className={classNames(s.search, 'search')}>
           <Image src={magnifyingGlass} alt="Search" />
         </button>
       </form>

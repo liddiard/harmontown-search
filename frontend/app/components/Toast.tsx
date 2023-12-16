@@ -15,7 +15,10 @@ export default function Toast({
   buttonAction
 } : ToastProps) {
   return (
-    <output className={s.toast} style={{ animationDuration: `${duration}ms` }}>
+    <output
+      className={s.toast}
+      style={{ animationDuration: `${duration}ms` }}
+    >
       {message}
       <button onClick={buttonAction}>
         {buttonText}
