@@ -1,10 +1,12 @@
 # Transcription tools
 
-**Prerequisite** to using the scripts in this directory is donwloading the episodes by following the instructions in `episodes/README.md`.
+**Prerequisite** to using the scripts in this directory is downloading the episodes by following the instructions in the [Episode tools readme](/episodes/README.md).
 
 ## Transcribe episodes
 
-After downloading episodes, you can transcripts by running `./transcribe_episodes.sh`.
+After downloading episodes, you can create episode transcriptions by running `./transcribe_episodes.sh`.
+
+**Prerequisite:** OpenAI's Whisper command line interface [must be installed](https://github.com/openai/whisper?tab=readme-ov-file#setup).
 
 Example usage:
 ```bash
@@ -15,7 +17,7 @@ Example usage:
 
 `transcription_corrections.tsv` holds a list of regex patterns to `find` on every line of every transcript and replace with the target `replace` string.
 
-Fix transcription defined in this file by running `python3 correct_transcripts.py`.
+Fix transcriptions per this file's find/replace criteria by running `python3 correct_transcripts.py`.
 
 ## Upload transcript search index
 
