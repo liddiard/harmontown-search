@@ -176,7 +176,7 @@ export default function Transcript({
     }
     setScrollingProgrammatically()
     seek(start, seekOptions)
-    window.setTimeout(() => setUserScroll(false))
+    setUserScroll(false)
   }, [seek, setScrollingProgrammatically])
 
   const handleLineKeydown = useCallback((ev: React.KeyboardEvent, start: number, isCurrent: boolean) => {
@@ -229,6 +229,7 @@ export default function Transcript({
         transcript={transcript}
         handleLineClick={handleLineClick}
         setScrollingProgrammatically={setScrollingProgrammatically}
+        setUserScroll={setUserScroll}
         mediaType={mediaType}
       />
       {transcriptComponent}

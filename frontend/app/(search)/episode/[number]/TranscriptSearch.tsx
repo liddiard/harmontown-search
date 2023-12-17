@@ -17,14 +17,16 @@ interface TranscriptSearchProps {
   transcript: Transcript
   mediaType: MediaType,
   handleLineClick: HandleLineClickFunc
-  setScrollingProgrammatically: SetScrollingProgrammaticallyFunc
+  setScrollingProgrammatically: SetScrollingProgrammaticallyFunc,
+  setUserScroll: (scrolling: boolean) => void
 }
 
 export default function TranscriptSearch({
   transcript,
   mediaType,
   handleLineClick,
-  setScrollingProgrammatically
+  setScrollingProgrammatically,
+  setUserScroll
 }: TranscriptSearchProps) {
   // current text in the episode search input
   const [currentQuery, setCurrentQuery] = useState('')
@@ -73,7 +75,10 @@ export default function TranscriptSearch({
             className={s.backToTranscript}
             data-tooltip-id="back-to-transcript"
             data-tooltip-content="Back to transcript"
-            onClick={() => setSearchResults([])}
+            onClick={() => {
+              setSearchResults([])
+              setUserScroll(false)
+            }}
           >
             <Image src={leftChevron} alt="Back to transcript" />
           </button>
