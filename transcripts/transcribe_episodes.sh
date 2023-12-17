@@ -14,6 +14,6 @@ final_episode=361
 for ((ep=$start_episode; ep<=$final_episode; ep++)); do
   echo "🎤 Starting transcription of episode: $ep"
   source=$(find ../episodes -name "$ep.mp3" -o -name "$ep.mp4")
-  whisper --model small.en --output_dir . --output_format tsv "$source"
+  whisper --model small.en --output_dir ./original --output_format tsv "$source"
   echo "✅ Finished transcription of episode: $ep"
 done
