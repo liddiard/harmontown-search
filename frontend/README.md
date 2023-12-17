@@ -8,17 +8,24 @@ First, run the development server:
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Open [http://localhost:3000](http://localhost:3000) with your browser to view the homepage.
 
 ## Build
+
+To generate static files for hosting, run:
 
 ```bash
 npm run build
 ```
 
 ## Deploy to Amazon S3
+
+**Prerequisites:** 
+
+- [AWS command line tools installed](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+- S3 bucket created
+- `deploy.sh` script modified to use your bucket name
+- [AWS CLI configured](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html) with read/write credentials for your bucket
 
 ```bash
 npm run deploy

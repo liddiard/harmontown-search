@@ -18,4 +18,4 @@ Example usage:
 python3 format_episode_filenames.py -d # dry run – print how episodes will be renamed without actually renaming them
 ```
 
-Note: The web application (`frontend/`) only understands episode filenames in the `1.mp3` format, so **don't run this script** if you're trying to do local development on the frontend.
+⚠️ Important: The web application (`frontend/`) only understands episode filenames in the `1.mp3` format, so **don't run this script** if you're trying to do local development on the frontend.

@@ -8,14 +8,14 @@ See the [About page]() for more on the motivation behind building this.
 
 ## Structure
 
-### `episodes/`
+### [`episodes/`](/episodes)
 
 Tools for downloading and renaming audio and video files from the podcast. Required for transcription and local media hosting on the frontend web application.
 
-### `trascripts/`
+### [`transcripts/`](/transcripts)
 
 Tools for transcribing downloaded episodes and uploading transcripts to a Typesense server for search indexing.
 
-### `frontend/`
+### [`frontend/`](/frontend)
 
 A Next.js + TypeScript web application for searching and listening to and watching the episodes. Intended for [static export](https://nextjs.org/docs/app/building-your-application/deploying/static-exports) and hosting on a service like [Amazon S3](https://aws.amazon.com/s3/).
