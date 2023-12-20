@@ -43,6 +43,12 @@ $article-width: 640px;
   }
 }
 
+@mixin error-stack {
+  color: $secondary-red-lighter;
+  background-color: rgba(0,0,0, 0.5);
+  padding: 1em;
+}
+
 @mixin transcript-line {
   list-style: none;
   line-height: 1.35;

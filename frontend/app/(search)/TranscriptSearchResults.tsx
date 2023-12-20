@@ -4,6 +4,7 @@ import Typesense from 'typesense'
 import { SearchResponse } from 'typesense/lib/Typesense/Documents'
 import classNames from 'classnames'
 import debounce from 'lodash.debounce'
+import { useErrorBoundary } from 'react-error-boundary'
 
 import s from './TranscriptSearchResults.module.scss'
 import { TYPESENSE_CONFIG } from '@/constants'
@@ -31,6 +32,8 @@ export default function TranscriptSearchResults({
   episodes = [],
   currentEpisode
 }: TranscriptSearchResultsProps) {
+  const { showBoundary } = useErrorBoundary()
+
   const [results, setResults] = useState<SearchResponse<IndexedTranscriptLine>['grouped_hits']>([])
   const [numFound, setNumFound] = useState<number>(0)
   const [loading, setLoading] = useState(false)
@@ -43,7 +46,7 @@ export default function TranscriptSearchResults({
 
   const search = useCallback(async (query: string, page: number) => {
     setLoading(true)
-    const res = await client.collections('asdf').documents().search({
+    const res = await client.collections('transcripts').documents().search({
       q: query,
       query_by: 'text',
       group_by: 'episode',
@@ -51,8 +54,9 @@ export default function TranscriptSearchResults({
       sort_by: 'episode:asc',
       page
     })
+    .catch(showBoundary)
     return res as SearchResponse<IndexedTranscriptLine>
-  }, [])
+  }, [showBoundary])
 
   const handleScroll = debounce(useCallback(async () => {
     const currentlyDisplayed = page.current * RESULTS_PER_PAGE
