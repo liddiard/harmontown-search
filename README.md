@@ -14,7 +14,7 @@ Tools for downloading and renaming audio and video files from the podcast. Requi
 
 ### [`transcripts/`](/transcripts)
 
-Tools for transcribing downloaded episodes and uploading transcripts to a Typesense server for search indexing.
+Tools for transcribing downloaded episodes and uploading transcripts to a [Typesense](https://typesense.org/) server for search indexing.
 
 ### [`frontend/`](/frontend)
 
