@@ -24,7 +24,7 @@ export default function Search({
 
   const currentEpisode = Number(useParams().number)
 
-  const renderTranscriptSearchError = ({ error, resetErrorBoundary }) => (
+  const renderTranscriptSearchError = ({ error }: { error: Error }) => (
     <div className={s.error}>
       <h2>Error loading transcript search results. Refresh to try again.</h2>
       <pre>{error.stack}</pre>
