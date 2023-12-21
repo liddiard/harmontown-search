@@ -46,13 +46,15 @@ export default function TranscriptSearchResults({
 
   const search = useCallback(async (query: string, page: number) => {
     setLoading(true)
+    // @ts-ignore because we're using a scoped search key with embedded params,
+    // but TypeScript doesn't recognize this and complains that params are
+    // missing on the search function call
     const res = await client.collections('transcripts').documents().search({
       q: query,
-      query_by: 'text',
-      group_by: 'episode',
-      group_limit: 10,
-      sort_by: 'episode:asc',
       page
+      // N.B. There are other params used in this search that are not listed
+      // here, which come from the scoped search API key the client is using.
+      // See these additional params in `frontend/generate_scoped_search_key.sh`.
     })
     .catch(showBoundary)
     return res as SearchResponse<IndexedTranscriptLine>

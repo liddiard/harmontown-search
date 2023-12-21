@@ -40,9 +40,9 @@ export const TYPESENSE_CONFIG = process.env.NODE_ENV === 'development' ? {
     port: 8108,
     protocol: 'http'
   }],
-  // IMPORTANT: This is a PUBLIC API key, with read-only access to the
-  // `transcripts` collection.
-  apiKey: 'J0NFQhLXtu5elmr7ulOrL4m9ZGOEVvSz',
+  // IMPORTANT: This is a scoped, PUBLIC API key, with read-only access to the
+  // `transcripts` collection, created by `generate_scoped_search_key.sh`
+  apiKey: 'ay96SlROL1g4MDA5NGF1NlJqOEphTUJzNEh3czJNcnZ2dk42RnlZcmx2Zz1FRjA5eyJxdWVyeV9ieSI6InRleHQiLCJncm91cF9ieSI6ImVwaXNvZGUiLCJncm91cF9saW1pdCI6MTAsInNvcnRfYnkiOiJlcGlzb2RlOmFzYyIsInVzZV9jYWNoZSI6dHJ1ZSwiY2FjaGVfdHRsIjozNjAwfQ==',
   connectionTimeoutSeconds: 10
 } : {
   nodes: [{
@@ -50,8 +50,8 @@ export const TYPESENSE_CONFIG = process.env.NODE_ENV === 'development' ? {
     port: 443,
     protocol: 'https'
   }],
-  // IMPORTANT: This is a PUBLIC API key, with read-only access to the
-  // `transcripts` collection.
-  apiKey: 'FbaXA81snpUIbyyTvvfgIuahg5trbk7b',
+  // IMPORTANT: This is a scoped, PUBLIC API key, with read-only access to the
+  // `transcripts` collection, created by `generate_scoped_search_key.sh`
+  apiKey: 'MzhzTnE0bEJLbE1oc2FvV3J5ZnliOEs2WUJNb3hOcjhrbW9ma0NheG5TZz1sM2lFeyJxdWVyeV9ieSI6InRleHQiLCJncm91cF9ieSI6ImVwaXNvZGUiLCJncm91cF9saW1pdCI6MTAsInNvcnRfYnkiOiJlcGlzb2RlOmFzYyIsInVzZV9jYWNoZSI6dHJ1ZSwiY2FjaGVfdHRsIjozNjAwfQ==',
   connectionTimeoutSeconds: 10
 }
