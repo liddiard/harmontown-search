@@ -109,7 +109,7 @@ header {
   align-items: flex-end;
   justify-content: space-between;
   border-bottom: 1px solid $fg-gray;
-  margin-top: 1.5rem;
+  margin-top: 2em;
   padding: 0.5em 0 0.5em;
 
   nav {
@@ -119,7 +119,7 @@ header {
     column-gap: 1em;
     row-gap: 0.5em;
     margin: 0 0 0.25em 1em;
-    font-size: 1rem;
+    font-size: 1.1em;
     text-align: right;
 
     a {
@@ -163,6 +163,10 @@ footer {
       font-weight: 200;
       font-size: 0.95em;
       letter-spacing: normal;
+    }
+
+    @include phone-lg {
+      font-size: 3.5em;
     }
   }
 
