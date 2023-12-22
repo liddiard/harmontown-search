@@ -47,7 +47,7 @@ export const TYPESENSE_CONFIG = process.env.NODE_ENV === 'development' ? {
   connectionTimeoutSeconds: 10
 } : {
   nodes: [{
-    host: 'harmontown-search-api.harrisonliddiard.com',
+    host: 'api.harmonsearch.com',
     port: 443,
     protocol: 'https'
   }],
