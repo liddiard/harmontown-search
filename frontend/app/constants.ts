@@ -1,6 +1,7 @@
 import { IFuseOptions } from 'fuse.js'
 
 import { Episode, TranscriptLine } from './types'
+import { TYPESENSE } from './keys'
 
 
 // default page title
@@ -42,7 +43,7 @@ export const TYPESENSE_CONFIG = process.env.NODE_ENV === 'development' ? {
   }],
   // IMPORTANT: This is a scoped, PUBLIC API key, with read-only access to the
   // `transcripts` collection, created by `generate_scoped_search_key.sh`
-  apiKey: 'ay96SlROL1g4MDA5NGF1NlJqOEphTUJzNEh3czJNcnZ2dk42RnlZcmx2Zz1FRjA5eyJxdWVyeV9ieSI6InRleHQiLCJncm91cF9ieSI6ImVwaXNvZGUiLCJncm91cF9saW1pdCI6MTAsInNvcnRfYnkiOiJlcGlzb2RlOmFzYyIsInVzZV9jYWNoZSI6dHJ1ZSwiY2FjaGVfdHRsIjozNjAwfQ==',
+  apiKey: TYPESENSE.DEV,
   connectionTimeoutSeconds: 10
 } : {
   nodes: [{
@@ -52,6 +53,6 @@ export const TYPESENSE_CONFIG = process.env.NODE_ENV === 'development' ? {
   }],
   // IMPORTANT: This is a scoped, PUBLIC API key, with read-only access to the
   // `transcripts` collection, created by `generate_scoped_search_key.sh`
-  apiKey: 'MzhzTnE0bEJLbE1oc2FvV3J5ZnliOEs2WUJNb3hOcjhrbW9ma0NheG5TZz1sM2lFeyJxdWVyeV9ieSI6InRleHQiLCJncm91cF9ieSI6ImVwaXNvZGUiLCJncm91cF9saW1pdCI6MTAsInNvcnRfYnkiOiJlcGlzb2RlOmFzYyIsInVzZV9jYWNoZSI6dHJ1ZSwiY2FjaGVfdHRsIjozNjAwfQ==',
+  apiKey: TYPESENSE.PROD,
   connectionTimeoutSeconds: 10
 }
