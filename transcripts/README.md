@@ -1,6 +1,11 @@
 # Transcription tools
 
-**Prerequisite** to using the scripts in this directory is downloading the episodes by following the instructions in the [Episode tools readme](/episodes/README.md).
+## Prerequisites 
+
+To make use of the scripts in this directory, you first need to download the podcast episodes by following the instructions in the [Episode tools readme](/episodes/README.md). Additionally, you should have:
+
+- Python 3.9+ installed
+- Packages listed in `requirements.txt` installed
 
 ## Transcribe episodes
 
@@ -10,7 +15,7 @@ After downloading episodes, you can create episode transcriptions by running `./
 
 Example usage:
 ```bash
-./transcribe_episodes.sh -e 1 # start transcribing episode 1
+./transcribe_episodes.sh -e 1 # start transcribing from episode 1
 ```
 
 ## Fix transcription issues
@@ -21,7 +26,7 @@ Fix transcriptions per this file's find/replace criteria by running `python3 cor
 
 ## Upload transcript search index
 
-**Prerequisite:** This project uses [Typesense](https://typesense.org/) as its search indexing provider. [Follow the instrunctions](https://typesense.org/docs/guide/install-typesense.html) to install and start Typesense on your development machine or server. Make sure you [configure an API key and data directory](https://typesense.org/docs/0.25.1/api/server-configuration.html#using-command-line-arguments).
+**Prerequisite:** This project uses [Typesense](https://typesense.org/) as its search indexing provider. [Follow the instructions](https://typesense.org/docs/guide/install-typesense.html) to install and start Typesense on your development machine or server. Make sure you [configure an API key and data directory](https://typesense.org/docs/0.25.1/api/server-configuration.html#using-command-line-arguments).
 
 Upload transcripts for Typesense to index by running `python3 index_transcripts.py`.
 

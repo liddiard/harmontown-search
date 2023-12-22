@@ -1,5 +1,9 @@
 # Episode tools
 
+## Prerequisites
+
+- Python 3.9+ installed
+
 ## Download episodes
 
 Populate this folder with all audio (mp3) and video (mp4) episodes using the `download_episodes.py` script.
