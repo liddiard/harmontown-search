@@ -20,7 +20,8 @@ const bebas = Bebas_Neue({
 
 export const metadata: Metadata = {
   title: 'Harmontown Podcast Search',
-  description: 'Search the transcripts from every episode of Harmontown, a podcast featuring Dan Harmon, Jeff B. Davis, and Spencer Crittenden.',
+  description: 'Search every episode of Harmontown: the podcast featuring Dan Harmon, Jeff B. Davis, and Spencer Crittenden.',
+  metadataBase: new URL('https://harmonsearch.com')
 }
 
 export default function RootLayout({
