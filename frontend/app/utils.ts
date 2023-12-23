@@ -93,14 +93,14 @@ export const mask = (str = '') =>
 // return media type (audio or video) + local media urls in development and
 // CDN urls in prod
 export const getMediaData = (episode: Episode) => {
-  const { video_link, audio_link } = episode
+  const { video_link, number } = episode
   const mediaType = video_link ? MediaType.Video : MediaType.Audio
   let url
   if (process.env.NODE_ENV === 'development') {
     const ext = mediaType === MediaType.Video ? 'mp4' : 'mp3'
-    url = `/episodes/${episode.number}.${ext}`
+    url = `/episodes/${number}.${ext}`
   } else {
-    url = video_link || audio_link
+    url = video_link || `https://media.harmonsearch.com/${number}.mp3`
   }
   return { mediaType, url }
 }
