@@ -56,7 +56,7 @@ export default function RootLayout({
           <p className="disclaimer">
             This is a fan-made site. It is not affiliated with Harmontown Productions LLC nor with anyone involved in the podcast.
           </p>
-          <Donate />
+          <Donate profileName="liddiard" />
         </footer>
       </body>
     </html>

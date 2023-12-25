@@ -6,12 +6,19 @@ import { useState, useEffect } from 'react'
 import s from './Donate.module.scss'
 import xIcon from 'img/x-gray.svg'
 
+
+interface DonateProps {
+  profileName: string
+}
+
 // Ko-fi donation popup
 // Made this because Ko-fi's suggested way of loading a script tag then
 // referencing a global variable it creates does not work well in Next.js.
 // It boiled down to a lot of race condition issues between loading te script
 // and executing the code that depends on it.
-export default function Donate() {
+export default function Donate({
+  profileName
+}: DonateProps) {
   const [open, setOpen] = useState(false)
 
   const setOpenFromHash = () =>
@@ -21,7 +28,6 @@ export default function Donate() {
     setOpen(false)
     history.pushState(null, '', '#');
   }
-
 
   useEffect(() => {
     setOpenFromHash()
@@ -47,10 +53,10 @@ export default function Donate() {
       >
         <Image src={xIcon} alt="Close donate popup" />
       </button>
-      <iframe src="https://ko-fi.com/liddiard/?hidefeed=true&widget=true&embed=true" />
+      <iframe src={`https://ko-fi.com/${profileName}?hidefeed=true&widget=true&embed=true`} />
       <div className={s.link}>
-        <a href="https://ko-fi.com/liddiard/" target="_blank" rel="noreferrer">
-          ko-fi.com/liddiard
+        <a href={`https://ko-fi.com/${profileName}`} target="_blank" rel="noreferrer">
+          ko-fi.com/{profileName}
         </a>
       </div>
     </div>
