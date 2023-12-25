@@ -47,16 +47,11 @@ export default function RootLayout({
         {children}
         <footer>
           <p className="donation">
-            {/* Using an <a> element on the Donate button because the Kofi donate component relies
-                on the window.hashChange event, and this event is not fired for Next.js Link
-                component. The alternative would be to maintain donation popup open/close state
-                in this component, but that would entail making the entire app a client component. */}
-            <Image src={heartIcon} alt="love" /> Harmontown Search? <a href="#donate" className="donate">Donate</a> a few bucks to help fund the <Link href="#">web hosting costs</Link>!
+            <Image src={heartIcon} alt="love" /> Harmontown Search? <Donate profileName="liddiard">Donate</Donate> a few bucks to help fund the <Link href="#">web hosting costs</Link>!
           </p>
           <p className="disclaimer">
             This is a fan-made site. It is not affiliated with Harmontown Productions LLC nor with anyone involved in the podcast.
           </p>
-          <Donate profileName="liddiard" />
         </footer>
       </body>
     </html>

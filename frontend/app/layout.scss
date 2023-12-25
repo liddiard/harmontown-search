@@ -146,25 +146,6 @@ footer {
     width: auto;
     vertical-align: sub;
   }
-
-  a.donate {
-    display: inline-block;
-    background-color: $primary-blue;
-    text-shadow: none;
-    text-decoration: none;
-    color: black;
-    padding: 0.4em 0.8em;
-    border-radius: 1em;
-    font-weight: bold;
-
-    &:hover {
-      background-color: $primary-blue-lighter;
-    }
-
-    &:active {
-      background-color: $primary-blue-darker;
-    }
-  }
 }
 
 #logo {

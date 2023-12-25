@@ -11,7 +11,27 @@
   }
 }
 
-.wrapper {
+.donate {
+  display: inline-block;
+  background-color: $primary-blue;
+  text-shadow: none;
+  text-decoration: none;
+  text-transform: none;
+  color: black;
+  padding: 0.4em 0.8em;
+  border-radius: 2em;
+  font-weight: bold;
+
+  &:hover {
+    background-color: $primary-blue-lighter;
+  }
+
+  &:active {
+    background-color: $primary-blue-darker;
+  }
+}
+
+.popup {
   $popup-width: min(320px, 100vw);
   $popup-height: min(580px, 98vh);
 
