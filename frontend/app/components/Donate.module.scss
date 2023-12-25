@@ -1,0 +1,90 @@
+@import './globals';
+
+@keyframes open {
+  from {
+    translate: 0 200%;
+    opacity: 0;
+  }
+  to {
+    translate: 0;
+    opacity: 1;
+  }
+}
+
+.wrapper {
+  $popup-width: min(320px, 100vw);
+  $popup-height: min(580px, 98vh);
+
+  position: fixed;
+  z-index: 1;
+  width: $popup-width;
+  height: $popup-height;
+  bottom: 0;
+  right: 2em;
+  animation: open 1s forwards ease-in-out;
+  box-shadow: 0 0 10px rgba(0,0,0, 0.5);
+
+  iframe {
+    width: $popup-width;
+    height: $popup-height;
+    border: 0;
+    border-radius: 1em 1em 0 0;
+    background-color: white;
+  }
+
+  .close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0.5em;
+    background-color: white;
+    border-color: lightgray;
+    border-width: 0 0 1px 1px;
+    border-radius: 0 1em 0 1em;
+    box-shadow: 0 0 5px rgba(0,0,0, 0.2);
+    
+    img {
+      width: 2em;
+      height: 2em;
+    }
+  }
+
+  .link {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    text-align: center;
+    padding: 0.9em;
+    font-size: 0.9em;
+    border-top: 1px solid lightgray;
+    font-weight: 600;
+
+    a {
+      color: black;
+      text-shadow: none;
+      text-decoration: none;
+
+      &:hover {
+        color: $primary-blue;
+      }
+    }
+  }
+
+  @include phone-lg {
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+
+    iframe {
+      width: 100vw;
+      height: 100vh;
+      border-radius: 0;
+    }
+
+    .close {
+      border-top-right-radius: 0;
+    }
+  }
+}
