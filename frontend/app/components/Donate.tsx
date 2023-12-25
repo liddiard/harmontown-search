@@ -36,7 +36,6 @@ export default function Donate({
           <button
             className={s.close}
             onClick={() => setOpen(false)}
-            title="Close"
           >
             <Image src={xIcon} alt="Close donate popup" />
           </button>
