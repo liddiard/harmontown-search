@@ -7,7 +7,7 @@ import classNames from 'classnames'
 import 'layout.scss'
 import Nav from '@/components/nav'
 import heartIcon from 'img/heart.svg'
-import Donate from './components/Donate'
+import { Donate } from 'react-kofi-overlay'
 
 
 const inter = Inter({
@@ -32,6 +32,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
 
+  const donate = (
+    <Donate
+      username="liddiard"
+      classNames={{ donateBtn: 'donateBtn' }}
+    >
+      Donate
+    </Donate>
+  )
+
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -47,11 +56,12 @@ export default function RootLayout({
         {children}
         <footer>
           <p className="donation">
-            <Image src={heartIcon} alt="love" /> Harmontown Search? <Donate profileName="liddiard">Donate</Donate> a few bucks to help fund the <Link href="#">web hosting costs</Link>!
+            <Image src={heartIcon} alt="love" /> Harmontown Search? a few bucks to help fund the <Link href="#">web hosting costs</Link>!
           </p>
           <p className="disclaimer">
             This is a fan-made site. It is not affiliated with Harmontown Productions LLC nor with anyone involved in the podcast.
           </p>
+          {donate} 
         </footer>
       </body>
     </html>
