@@ -138,34 +138,47 @@ footer {
   padding: 2em 0;
   font-size: 0.9em;
   color: $fg-gray;
-}
 
-.donation {
-  img {
-    height: 1.1em;
-    width: auto;
-    vertical-align: sub;
+  & > * {
+    margin: 1em 0;
   }
 
-  .donateBtn {
-    background-color: $primary-blue;
-    text-shadow: none;
-    text-decoration: none;
-    text-transform: none;
-    color: black;
-    padding: 0.4em 0.8em;
-    border-radius: 2em;
-    font-weight: bold;
-  
-    &:hover {
-      background-color: $primary-blue-lighter;
+  .donation {
+    img {
+      height: 1.1em;
+      width: auto;
+      vertical-align: sub;
     }
   
-    &:active {
-      background-color: $primary-blue-darker;
+    .donateBtn {
+      background-color: $primary-blue;
+      text-shadow: none;
+      text-decoration: none;
+      text-transform: none;
+      color: black;
+      padding: 0.4em 0.8em;
+      border-radius: 2em;
+      font-weight: bold;
+    
+      &:hover {
+        background-color: $primary-blue-lighter;
+      }
+    
+      &:active {
+        background-color: $primary-blue-darker;
+      }
+    }
+
+    .profileLink a:hover {
+      color: $primary-blue-darker;
     }
   }
+
+  .disclaimer {
+    font-style: italic;
+  }
 }
+
 
 #logo {
   position: relative;

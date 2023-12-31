@@ -35,7 +35,10 @@ export default function RootLayout({
   const donate = (
     <Donate
       username="liddiard"
-      classNames={{ donateBtn: 'donateBtn' }}
+      classNames={{
+        donateBtn: 'donateBtn',
+        profileLink: 'profileLink'
+      }}
     >
       Donate
     </Donate>
@@ -55,13 +58,12 @@ export default function RootLayout({
         </header>
         {children}
         <footer>
-          <p className="donation">
-            <Image src={heartIcon} alt="love" /> Harmontown Search? a few bucks to help fund the <Link href="#">web hosting costs</Link>!
-          </p>
-          <p className="disclaimer">
-            This is a fan-made site. It is not affiliated with Harmontown Productions LLC nor with anyone involved in the podcast.
-          </p>
-          {donate} 
+          <div className="donation">
+            <Image src={heartIcon} alt="love" /> Harmontown Search? {donate} a few bucks to help fund the <Link href="#">web hosting costs</Link>!
+          </div>
+          <div className="disclaimer">
+            Disclaimer: This is a fan-made site. It is not affiliated with Harmontown Productions LLC or anyone from the podcast.
+          </div>
         </footer>
       </body>
     </html>
