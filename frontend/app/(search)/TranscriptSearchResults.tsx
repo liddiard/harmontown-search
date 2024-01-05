@@ -98,7 +98,7 @@ export default function TranscriptSearchResults({
     // wait for the results to be added to the DOM for infinite scroll before
     // considering loading complete
     setLoading(false)
-  }, [results?.length])
+  }, [results])
 
   useEffect(() => {
     (async () => {
