@@ -59,7 +59,7 @@ export default function RootLayout({
         {children}
         <footer>
           <div className="donation">
-            <Image src={heartIcon} alt="love" /> Harmontown Search? {donate} a few bucks to help fund the <Link href="#">web hosting costs</Link>!
+            <Image src={heartIcon} alt="love" /> Harmontown Search? {donate} a few bucks to help fund the <Link href="/about">web hosting costs</Link>!
           </div>
           <div className="disclaimer">
             Disclaimer: This is a fan-made site. It is not affiliated with Harmontown Productions LLC or anyone from the podcast.
