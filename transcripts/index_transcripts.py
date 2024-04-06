@@ -6,6 +6,7 @@ import sys
 import csv
 import re
 import argparse
+from glob import glob
 
 import typesense
 
@@ -19,7 +20,7 @@ CONFIG = {
         'protocol': 'http'
     },
     PROD: {
-        'host': 'api.harmontown-search.harrisonliddiard.com',
+        'host': 'api.harmonsearch.com',
         'port': '443',
         'protocol': 'https'
     }
@@ -81,14 +82,14 @@ try:
 except typesense.exceptions.ObjectAlreadyExists:
     print(f"Collection '{COLLECTION_NAME}' already exists.")
 
-transcripts = os.listdir(TRANSCRIPT_DIR)
+transcripts = glob(os.path.join(TRANSCRIPT_DIR, '*.tsv'))
 
 errors = False
 for transcript_file in transcripts:
     episode = re.search(r"(\d+)\.tsv", transcript_file).group(1)
     transcript = []
     print(f"⬆️  Starting upload for episode: {episode}")
-    with open(f"{TRANSCRIPT_DIR}/{transcript_file}", 'r') as f:
+    with open(transcript_file, 'r') as f:
         reader = csv.DictReader(f, delimiter='\t')
         for row in reader:
             transcript.append({
