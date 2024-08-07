@@ -1,6 +1,7 @@
 import { IFuseOptions } from 'fuse.js'
 
 import { Episode, TranscriptLine } from './types'
+import { TYPESENSE } from './keys'
 
 
 // default page title
@@ -40,18 +41,18 @@ export const TYPESENSE_CONFIG = process.env.NODE_ENV === 'development' ? {
     port: 8108,
     protocol: 'http'
   }],
-  // IMPORTANT: This is a PUBLIC API key, with read-only access to the
-  // `transcripts` collection.
-  apiKey: 'J0NFQhLXtu5elmr7ulOrL4m9ZGOEVvSz',
+  // IMPORTANT: This is a scoped, PUBLIC API key, with read-only access to the
+  // `transcripts` collection, created by `generate_scoped_search_key.sh`
+  apiKey: TYPESENSE.DEV,
   connectionTimeoutSeconds: 10
 } : {
   nodes: [{
-    host: 'api.harmontown-search.harrisonliddiard.com',
+    host: 'api.harmonsearch.com',
     port: 443,
     protocol: 'https'
   }],
-  // IMPORTANT: This is a PUBLIC API key, with read-only access to the
-  // `transcripts` collection.
-  apiKey: 'FbaXA81snpUIbyyTvvfgIuahg5trbk7b',
+  // IMPORTANT: This is a scoped, PUBLIC API key, with read-only access to the
+  // `transcripts` collection, created by `generate_scoped_search_key.sh`
+  apiKey: TYPESENSE.PROD,
   connectionTimeoutSeconds: 10
 }

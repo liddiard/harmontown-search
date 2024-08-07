@@ -2,11 +2,12 @@
 
 import { useSearchParams, useParams } from 'next/navigation'
 
-import s from './page.module.scss'
+import s from './layout.module.scss'
 import EpisodeSearchBar from './SearchBar'
 import TranscriptSearchResults from './TranscriptSearchResults'
 import EpisodeSearchResults from './EpisodeSearchResults'
 import episodes from '@/episode_list.tsv'
+import { ErrorBoundary } from 'react-error-boundary'
 
 
 export default function Search({
@@ -23,6 +24,13 @@ export default function Search({
 
   const currentEpisode = Number(useParams().number)
 
+  const renderTranscriptSearchError = ({ error }: { error: Error }) => (
+    <div className={s.error}>
+      <h2>Error loading transcript search results. Refresh to try again.</h2>
+      <pre>{error.stack}</pre>
+    </div>
+  )
+
   return (
     <>
       {children}
@@ -37,11 +45,13 @@ export default function Search({
           query={queryParams.query}
           currentEpisode={currentEpisode}
         />
-        <TranscriptSearchResults
-          query={queryParams.query}
-          currentEpisode={currentEpisode}
-          episodes={episodes}
-        />
+        <ErrorBoundary fallbackRender={renderTranscriptSearchError}>
+          <TranscriptSearchResults
+            query={queryParams.query}
+            currentEpisode={currentEpisode}
+            episodes={episodes}
+          />
+        </ErrorBoundary>
       </div>
     </>
   )

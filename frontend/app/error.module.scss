@@ -5,8 +5,6 @@
   margin: 0 auto;
   
   pre {
-    color: $secondary-red-lighter;
-    background-color: rgba(0,0,0, 0.5);
-    padding: 1em;
+    @include error-stack;
   }
 }

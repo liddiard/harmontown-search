@@ -15,4 +15,17 @@
     margin: 1em 0 0.5em;
     text-transform: uppercase;
   }
+
+  .error {
+    color: $secondary-red-lighter;
+  
+    h2 {
+      font-weight: normal;
+      text-transform: none;
+    }
+
+    pre {
+      @include error-stack;
+    }
+  }
 }

@@ -1,11 +1,36 @@
 # About
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ac feugiat sed lectus vestibulum mattis ullamcorper. Adipiscing commodo elit at imperdiet dui accumsan sit. Faucibus interdum posuere lorem ipsum dolor sit amet. Nunc pulvinar sapien et ligula. Aliquam nulla facilisi cras fermentum odio eu feugiat pretium nibh. Amet mattis vulputate enim nulla aliquet porttitor lacus luctus. Arcu dictum varius duis at consectetur. Hac habitasse platea dictumst vestibulum rhoncus est. Iaculis urna id volutpat lacus laoreet non curabitur. Urna cursus eget nunc scelerisque viverra. Etiam dignissim diam quis enim lobortis scelerisque. Non consectetur a erat nam at. Nibh mauris cursus mattis molestie a. Laoreet sit amet cursus sit amet dictum sit. Sed egestas egestas fringilla phasellus. Malesuada fames ac turpis egestas sed tempus.
+_Come on down to Harmontown; turn that frown upside down._
 
-Venenatis urna cursus eget nunc scelerisque viverra mauris in aliquam. Ullamcorper velit sed ullamcorper morbi tincidunt ornare. Vitae congue mauris rhoncus aenean vel. Commodo sed egestas egestas fringilla phasellus faucibus. Praesent semper feugiat nibh sed. Mattis molestie a iaculis at erat pellentesque adipiscing commodo. Blandit libero volutpat sed cras ornare arcu dui. Dolor sit amet consectetur adipiscing elit ut. Libero enim sed faucibus turpis in eu mi bibendum neque. Nunc vel risus commodo viverra maecenas accumsan lacus. Neque sodales ut etiam sit. Urna porttitor rhoncus dolor purus. Volutpat maecenas volutpat blandit aliquam etiam erat.
+There’s something special about this podcast. Like many Harmontown fans, I keep coming back to it. The mix of comedy, philosophy, roleplaying, and improv among an ensemble of complementary friends with the occasional celebrity (or niche Hollywood person) just hasn’t gotten old.
 
-Auctor elit sed vulputate mi. Suspendisse ultrices gravida dictum fusce ut placerat orci nulla pellentesque. Massa enim nec dui nunc mattis enim. Interdum velit laoreet id donec ultrices tincidunt. Tincidunt id aliquet risus feugiat in ante metus. Eget nunc lobortis mattis aliquam faucibus. Tincidunt tortor aliquam nulla facilisi cras fermentum odio eu feugiat. Nullam non nisi est sit amet facilisis magna etiam. Enim nec dui nunc mattis enim. Quisque id diam vel quam elementum pulvinar etiam non. Viverra justo nec ultrices dui sapien eget mi proin. Donec et odio pellentesque diam. Consequat mauris nunc congue nisi vitae suscipit. Convallis posuere morbi leo urna molestie.
+Back when the podcast ended in 2019, I wanted to transcribe all the episodes and make them searchable for us fans to easily find and revisit favorite moments. Problem was, there’s a lot of Harmontown, and high-quality transcription services _were_ pricey.
 
-Pretium aenean pharetra magna ac placerat vestibulum. Viverra accumsan in nisl nisi scelerisque eu ultrices. Viverra accumsan in nisl nisi scelerisque. Mi tempus imperdiet nulla malesuada pellentesque elit eget gravida. Ornare quam viverra orci sagittis eu volutpat odio facilisis mauris. Morbi non arcu risus quis varius quam quisque id diam. Cursus vitae congue mauris rhoncus aenean vel elit scelerisque. Ut pharetra sit amet aliquam. Tincidunt arcu non sodales neque sodales ut etiam. At volutpat diam ut venenatis tellus in metus. Euismod quis viverra nibh cras pulvinar mattis nunc sed blandit. Iaculis at erat pellentesque adipiscing commodo elit at imperdiet. Nunc aliquet bibendum enim facilisis gravida. Vel facilisis volutpat est velit egestas dui id ornare. Consequat id porta nibh venenatis. Magna etiam tempor orci eu.
+That changed in 2022 when OpenAI, the company behind ChatGPT, [released Whisper](https://openai.com/research/whisper). It’s open-source software you can run on your own computer that, in their words, “approaches human level robustness and accuracy on English speech recognition.” It’s not perfect, but it’s pretty darn good.
 
-Aliquam purus sit amet luctus venenatis lectus magna fringilla urna. Facilisi etiam dignissim diam quis enim lobortis scelerisque. Aliquet eget sit amet tellus cras adipiscing enim eu. Tempus imperdiet nulla malesuada pellentesque. Orci nulla pellentesque dignissim enim. Pellentesque habitant morbi tristique senectus et netus et malesuada fames. Justo nec ultrices dui sapien. Blandit libero volutpat sed cras ornare arcu dui. Nibh sed pulvinar proin gravida hendrerit lectus. Pellentesque massa placerat duis ultricies lacus sed turpis tincidunt id. Id venenatis a condimentum vitae sapien pellentesque habitant morbi. Aliquam sem et tortor consequat. Lobortis mattis aliquam faucibus purus. Ante metus dictum at tempor commodo ullamcorper a lacus vestibulum.
+With the cost barrier overcome and a desire to create a new side project that I was passionate about, I built this site in the last few months of 2022. I hope you enjoy it.
+
+## How it works (the nerd stuff)
+
+Episodes have been transcribed using [OpenAI’s Whisper](https://github.com/openai/whisper) `small.en` model between July–November 2023. Minor [find-and-replace corrections](https://github.com/liddiard/harmontown-search/blob/main/transcripts/transcription_corrections.tsv) are made to the transcripts for common errors, such as “Harmontown” being transcribed as “Herman Town.” 
+
+The transcripts are uploaded to [Amazon S3](https://aws.amazon.com/s3/) in a structured data format ([TSV](https://www.loc.gov/preservation/digital/formats/fdd/fdd000533.shtml#:~:text=A%20tab%2Dseparated%20values%20(TSV,line%20of%20the%20text%20file.)) and indexed for search using [Typesense](https://typesense.org/), which is running on a [Google Compute Engine](https://cloud.google.com/compute) server. Typesense provides performant dialog matches via API when you search across all episodes.
+
+The frontend is [React](https://react.dev/), running on a [static-export Next.js site](https://nextjs.org/docs/app/building-your-application/deploying/static-exports). When you visit the site, a list of all episode titles and other metadata is downloaded and indexed in browser using [Fuse.js](https://www.fusejs.io/), which returns near-instant episode search results for queries that match episode titles, descriptions, and numbers. Fuse is also used for searching individual transcripts while playing an episode.
+
+Audio episodes are streamed from [Cloudflare R2](https://www.cloudflare.com/developer-platform/r2/) because podcast providers use dynamic ad insertion which unpredictably shifts the syncronization between the audio and the corresponding transcript. Video episodes are streamed from [harmontown.com](http://harmontown.com), which are available at public URLs containing the episode’s recorded date.
+
+The code for this website plus the transcription and indexing process is all open source and [available on GitHub](http://github.com/liddiard/harmontown-search).
+
+## Server costs
+
+Here’s everything I’m paying to run this:
+
+- [GCP hosting](https://cloud.google.com/?hl=en) for [Typesense search](https://typesense.org/) API (fast searches across the 6M+ words spoken during Harmontown): **~$2/month**
+- Static file hosting for website (the web UI you’re reading this on): **~$1/month**
+- Static file hosting for audio podcasts: **~$2/month**
+- Domain name: **$1/month**
+
+Total cost: **~$72/year**
+
+I’m paying this out of pocket. If you get value and enjoyment from this site, consider throwing me a [few bucks if you can spare it](https://ko-fi.com/liddiard). I’d love to keep this archive online for as long as possible. Thank you.

@@ -3,6 +3,8 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import Typesense from 'typesense'
 import { SearchResponse } from 'typesense/lib/Typesense/Documents'
 import classNames from 'classnames'
+import debounce from 'lodash.debounce'
+import { useErrorBoundary } from 'react-error-boundary'
 
 import s from './TranscriptSearchResults.module.scss'
 import { TYPESENSE_CONFIG } from '@/constants'
@@ -30,35 +32,40 @@ export default function TranscriptSearchResults({
   episodes = [],
   currentEpisode
 }: TranscriptSearchResultsProps) {
+  const { showBoundary } = useErrorBoundary()
+
   const [results, setResults] = useState<SearchResponse<IndexedTranscriptLine>['grouped_hits']>([])
   const [numFound, setNumFound] = useState<number>(0)
+  const [loading, setLoading] = useState(false)
   
   const resultsEl = useRef<HTMLOListElement>(null)
   // current last page of search results
   const page = useRef(1)
-  const loading = useRef(false)
 
   const transcriptId = 'transcript-search-results'
 
   const search = useCallback(async (query: string, page: number) => {
-    loading.current = true
+    setLoading(true)
+    // @ts-ignore because we're using a scoped search key with embedded params,
+    // but TypeScript doesn't recognize this and complains that params are
+    // missing on the search function call
     const res = await client.collections('transcripts').documents().search({
       q: query,
-      query_by: 'text',
-      group_by: 'episode',
-      group_limit: 10,
-      sort_by: 'episode:asc',
       page
+      // N.B. There are other params used in this search that are not listed
+      // here, which come from the scoped search API key the client is using.
+      // See these additional params in `frontend/generate_scoped_search_key.sh`.
     })
+    .catch(showBoundary)
     return res as SearchResponse<IndexedTranscriptLine>
-  }, [])
+  }, [showBoundary])
 
-  const handleScroll = useCallback(async () => {
+  const handleScroll = debounce(useCallback(async () => {
     const currentlyDisplayed = page.current * RESULTS_PER_PAGE
     if (
       !resultsEl.current ||
       currentlyDisplayed >= numFound ||
-      loading.current
+      loading
     ) {
       return
     }
@@ -72,7 +79,7 @@ export default function TranscriptSearchResults({
       const res = await search(query, ++page.current)
       setResults(prevResults => [...prevResults!, ...res.grouped_hits!])
     }
-  }, [query, search, numFound])
+  }, [query, search, numFound, loading]), 500, { leading: true, maxWait: 500 })
 
   const getHitUrl = (epNumber: number, document: { start: number }) => {
     const params = new URLSearchParams(window.location.search)
@@ -90,7 +97,7 @@ export default function TranscriptSearchResults({
   useEffect(() => {
     // wait for the results to be added to the DOM for infinite scroll before
     // considering loading complete
-    loading.current = false
+    setLoading(false)
   }, [results])
 
   useEffect(() => {
@@ -112,12 +119,14 @@ export default function TranscriptSearchResults({
 
   return (
     <>
-      <h2 id={transcriptId}>
-        <span className={s.numResults}>{numFound ?? 0} </span>
-        Transcript{numFound !== 1 ? 's' : null}
-      </h2>
-      {numFound ? <ol className={s.results} ref={resultsEl}>
-        {results!.map(({ group_key, hits }) => {
+      {results?.length || !loading ? 
+        <h2 id={transcriptId}>
+          <span className={s.numResults}>{numFound ?? 0} </span>
+          Transcript{numFound !== 1 ? 's' : null}
+        </h2>
+      : null}
+      {results?.length ? <ol className={s.results} ref={resultsEl}>
+        {results.map(({ group_key, hits }) => {
           const epNumber = Number(group_key[0])
           const selected = epNumber === currentEpisode
           const episode = findEpisodeByNumber(episodes, epNumber)
@@ -153,7 +162,7 @@ export default function TranscriptSearchResults({
         })}
       </ol> : null}
       <LoadingSpinner 
-        loading={results!.length < (numFound ?? Infinity)}
+        loading={loading || results!.length < numFound}
         className={s.spinner}
       />
     </>

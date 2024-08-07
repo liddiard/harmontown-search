@@ -29,7 +29,10 @@ export function generateMetadata({ params: { number } }: PageParams) {
   const { title, description } = episode
   return {
     title,
-    description
+    description,
+    openGraph: {
+      title: `Episode ${number}: ${title}`
+    }
   }
 }
 

@@ -8,6 +8,7 @@ import s from './SearchBar.module.scss'
 import magnifyingGlass from 'img/magnifying-glass.svg'
 import searchSuggestions from './searchSuggestions.json'
 import { jumpToHash } from '@/utils'
+import Link from 'next/link'
 
 
 interface SearchBarProps {
@@ -121,7 +122,7 @@ export default function SearchBar({
 
   return (
     <form onSubmit={handleSubmit} className={s.search} id={searchBarId}>
-      <p>Search all <strong>361</strong> episodes, <strong>14,931</strong> minutes, and <strong>6,611,981</strong> words spoken in Harmontown:</p>
+      <p>Search all <strong>361</strong> episodes, <strong>14,931</strong> minutes, and <strong>6,611,981</strong> words spoken in <Link href="https://en.wikipedia.org/wiki/Harmontown">Harmontown</Link>:</p>
       <div className={s.inputWrapper}>
         {currentQuery ? null : renderPlaceholder()}
         <input 
