@@ -44,9 +44,6 @@ export default function RootLayout({
         </header>
         {children}
         <footer>
-          <p className="donate">
-            <Image src={heartIcon} alt="love" /> Harmontown Search? <a href="https://www.buymeacoffee.com/liddiard" target="_blank" rel="noreferrer">Donate</a> toward the <a href="#">web hosting</a> to keep it running!
-          </p>
           <p className="disclaimer">
             This is a fan-made site. It is not affiliated with Harmontown Productions LLC nor with anyone involved in the podcast.
           </p>
