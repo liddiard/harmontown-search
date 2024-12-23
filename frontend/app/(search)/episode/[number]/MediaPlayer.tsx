@@ -147,7 +147,7 @@ function MediaPlayer({ episode }: MediaPlayerProps) {
             throw Error(`Unrecognized media type: ${mediaType}`)
         }
       })(mediaType, url),
-    [startTimecode, mediaType, url, updateTimecode]
+    [startTimecode, mediaType, url, updateTimecode, videoPlaying]
   )
 
   return (

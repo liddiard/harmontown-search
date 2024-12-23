@@ -118,7 +118,7 @@ export default function Transcript({
     setCurrentLine(
       getCurrentLine(transcript, (timecode + offset) * 1000, currentLine) ?? 0
     )
-  }, [transcript, timecode, currentLine])
+  }, [transcript, timecode, currentLine, offset])
 
   // scroll the transcript element to display the current line in the middle
   // of its boundingClientRect
