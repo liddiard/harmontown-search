@@ -24,6 +24,7 @@ interface TranscriptProps {
   epNumber: number
   timecode: number
   seek: SeekFunc
+  offset: number
   mediaType: MediaType
 }
 
@@ -31,6 +32,7 @@ export default function Transcript({
   epNumber,
   timecode,
   seek,
+  offset,
   mediaType,
 }: TranscriptProps) {
   // transcript: array of lines
@@ -114,7 +116,7 @@ export default function Transcript({
       return
     }
     setCurrentLine(
-      getCurrentLine(transcript, timecode * 1000, currentLine) ?? 0
+      getCurrentLine(transcript, (timecode + offset) * 1000, currentLine) ?? 0
     )
   }, [transcript, timecode, currentLine])
 

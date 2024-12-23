@@ -100,9 +100,7 @@ function MediaPlayer({ episode }: MediaPlayerProps) {
       if (!videoEl.current) {
         return
       }
-      // for some reason, video specifically always seeks to the previous
-      // trascript line, so we need to round up
-      videoEl.current.seekTo(Math.ceil(ms / 1000))
+      videoEl.current.seekTo(ms / 1000)
       if (options.play) {
         // toggle video playback from off to on to force play
         setVideoPlaying(false)
@@ -161,6 +159,9 @@ function MediaPlayer({ episode }: MediaPlayerProps) {
           epNumber={episode.number}
           timecode={timecode}
           seek={mediaType === MediaType.Audio ? seekAudio : seekVideo}
+          // YouTube videos are slightly behind the original source timecode by
+          // just under a second, presumably due to reencoding
+          offset={mediaType === MediaType.Video ? 0.75 : 0}
           mediaType={mediaType}
         />
       </div>
