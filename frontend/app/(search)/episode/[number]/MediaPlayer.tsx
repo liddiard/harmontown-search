@@ -114,6 +114,7 @@ function MediaPlayer({ episode }: MediaPlayerProps) {
                 url={`${url}?t=${startTimecode}`}
                 width="100%"
                 height="100%"
+                className={s.youtubeEmbed}
                 progressInterval={100}
                 onProgress={({ playedSeconds }) =>
                   updateTimecode(Math.floor(playedSeconds))
