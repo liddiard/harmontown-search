@@ -38,6 +38,7 @@ function MediaPlayer({ episode }: MediaPlayerProps) {
   const searchParams = useSearchParams()
   const start = Number(searchParams.get('t'))
 
+  const [isClient, setIsClient] = useState(false)
   const [timecode, setTimecode] = useState(0)
   const [startTimecode, setStartTimecode] = useState(0)
   const [shareOpen, setShareOpen] = useState(false)
@@ -46,6 +47,10 @@ function MediaPlayer({ episode }: MediaPlayerProps) {
   const resumePlaybackTimecode = useRef<number | null>(null)
 
   const { mediaType, url } = getMediaData(episode)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   useEffect(() => {
     resumePlaybackTimecode.current =
@@ -127,7 +132,8 @@ function MediaPlayer({ episode }: MediaPlayerProps) {
   return (
     <>
       <div className={s.mediaPlayer}>
-        {mediaElement}
+        {/*  Render media on client side only to avoid hydration mismatch errors */}
+        {isClient && mediaElement}
         <Transcript
           epNumber={episode.number}
           timecode={timecode}
