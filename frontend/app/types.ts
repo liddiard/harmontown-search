@@ -5,14 +5,14 @@ export interface Episode {
   record_date?: string
   release_date: string
   audio_link: string
-  video_link?: string
+  video_id?: string
 }
 
 export type EpisodeList = Episode[]
 
 export interface TranscriptLine {
-  start: number,
-  end: number,
+  start: number
+  end: number
   text: string
 }
 
@@ -24,5 +24,5 @@ export interface QueryParams {
 
 export enum MediaType {
   Audio,
-  Video
+  Video,
 }

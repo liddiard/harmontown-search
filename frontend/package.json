@@ -24,6 +24,7 @@
     "react-dom": "^19",
     "react-error-boundary": "^5.0.0",
     "react-kofi-overlay": "^1.0.2",
+    "react-player": "^2.16.0",
     "react-tooltip": "^5.28.0",
     "sass": "^1.83.0",
     "typesense": "^1.8.2"

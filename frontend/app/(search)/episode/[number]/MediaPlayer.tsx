@@ -10,6 +10,7 @@ import {
   useCallback,
   Suspense,
 } from 'react'
+import ReactPlayer from 'react-player/youtube'
 import { Tooltip } from 'react-tooltip'
 import debounce from 'lodash.debounce'
 import classNames from 'classnames'
@@ -24,7 +25,6 @@ import {
 import ShareDialog from './ShareDialog'
 import Transcript from './Transcript'
 import shareIcon from 'img/share.svg'
-import poster from 'img/harmontown-logo-bg-poster.png'
 import refreshIcon from 'img/refresh.svg'
 import Toast from '@/components/Toast'
 
@@ -63,12 +63,11 @@ function MediaPlayer({ episode }: MediaPlayerProps) {
   // highlight/scroll
   // https://lodash.com/docs/4.17.15#debounce
   const updateTimecode = debounce(
-    (ev) => {
-      const { currentTime } = ev.target
-      setTimecode(currentTime)
+    (timecode) => {
+      setTimecode(timecode)
       window.localStorage.setItem(
         getTimecodeLocalStorageKey(episode.number),
-        currentTime
+        timecode
       )
     },
     500,
@@ -91,19 +90,33 @@ function MediaPlayer({ episode }: MediaPlayerProps) {
   const mediaElement = useMemo(
     () =>
       ((mediaType, url) => {
-        const timecodeUrl = `${url}#t=${startTimecode}`
-        const props = {
-          src: timecodeUrl,
-          autoPlay: true,
-          controls: true,
-          onTimeUpdate: updateTimecode,
-          ref: mediaEl,
-        }
         switch (mediaType) {
           case MediaType.Audio:
-            return <audio {...props} />
+            return (
+              <audio
+                src={`${url}#t=${startTimecode}`}
+                autoPlay
+                controls
+                onTimeUpdate={(e) =>
+                  updateTimecode((e.target as HTMLAudioElement).currentTime)
+                }
+                ref={mediaEl}
+              />
+            )
           case MediaType.Video:
-            return <video poster={poster.src} {...props} />
+            return (
+              <ReactPlayer
+                url={`${url}?t=${startTimecode}`}
+                width="100%"
+                height="100%"
+                progressInterval={100}
+                onProgress={({ playedSeconds }) =>
+                  updateTimecode(Math.floor(playedSeconds))
+                }
+                controls
+                playsinline
+              />
+            )
           default:
             throw Error(`Unrecognized media type: ${mediaType}`)
         }

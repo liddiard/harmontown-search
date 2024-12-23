@@ -93,18 +93,14 @@ export const handleKeyboardSelect = (
 
 export const mask = (str = '') => new Array(str.length).fill('█').join('')
 
-// return media type (audio or video) + local media urls in development and
-// CDN urls in prod
+// return media type (audio or video) + URL for an episode
 export const getMediaData = (episode: Episode) => {
   const { video_id, number } = episode
   const mediaType = video_id ? MediaType.Video : MediaType.Audio
-  let url
-  // if (process.env.NODE_ENV === 'development') {
-  //   const ext = mediaType === MediaType.Video ? 'mp4' : 'mp3'
-  //   url = `/episodes/${number}.${ext}`
-  // } else {
-  url = video_id || `https://media.harmonsearch.com/${number}.mp3`
-  // }
+  const url =
+    mediaType === MediaType.Video
+      ? `https://www.youtube.com/watch?v=${video_id}`
+      : `https://media.harmonsearch.com/${number}.mp3`
   return { mediaType, url }
 }
 
