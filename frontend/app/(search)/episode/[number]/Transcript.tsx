@@ -9,10 +9,8 @@ import chevronUp from 'img/chevron-up.svg'
 import { handleKeyboardSelect, inRange } from '@/utils'
 import { getCurrentLine } from './transcriptUtils'
 import TranscriptSearch from './TranscriptSearch'
-import { MediaType, Transcript } from '@/types'
+import { MediaType, Transcript as TranscriptType } from '@/types'
 import { SeekFunc } from './MediaPlayer'
-
-
 
 export type HandleLineClickFunc = (
   start: number,
@@ -23,8 +21,8 @@ export type HandleLineClickFunc = (
 export type SetScrollingProgrammaticallyFunc = (timeout?: number) => void
 
 interface TranscriptProps {
-  epNumber: number,
-  timecode: number,
+  epNumber: number
+  timecode: number
   seek: SeekFunc
   mediaType: MediaType
 }
@@ -33,10 +31,10 @@ export default function Transcript({
   epNumber,
   timecode,
   seek,
-  mediaType
+  mediaType,
 }: TranscriptProps) {
   // transcript: array of lines
-  const [transcript, setTranscript] = useState<Transcript>([])
+  const [transcript, setTranscript] = useState<TranscriptType>([])
   // current line of transcript matching the media timecode
   const [currentLine, setCurrentLine] = useState(0)
   // user is scrolling transcript independent of auto scroll to current line
@@ -65,11 +63,12 @@ export default function Transcript({
     const transcriptHeight = transcriptEl.current.clientHeight
     const currentScrollTop = transcriptEl.current.scrollTop
     // vertically center the current line in the transcript window
-    const scrollTo = currentLineTop - (transcriptHeight/2) + (currentLineHeight/2)
+    const scrollTo =
+      currentLineTop - transcriptHeight / 2 + currentLineHeight / 2
     return {
       scrollTo,
       currentScrollTop,
-      transcriptHeight
+      transcriptHeight,
     }
   }
 
@@ -78,19 +77,21 @@ export default function Transcript({
   // Intended to be called directly befrore any scrolling code
   // Browser smooth scroll implemnetations vary, but 1000ms seems to be a
   // sufficiently long duration for this purpose.
-  const setScrollingProgrammatically: SetScrollingProgrammaticallyFunc = useCallback((timeout = 1000) => {
-    scrollingProgrammatically.current = true
-    if (programmaticScollingTimeout.current) {
-      window.clearInterval(programmaticScollingTimeout.current)
-    }
-    programmaticScollingTimeout.current = window.setTimeout(() =>
-      scrollingProgrammatically.current = false,
-    timeout)
-  }, [])
+  const setScrollingProgrammatically: SetScrollingProgrammaticallyFunc =
+    useCallback((timeout = 1000) => {
+      scrollingProgrammatically.current = true
+      if (programmaticScollingTimeout.current) {
+        window.clearInterval(programmaticScollingTimeout.current)
+      }
+      programmaticScollingTimeout.current = window.setTimeout(
+        () => (scrollingProgrammatically.current = false),
+        timeout
+      )
+    }, [])
 
   // fetch the episode transcript whenever the episode number changes
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       if (!epNumber) {
         return
       }
@@ -125,11 +126,7 @@ export default function Transcript({
     if (!transcriptEl.current || !currentLineEl.current || userScroll) {
       return
     }
-    const {
-      scrollTo,
-      currentScrollTop,
-      transcriptHeight
-    } = getScrollTarget()
+    const { scrollTo, currentScrollTop, transcriptHeight } = getScrollTarget()
     if (scrollTo === undefined) {
       return
     }
@@ -139,9 +136,9 @@ export default function Transcript({
       currentScrollTop - transcriptHeight,
       currentScrollTop + transcriptHeight
     )
-    transcriptEl.current?.scroll({ 
+    transcriptEl.current?.scroll({
       top: scrollTo,
-      behavior: smoothScroll ? 'smooth' : 'instant'
+      behavior: smoothScroll ? 'smooth' : 'instant',
     })
     setScrollingProgrammatically()
   }, [currentLine, userScroll, setScrollingProgrammatically])
@@ -170,58 +167,58 @@ export default function Transcript({
     }
   }, [])
 
-  const handleLineClick: HandleLineClickFunc = useCallback((start, isCurrent, seekOptions = {}) => {
-    if (isCurrent) {
-      return
-    }
-    setScrollingProgrammatically()
-    seek(start, seekOptions)
-    setUserScroll(false)
-  }, [seek, setScrollingProgrammatically])
+  const handleLineClick: HandleLineClickFunc = useCallback(
+    (start, isCurrent, seekOptions = {}) => {
+      if (isCurrent) {
+        return
+      }
+      setScrollingProgrammatically()
+      seek(start, seekOptions)
+      setUserScroll(false)
+    },
+    [seek, setScrollingProgrammatically]
+  )
 
-  const handleLineKeydown = useCallback((ev: React.KeyboardEvent, start: number, isCurrent: boolean) => {
-    handleKeyboardSelect(ev, () => handleLineClick(start, isCurrent))
-  }, [handleLineClick])
+  const handleLineKeydown = useCallback(
+    (ev: React.KeyboardEvent, start: number, isCurrent: boolean) => {
+      handleKeyboardSelect(ev, () => handleLineClick(start, isCurrent))
+    },
+    [handleLineClick]
+  )
 
   // when the user is scrolling, show a button with chevron pointing in the
   // direction of the current line
   const getUserScrollIcon = () => {
-    const {
-      scrollTo,
-      currentScrollTop
-    } = getScrollTarget()
-    return (scrollTo && currentScrollTop) &&
-      scrollTo < currentScrollTop ?
-        chevronUp : 
-        chevronDown
+    const { scrollTo, currentScrollTop } = getScrollTarget()
+    return scrollTo && currentScrollTop && scrollTo < currentScrollTop
+      ? chevronUp
+      : chevronDown
   }
 
-  const transcriptComponent = useMemo(() => ((transcript, currentLine) => (
-    <ol className={s.lines}>
-      {transcript.map(({ start, text }) => {
-        const isCurrent = transcript[currentLine]?.start === start
-        return (
-          <li
-            key={`${epNumber}_${start}`}
-            className={classNames('selectable', { selected: isCurrent })}
-            tabIndex={0}
-            role="link"
-            ref={isCurrent ? currentLineEl : null}
-            onClick={() => handleLineClick(start, isCurrent)}
-            onKeyDown={(ev) => handleLineKeydown(ev, start, isCurrent)}
-          >
-            {text}
-          </li>
-        )
-      })}
-    </ol>
-  ))(transcript, currentLine), [
-    epNumber,
-    transcript,
-    currentLine,
-    handleLineClick,
-    handleLineKeydown
-  ])
+  const transcriptComponent = useMemo(
+    () =>
+      ((transcript, currentLine) => (
+        <ol className={s.lines}>
+          {transcript.map(({ start, text }) => {
+            const isCurrent = transcript[currentLine]?.start === start
+            return (
+              <li
+                key={`${epNumber}_${start}`}
+                className={classNames('selectable', { selected: isCurrent })}
+                tabIndex={0}
+                role="link"
+                ref={isCurrent ? currentLineEl : null}
+                onClick={() => handleLineClick(start, isCurrent)}
+                onKeyDown={(ev) => handleLineKeydown(ev, start, isCurrent)}
+              >
+                {text}
+              </li>
+            )
+          })}
+        </ol>
+      ))(transcript, currentLine),
+    [epNumber, transcript, currentLine, handleLineClick, handleLineKeydown]
+  )
 
   return (
     <div className={s.transcript} ref={transcriptEl}>

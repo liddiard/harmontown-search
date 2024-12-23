@@ -10,7 +10,8 @@ import {
   useCallback,
   Suspense,
 } from 'react'
-import ReactPlayer from 'react-player/youtube'
+import ReactPlayer, { YouTubePlayerProps } from 'react-player/youtube'
+import BaseReactPlayer from 'react-player/base'
 import { Tooltip } from 'react-tooltip'
 import debounce from 'lodash.debounce'
 import classNames from 'classnames'
@@ -42,8 +43,10 @@ function MediaPlayer({ episode }: MediaPlayerProps) {
   const [timecode, setTimecode] = useState(0)
   const [startTimecode, setStartTimecode] = useState(0)
   const [shareOpen, setShareOpen] = useState(false)
+  const [videoPlaying, setVideoPlaying] = useState(true)
 
-  const mediaEl = useRef<HTMLVideoElement>(null)
+  const audioEl = useRef<HTMLAudioElement>(null)
+  const videoEl = useRef<BaseReactPlayer<YouTubePlayerProps>>(null)
   const resumePlaybackTimecode = useRef<number | null>(null)
 
   const { mediaType, url } = getMediaData(episode)
@@ -79,17 +82,34 @@ function MediaPlayer({ episode }: MediaPlayerProps) {
     { leading: true, maxWait: 500 }
   )
 
-  const seek: SeekFunc = useCallback(
+  const seekAudio: SeekFunc = useCallback(
     (ms, options = {}) => {
-      if (!mediaEl.current) {
+      if (!audioEl.current) {
         return
       }
-      mediaEl.current.currentTime = ms / 1000
+      audioEl.current.currentTime = ms / 1000
       if (options.play) {
-        mediaEl.current.play()
+        audioEl.current.play()
       }
     },
-    [mediaEl]
+    [audioEl]
+  )
+
+  const seekVideo: SeekFunc = useCallback(
+    (ms, options = {}) => {
+      if (!videoEl.current) {
+        return
+      }
+      // for some reason, video specifically always seeks to the previous
+      // trascript line, so we need to round up
+      videoEl.current.seekTo(Math.ceil(ms / 1000))
+      if (options.play) {
+        // toggle video playback from off to on to force play
+        setVideoPlaying(false)
+        window.setTimeout(() => setVideoPlaying(true))
+      }
+    },
+    [videoEl]
   )
 
   const mediaElement = useMemo(
@@ -105,7 +125,7 @@ function MediaPlayer({ episode }: MediaPlayerProps) {
                 onTimeUpdate={(e) =>
                   updateTimecode((e.target as HTMLAudioElement).currentTime)
                 }
-                ref={mediaEl}
+                ref={audioEl}
               />
             )
           case MediaType.Video:
@@ -116,11 +136,13 @@ function MediaPlayer({ episode }: MediaPlayerProps) {
                 height="100%"
                 className={s.youtubeEmbed}
                 progressInterval={100}
+                playing={videoPlaying}
+                controls
+                playsinline
                 onProgress={({ playedSeconds }) =>
                   updateTimecode(Math.floor(playedSeconds))
                 }
-                controls
-                playsinline
+                ref={videoEl}
               />
             )
           default:
@@ -138,7 +160,7 @@ function MediaPlayer({ episode }: MediaPlayerProps) {
         <Transcript
           epNumber={episode.number}
           timecode={timecode}
-          seek={seek}
+          seek={mediaType === MediaType.Audio ? seekAudio : seekVideo}
           mediaType={mediaType}
         />
       </div>
