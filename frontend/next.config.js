@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-  // https://nextjs.org/docs/app/building-your-application/deploying/static-exports
-  output: 'export',
-  // https://stackoverflow.com/a/66573096/2487925
-  trailingSlash: true,
+  // // https://nextjs.org/docs/app/building-your-application/deploying/static-exports
+  // output: 'export',
+  // // https://stackoverflow.com/a/66573096/2487925
+  // trailingSlash: true,
   webpack: (
     config,
     { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }

@@ -1,11 +1,11 @@
-@import '../globals';
+@use '../globals';
 
 .results {
   & ol {
     list-style: none;
     padding: 0.75em;
     margin: 0.5em 0;
-    background-color: $bg-gray;
+    background-color: globals.$bg-gray;
     border-radius: 0.5em;
   }
 
@@ -17,7 +17,7 @@
   }
 
   .error {
-    color: $secondary-red-lighter;
+    color: globals.$secondary-red-lighter;
   
     h2 {
       font-weight: normal;
@@ -25,7 +25,7 @@
     }
 
     pre {
-      @include error-stack;
+      @include globals.error-stack;
     }
   }
 }

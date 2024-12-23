@@ -8,22 +8,23 @@ import 'layout.scss'
 import Nav from '@/components/nav'
 import heartIcon from 'img/heart.svg'
 import { Donate } from 'react-kofi-overlay'
-
+import { metadataBase } from './constants'
 
 const inter = Inter({
   subsets: ['latin'],
-  fallback: ['system-ui']
+  fallback: ['system-ui'],
 })
 const bebas = Bebas_Neue({
   subsets: ['latin'],
   weight: '400',
-  fallback: ['system-ui']
+  fallback: ['system-ui'],
 })
 
 export const metadata: Metadata = {
   title: 'Harmontown Podcast Search',
-  description: 'Search all episodes of Harmontown: the podcast featuring Dan Harmon, Jeff B. Davis, and Spencer Crittenden.',
-  metadataBase: new URL('https://harmonsearch.com')
+  description:
+    'Search all episodes of Harmontown: the podcast featuring Dan Harmon, Jeff B. Davis, and Spencer Crittenden.',
+  metadataBase,
 }
 
 export default function RootLayout({
@@ -31,13 +32,12 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-
   const donate = (
     <Donate
       username="liddiard"
       classNames={{
         donateBtn: 'donateBtn',
-        profileLink: 'profileLink'
+        profileLink: 'profileLink',
       }}
     >
       Donate
@@ -51,7 +51,10 @@ export default function RootLayout({
           <Link href="/" id="logo">
             <div className="unofficial">Unofficial</div>
             <h1 className={bebas.className}>
-              Harmontown<span className={classNames(inter.className, 'searchHeading')}> Search</span>
+              Harmontown
+              <span className={classNames(inter.className, 'searchHeading')}>
+                 Search
+              </span>
             </h1>
           </Link>
           <Nav />
@@ -59,7 +62,8 @@ export default function RootLayout({
         {children}
         <footer>
           <div className="disclaimer">
-            Disclaimer: This is a fan-made site. It is not affiliated with Harmontown Productions LLC or with anyone from the podcast.
+            Disclaimer: This is a fan-made site. It is not affiliated with
+            Harmontown Productions LLC or with anyone from the podcast.
           </div>
         </footer>
       </body>

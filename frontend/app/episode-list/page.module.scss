@@ -1,4 +1,4 @@
-@import '../globals';
+@use '../globals';
 
 .episodeList {
   table {
@@ -11,8 +11,8 @@
     position: sticky;
     top: 0;
     background-color: rgba(0, 0, 0, 0.5);
-    border-bottom: 1px solid $fg-gray;
-    @include frosted-glass;
+    border-bottom: 1px solid globals.$fg-gray;
+    @include globals.frosted-glass;
 
     th {
       padding: 0.5em 0;
@@ -27,7 +27,7 @@
     white-space: nowrap;
   }
 
-  @include narrow {
+  @include globals.narrow {
     table {
       border-spacing: 0;
     }
@@ -64,7 +64,7 @@
     }
 
     .date {
-      color: $fg-gray;
+      color: globals.$fg-gray;
       font-weight: bold;
       font-size: 0.9em;
     }

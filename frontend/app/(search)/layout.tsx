@@ -1,4 +1,5 @@
 'use client'
+export const dynamic = 'force-static'
 
 import { useSearchParams, useParams } from 'next/navigation'
 
@@ -8,13 +9,13 @@ import TranscriptSearchResults from './TranscriptSearchResults'
 import EpisodeSearchResults from './EpisodeSearchResults'
 import episodes from '@/episode_list.tsv'
 import { ErrorBoundary } from 'react-error-boundary'
+import { Suspense } from 'react'
 
-
-export default function Search({
-  children
-} : {
+interface SearchProps {
   children: React.ReactNode
-}) {
+}
+
+function Search({ children }: SearchProps) {
   const searchParams = useSearchParams()
 
   const queryParams = {
@@ -54,5 +55,14 @@ export default function Search({
         </ErrorBoundary>
       </div>
     </>
+  )
+}
+
+// https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
+export default function SearchWrapper(props: SearchProps) {
+  return (
+    <Suspense>
+      <Search {...props} />
+    </Suspense>
   )
 }

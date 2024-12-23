@@ -1,11 +1,11 @@
-@import '../globals';
+@use '../globals';
 
 .search {
   display: flex;
   gap: 1em;
   margin: 3em 0 2em;
 
-  @include narrow {
+  @include globals.narrow {
     flex-wrap: wrap;
   }
 
@@ -26,7 +26,7 @@
     z-index: 1;
     pointer-events: none;
     font-size: 1.5em;
-    color: $fg-gray;
+    color: globals.$fg-gray;
     height: 100%;
     margin-left: 1.1em;
     display: flex;

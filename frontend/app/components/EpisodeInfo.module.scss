@@ -1,4 +1,4 @@
-@import './globals';
+@use "../globals";
 
 .episodeInfo {
   h3 {
@@ -19,7 +19,7 @@
     .episode {
       font-weight: bold;
       text-transform: uppercase;
-      color: $fg-gray;
+      color: globals.$fg-gray;
     }
 
     .number,
@@ -28,9 +28,9 @@
       color: white;
     }
 
-    @include tablet {
+    @include globals.tablet {
       flex-wrap: wrap;
-    } 
+    }
   }
 
   .metadata {

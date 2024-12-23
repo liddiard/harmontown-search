@@ -1,4 +1,4 @@
-@import './globals';
+@use "../globals";
 
 @keyframes toast {
   0% {
@@ -26,7 +26,7 @@
   margin: 1em;
   padding-block-end: 5vh;
   border-radius: 0.5em;
-  background-color: $bg-gray-opaque;
+  background-color: globals.$bg-gray-opaque;
   z-index: 2;
   padding: 1em;
   display: flex;
@@ -38,7 +38,7 @@
   animation-fill-mode: forwards;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 
-  @include phone-lg {
+  @include globals.phone-lg {
     margin: 0;
     border-radius: 0;
     width: 100%;

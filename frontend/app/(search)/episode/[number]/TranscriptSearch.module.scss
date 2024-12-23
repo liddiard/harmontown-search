@@ -1,4 +1,4 @@
-@import '../../../globals';
+@use '../../../globals';
 
 .transcriptSearch {
   width: 100%;
@@ -30,18 +30,18 @@
   input[type=search] {
     font-size: 0.9rem;
     border-radius: 0.5em 0 0 0.5em;
-    background-color: $bg-gray-lighter-opaque;
+    background-color: globals.$bg-gray-lighter-opaque;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 
     &::placeholder {
-      color: $fg-gray;
+      color: globals.$fg-gray;
     }
 
     &.showingResults {
       padding-left: 2.5em;
     }
 
-    @include wide {
+    @include globals.wide {
       &.video {
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
@@ -64,8 +64,8 @@
     font-size: 0.8em;
     text-transform: uppercase;
     font-weight: bold;
-    color: $secondary-red-lighter;
-    background-color: $bg-gray-lighter-opaque;
+    color: globals.$secondary-red-lighter;
+    background-color: globals.$bg-gray-lighter-opaque;
     position: absolute;
     right: 3em;
     padding: 0.5em 1em;

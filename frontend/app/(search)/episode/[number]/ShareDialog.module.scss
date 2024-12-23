@@ -1,4 +1,4 @@
-@import '../../../globals';
+@use '../../../globals';
 
 .shareDialog {
   margin: 0;
@@ -47,10 +47,10 @@
       }
 
       &.copyLink {
-        color: $primary-blue-lighter;
+        color: globals.$primary-blue-lighter;
 
         &.copied {
-          color: $tertiary-green-lighter;
+          color: globals.$tertiary-green-lighter;
 
           img {
             height: 1.3em;

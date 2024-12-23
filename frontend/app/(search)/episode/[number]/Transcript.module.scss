@@ -1,4 +1,4 @@
-@import '../../../globals';
+@use '../../../globals';
 
 .transcript {
   position: relative;
@@ -7,7 +7,7 @@
   overflow-y: scroll;
   scrollbar-width: none; // Firefox
 
-  @include narrow {
+  @include globals.narrow {
     aspect-ratio: 16/9;
   }
 
@@ -28,7 +28,7 @@
   }
 
   .lines {
-    @include transcript-line;
+    @include globals.transcript-line;
     padding: 0 0.5em;
     margin: 1em 0;
 
@@ -42,7 +42,7 @@
     bottom: 1em;
     margin: 0.5em;
     float: right;
-    background-color: $bg-gray-lighter-opaque;
+    background-color: globals.$bg-gray-lighter-opaque;
     border-radius: 100%;
     aspect-ratio: 1;
     line-height: 0;
@@ -51,7 +51,7 @@
     animation: fadeIn 0.5s forwards;
 
     &:hover {
-      background-color: $bg-gray-lightest-opaque;
+      background-color: globals.$bg-gray-lightest-opaque;
     }
 
     img {
@@ -78,11 +78,11 @@
     }
 
     &::-webkit-progress-value {
-      background-color: $primary-blue;
+      background-color: globals.$primary-blue;
     }
 
     &::-moz-progress-bar {
-      background-color: $primary-blue;
+      background-color: globals.$primary-blue;
     }
   }
 }

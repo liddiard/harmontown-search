@@ -1,9 +1,9 @@
-@import '../../../globals';
+@use '../../../globals';
 
 .mediaPlayerContainer {
   position: relative;
   margin-bottom: 1em;
-  border-bottom: 1px solid $fg-gray;
+  border-bottom: 1px solid globals.$fg-gray;
   padding-bottom: 1em;
 
   .episodeInfo {
@@ -19,7 +19,7 @@
       line-height: 1.1;
       text-wrap: balance;
 
-      @include phone-lg {
+      @include globals.phone-lg {
         font-size: 2em;
       }
     }
@@ -40,15 +40,15 @@
     top: 1rem;
     right: 0;
     background: none;
-    background-color: $bg-gray;
+    background-color: globals.$bg-gray;
     border-radius: 100%;
     aspect-ratio: 1;
     line-height: 0;
     padding: 0.35em;
-    border: 1px solid $bg-gray;
+    border: 1px solid globals.$bg-gray;
     
     &:hover {
-      background-color: $bg-gray-lighter;
+      background-color: globals.$bg-gray-lighter;
     }
     
     img {

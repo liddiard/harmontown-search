@@ -10,56 +10,52 @@ import searchSuggestions from './searchSuggestions.json'
 import { jumpToHash } from '@/utils'
 import Link from 'next/link'
 
-
 interface SearchBarProps {
-  initialQuery: string,
-  searchParams: URLSearchParams,
+  initialQuery: string
+  searchParams: URLSearchParams
   currentEpisode: number
 }
 
 export default function SearchBar({
   initialQuery = '',
   searchParams,
-  currentEpisode
-} : SearchBarProps) {
+  currentEpisode,
+}: SearchBarProps) {
   const defaultPlaceholder = 'Search'
-  const searchBarId = 'search-bar'
+  const searchBarId = 'search'
   const autoFocus = !currentEpisode
 
   const [currentQuery, setCurrentQuery] = useState(initialQuery)
   // if the input is empty, show the first placeholder suggestion on first render
   // `null` corresponds to showing the `defaultPlaceholder`
-  const [placeholderIndex, setPlaceholderIndex] = useState<number | null>(currentQuery || !autoFocus ? null : 0)
-  const cycleInterval = useRef<number>()
+  const [placeholderIndex, setPlaceholderIndex] = useState<number | null>(
+    currentQuery || !autoFocus ? null : 0
+  )
   const placeholders = useRef<string[]>([])
   const pathname = usePathname()
   const router = useRouter()
 
-  const handleSubmit = (ev: React.FormEvent) => {
-    ev?.preventDefault()
+  const handleSubmit = async () => {
     const params = new URLSearchParams(searchParams)
     if (currentQuery) {
       params.set('q', currentQuery)
     } else {
       params.delete('q')
     }
-    router.push(
-      `${pathname}?${params.toString()}`,
-      { scroll: false }
-    )
+    await router.push(`${pathname}?${params.toString()}#${searchBarId}`, {
+      scroll: false,
+    })
     if (document.activeElement instanceof HTMLElement) {
       // remove focus from the input to hide keyboard on mobile
       document.activeElement.blur()
     }
-    jumpToHash(searchBarId)
   }
 
   const cyclePlaceholder = () => {
-    setPlaceholderIndex(prevIndex =>
-      prevIndex === null ||
-      prevIndex + 1 === searchSuggestions.length ?
-        0 :
-        prevIndex! + 1
+    setPlaceholderIndex((prevIndex) =>
+      prevIndex === null || prevIndex + 1 === searchSuggestions.length
+        ? 0
+        : prevIndex! + 1
     )
     setPlaceholderIndex(Math.floor(Math.random() * searchSuggestions.length))
   }
@@ -69,15 +65,18 @@ export default function SearchBar({
   }
 
   // only start the placeholder cycle if the input is empty
-  const handleFocus = useCallback((ev?: React.FocusEvent<HTMLInputElement>) => {
-    if (ev) {
-      ev.target.select()
-    }
-    if (currentQuery) {
-      return
-    }
-    cyclePlaceholder()
-  }, [currentQuery])
+  const handleFocus = useCallback(
+    (ev?: React.FocusEvent<HTMLInputElement>) => {
+      if (ev) {
+        ev.target.select()
+      }
+      if (currentQuery) {
+        return
+      }
+      cyclePlaceholder()
+    },
+    [currentQuery]
+  )
 
   // start the placeholder cycle if the input was cleared, or stop it if it
   // went from empty to containing text
@@ -87,26 +86,24 @@ export default function SearchBar({
       cyclePlaceholder()
     } else if (!currentQuery && value) {
       endPlaceholderCycle()
-    } 
+    }
     setCurrentQuery(value)
   }
 
   const renderPlaceholder = () => (
     <div className={s.placeholders}>
-      <span 
-        className={classNames({ [s.fadeIn]: placeholderIndex === null })}
-      >
+      <span className={classNames({ [s.fadeIn]: placeholderIndex === null })}>
         {defaultPlaceholder}
       </span>
-      {placeholders.current.map((placeholder, index) => 
-        <span 
+      {placeholders.current.map((placeholder, index) => (
+        <span
           className={classNames({ [s.fadeInOut]: index === placeholderIndex })}
           key={placeholder}
           onAnimationEnd={cyclePlaceholder}
         >
           {placeholder}
         </span>
-      )}
+      ))}
     </div>
   )
 
@@ -121,11 +118,15 @@ export default function SearchBar({
   }, [handleFocus, autoFocus])
 
   return (
-    <form onSubmit={handleSubmit} className={s.search} id={searchBarId}>
-      <p>Search all <strong>361</strong> episodes, <strong>14,931</strong> minutes, and <strong>6,611,981</strong> words spoken in <Link href="https://en.wikipedia.org/wiki/Harmontown">Harmontown</Link>:</p>
+    <form action={handleSubmit} className={s.search} id={searchBarId}>
+      <p>
+        Search all <strong>361</strong> episodes, <strong>14,931</strong>
+         minutes, and <strong>6,611,981</strong> words spoken in{' '}
+        <Link href="https://en.wikipedia.org/wiki/Harmontown">Harmontown</Link>:
+      </p>
       <div className={s.inputWrapper}>
         {currentQuery ? null : renderPlaceholder()}
-        <input 
+        <input
           type="search"
           name="main-search"
           aria-label="Search all episodes"

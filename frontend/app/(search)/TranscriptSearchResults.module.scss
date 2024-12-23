@@ -1,4 +1,4 @@
-@import '../globals';
+@use '../globals';
 
 .numResults {
   font-weight: normal;
@@ -12,7 +12,7 @@
 
   .timecode {
     display: inline-block;
-    color: $fg-gray;
+    color: globals.$fg-gray;
     border-radius: 0.5em;
     padding: 2px 4px;
     font-size: 0.9em;
@@ -50,7 +50,7 @@
   overflow-y: auto;
 
   .pageSelected {
-    background-color: $primary-blue;
+    background-color: globals.$primary-blue;
   }
 
   li {

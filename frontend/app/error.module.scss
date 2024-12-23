@@ -1,10 +1,10 @@
-@import './globals';
+@use 'globals';
 
 #errorPage {
   max-width: 960px;
   margin: 0 auto;
   
   pre {
-    @include error-stack;
+    @include globals.error-stack;
   }
 }

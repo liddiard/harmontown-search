@@ -1,4 +1,4 @@
-@import './globals';
+@use 'globals';
 
 html {
   box-sizing: border-box;
@@ -22,7 +22,7 @@ body {
   max-width: 1440px;
   min-height: 100vh;
 
-  @include phone-lg {
+  @include globals.phone-lg {
     padding: 0 1em;
     font-size: 0.9em;
   }
@@ -32,7 +32,7 @@ a {
   color: white;
 
   &:hover {
-    color: $primary-blue-lightest;
+    color: globals.$primary-blue-lightest;
   }
 }
 
@@ -42,30 +42,30 @@ button {
   background: none;
   color: white;
   text-transform: uppercase;
-  font-family: $body-font;
+  font-family: globals.$body-font;
   font-weight: bold;
-  border: 1px solid $bg-gray;
+  border: 1px solid globals.$bg-gray;
 }
 
 mark {
-  background-color: rgba($secondary-yellow, 0.5);
+  background-color: rgba(globals.$secondary-yellow, 0.5);
   color: unset;
 }
 
 input[type=search] {
   width: 100%;
-  font-family: $body-font, sans-serif;
-  background-color: $bg-gray;
+  font-family: globals.$body-font, sans-serif;
+  background-color: globals.$bg-gray;
   color: white;
   border-color: transparent;
   border-style: solid;
   border-width: 2px 0 2px 2px;
   padding: 0.5em 1em;
-  @include frosted-glass;
+  @include globals.frosted-glass;
 
   &:focus {
     outline: none;
-    border-color: $primary-blue;
+    border-color: globals.$primary-blue;
   }
 
   &::-webkit-search-cancel-button {
@@ -79,7 +79,7 @@ article h1 {
 }
 
 button.search {
-  background-color: $primary-blue;
+  background-color: globals.$primary-blue;
   display: flex;
   align-items: center;
   border: none;
@@ -101,14 +101,14 @@ button.search {
 
 .selected {
   cursor: default;
-  background-color: rgba($primary-blue, 0.25);
+  background-color: rgba(globals.$primary-blue, 0.25);
 }
 
 header {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  border-bottom: 1px solid $fg-gray;
+  border-bottom: 1px solid globals.$fg-gray;
   margin-top: 2em;
   padding: 0.5em 0 0.5em;
 
@@ -137,7 +137,7 @@ header {
 footer {
   padding: 2em 0;
   font-size: 0.9em;
-  color: $fg-gray;
+  color: globals.$fg-gray;
 
   & > * {
     margin: 1em 0;
@@ -151,7 +151,7 @@ footer {
     }
   
     .donateBtn {
-      background-color: $primary-blue;
+      background-color: globals.$primary-blue;
       text-shadow: none;
       text-decoration: none;
       text-transform: none;
@@ -161,16 +161,16 @@ footer {
       font-weight: bold;
     
       &:hover {
-        background-color: $primary-blue-lighter;
+        background-color: globals.$primary-blue-lighter;
       }
     
       &:active {
-        background-color: $primary-blue-darker;
+        background-color: globals.$primary-blue-darker;
       }
     }
 
     .profileLink a:hover {
-      color: $primary-blue-darker;
+      color: globals.$primary-blue-darker;
     }
   }
 
@@ -197,14 +197,14 @@ footer {
       letter-spacing: normal;
     }
 
-    @include phone-lg {
+    @include globals.phone-lg {
       font-size: 3.5em;
     }
   }
 
   .unofficial {
     position: absolute;
-    background-color: $secondary-yellow;
+    background-color: globals.$secondary-yellow;
     color: black;
     text-shadow: none;
     text-transform: uppercase;

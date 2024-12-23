@@ -1,7 +1,7 @@
-@import './globals';
+@use 'globals';
 
 .notFound {
-  max-width: $article-width;
+  max-width: globals.$article-width;
   text-align: center;
   margin: 0 auto 30vw;
   padding: 1em;

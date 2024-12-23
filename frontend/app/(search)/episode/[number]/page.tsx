@@ -8,20 +8,19 @@ import { findEpisodeByNumber, getQueryParamsWithoutTimecode } from '@/utils'
 import { QueryParams } from '@/types'
 import MediaPlayer from './MediaPlayer'
 import episodes from '@/episode_list.tsv'
+import { metadataBase } from '@/constants'
+import { unstable_rethrow } from 'next/navigation'
 
-
-interface PageParams {
-  params: {
-    number: number
-  }
-}
+type PageParams = Promise<{ number: number }>
 
 export async function generateStaticParams() {
-  return episodes.map(({ number }: PageParams['params']) =>
-    ({ number: number.toString() }))
+  return episodes.map(({ number }: { number: number }) => ({
+    number: number.toString(),
+  }))
 }
 
-export function generateMetadata({ params: { number } }: PageParams) {
+export async function generateMetadata({ params }: { params: PageParams }) {
+  const { number } = await params
   const episode = findEpisodeByNumber(episodes, Number(number))
   if (!episode) {
     throw Error(`Missing episode for number: ${number}`)
@@ -31,20 +30,29 @@ export function generateMetadata({ params: { number } }: PageParams) {
     title,
     description,
     openGraph: {
-      title: `Episode ${number}: ${title}`
-    }
+      title: `Episode ${number}: ${title}`,
+    },
+    metadataBase,
   }
 }
 
-interface EpisodePlayerProps extends PageParams {
-  searchParams: QueryParams
+interface EpisodePlayerProps {
+  searchParams: Promise<QueryParams>
+  params: Promise<{ number: string }>
 }
 
 export default async function EpisodePlayer({
   params,
-  searchParams
+  searchParams,
 }: EpisodePlayerProps) {
-  const { number } = params
+  let number, queryParams
+  // https://stackoverflow.com/a/78010468
+  try {
+    number = (await params).number
+    queryParams = await searchParams
+  } catch (error) {
+    unstable_rethrow(error)
+  }
   const episode = findEpisodeByNumber(episodes, Number(number))
 
   if (!episode) {
@@ -53,19 +61,19 @@ export default async function EpisodePlayer({
 
   return (
     <div className={s.mediaPlayerContainer} id="media-player">
-      <Link 
-        href={`/${getQueryParamsWithoutTimecode(searchParams)}`}
-        scroll={false}
-        className={s.closePlayer}
-        data-tooltip-id="close-player"
-        data-tooltip-content="Close player"
-      >
-        <Image src={xIcon} alt="Close player" />
-      </Link>
+      {queryParams && (
+        <Link
+          href={`/${getQueryParamsWithoutTimecode(queryParams)}`}
+          scroll={false}
+          className={s.closePlayer}
+          data-tooltip-id="close-player"
+          data-tooltip-content="Close player"
+        >
+          <Image src={xIcon} alt="Close player" />
+        </Link>
+      )}
       <EpisodeInfo {...episode} className={s.episodeInfo} />
-      <MediaPlayer
-        episode={episode}
-      />
+      <MediaPlayer episode={episode} />
     </div>
   )
 }
