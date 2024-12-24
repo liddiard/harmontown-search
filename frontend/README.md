@@ -4,13 +4,10 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 For local development, this project requires:
 
-- Episodes downloaded locally (see [Episodes readme](/episodes))
-- Transcripts: You can use the existing ones in the repo or [create your own](/transcripts)
-- Dependencies installed with `npm install` (or equivalent on other package managers)
-- [Typesense](https://typesense.org/):
-  - A server setup and running with a transcripts search index ("collection") (see [Transcripts readme](/transcripts))
-  - A scoped API key so the frontend can query the Typesense server. For local development, you can use the existing one setup for the default API key "xyz".
-- Node.js 22+ and npm 10+ installed
+- Node.js 22+ and npm 10+ installed.
+- Dependencies installed with `npm install` (or equivalent on other package managers).
+- Transcripts: You can use the existing ones in the repo or [create your own](/transcripts).
+- The [Typesense] search server running locally: See the [server readme](/server/README.md) for instructions.
 
 ## Getting Started
 
