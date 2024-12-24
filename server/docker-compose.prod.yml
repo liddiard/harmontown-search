@@ -8,8 +8,8 @@ services:
       - '443:443'
     volumes:
       - ./typesense-data:/data
+      - /etc/letsencrypt/live/api.harmonsearch.com:/cert:ro
       - type: bind
         source: ./typesense-server.ini
         target: /config/typesense-server.ini
-      - /etc/letsencrypt/live/api.harmonsearch.com:/cert
     command: '--config=/config/typesense-server.ini'
