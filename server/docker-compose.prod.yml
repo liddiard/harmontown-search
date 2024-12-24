@@ -1,0 +1,14 @@
+# config to run Typesense in production directly on HTTPS port 443
+# add an API key and update config as ndded in `typesense-server.ini`
+services:
+  typesense:
+    image: typesense/typesense:27.1
+    restart: always
+    ports:
+      - '443:443'
+    volumes:
+      - ./typesense-data:/data
+      - type: bind
+        source: ./typesense-server.ini
+        target: /config/typesense-server.ini
+    command: '--config=/config/typesense-server.ini'

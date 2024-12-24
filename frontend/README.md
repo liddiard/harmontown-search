@@ -6,14 +6,11 @@ For local development, this project requires:
 
 - Episodes downloaded locally (see [Episodes readme](/episodes))
 - Transcripts: You can use the existing ones in the repo or [create your own](/transcripts)
-- Node.js 18+ and npm 9+ installed
 - Dependencies installed with `npm install` (or equivalent on other package managers)
 - [Typesense](https://typesense.org/):
   - A server setup and running with a transcripts search index ("collection") (see [Transcripts readme](/transcripts))
-  - A scoped API key so the frontend can query the Typesense server:
-    - Create a key with read-only access to the "transcripts" collection ([docs](https://typesense.org/docs/0.25.1/api/api-keys.html#create-an-api-key)).
-    - From this directory, run `API_KEY=<read-only key> ./generate_scoped_search_key.sh`, replacing `<read-only key>` with the key created in the previous step.
-    - In [`app/keys.ts`](/frontend/app/types.ts), replace the `TYPESENSE.DEV` value with the "scoped" key generated in the previous step.
+  - A scoped API key so the frontend can query the Typesense server. For local development, you can use the existing one setup for the default API key "xyz".
+- Node.js 22+ and npm 10+ installed
 
 ## Getting Started
 
@@ -35,7 +32,7 @@ npm run build
 
 ## Deploy to Amazon S3
 
-**Prerequisites:** 
+**Prerequisites:**
 
 - [AWS command line tools installed](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 - S3 bucket created

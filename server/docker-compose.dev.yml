@@ -1,4 +1,4 @@
-# config to run typesense for LOCAL DEVELOPMENT ONLY (API key is not secure)
+# config to run Typesense for LOCAL DEVELOPMENT ONLY (API key is not secure)
 services:
   typesense:
     image: typesense/typesense:27.1

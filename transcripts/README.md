@@ -1,6 +1,6 @@
 # Transcription tools
 
-## Prerequisites 
+## Prerequisites
 
 To make use of the scripts in this directory, you first need to download the podcast episodes by following the instructions in the [Episode tools readme](/episodes/README.md). Additionally, you should have:
 
@@ -14,6 +14,7 @@ After downloading episodes, you can create episode transcriptions by running `./
 **Prerequisite:** OpenAI's Whisper command line interface [must be installed](https://github.com/openai/whisper?tab=readme-ov-file#setup).
 
 Example usage:
+
 ```bash
 ./transcribe_episodes.sh -e 1 # start transcribing from episode 1
 ```
@@ -26,11 +27,12 @@ Fix transcriptions per this file's find/replace criteria by running `python3 cor
 
 ## Upload transcript search index
 
-**Prerequisite:** This project uses [Typesense](https://typesense.org/) as its search indexing provider. [Follow the instructions](https://typesense.org/docs/guide/install-typesense.html) to install and start Typesense on your development machine or server. Make sure you [configure an API key and data directory](https://typesense.org/docs/0.25.1/api/server-configuration.html#using-command-line-arguments).
+**Prerequisite:** This project uses [Typesense](https://typesense.org/) as its search indexing provider. To start the Typesense server, follow the instructions in the [server readme](/server/README.md).
 
 Upload transcripts for Typesense to index by running `python3 index_transcripts.py`.
 
 Example usage:
+
 ```bash
 python3 index_transcripts.py -k '<Typesense API key>' -e dev # upload transcriptions to the local development Typesense server
 ```
