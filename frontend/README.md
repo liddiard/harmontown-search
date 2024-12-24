@@ -7,7 +7,7 @@ For local development, this project requires:
 - Node.js 22+ and npm 10+ installed.
 - Dependencies installed with `npm install` (or equivalent on other package managers).
 - Transcripts: You can use the existing ones in the repo or [create your own](/transcripts).
-- The [Typesense] search server running locally: See the [server readme](/server/README.md) for instructions.
+- The [Typesense](https://typesense.org/) search server running locally: See the [server readme](/server/README.md) for instructions.
 
 ## Getting Started
 
