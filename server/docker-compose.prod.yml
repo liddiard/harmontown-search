@@ -11,4 +11,5 @@ services:
       - type: bind
         source: ./typesense-server.ini
         target: /config/typesense-server.ini
+      - /etc/letsencrypt/live/api.harmonsearch.com:/etc/letsencrypt/live/api.harmonsearch.com
     command: '--config=/config/typesense-server.ini'
