@@ -8,6 +8,8 @@ services:
       - '443:443'
     volumes:
       - ./typesense-data:/data
+      # mount entire directory due to certbot's symlink usage
+      # https://stackoverflow.com/a/67124350
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - type: bind
         source: ./typesense-server.ini

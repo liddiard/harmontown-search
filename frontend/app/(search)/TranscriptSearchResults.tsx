@@ -59,7 +59,7 @@ export default function TranscriptSearchResults({
           page,
           // N.B. There are other params used in this search that are not listed
           // here, which come from the scoped search API key the client is using.
-          // See these additional params in `frontend/generate_scoped_search_key.sh`.
+          // See these additional params in `server/generate_scoped_search_key.sh`.
         })
         .catch(showBoundary)
       return res as SearchResponse<IndexedTranscriptLine>
