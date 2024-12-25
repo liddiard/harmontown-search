@@ -8,23 +8,22 @@ import linkIcon from 'img/link.svg'
 import checkmarkIcon from 'img/checkmark.svg'
 import { formatTimecode } from '@/utils'
 
-
-enum ShareOption { StartCurrent, IncludeResults }
+enum ShareOption {
+  StartCurrent,
+  IncludeResults,
+}
 
 interface ShareDialogProps {
-  setOpen: (open: boolean) => void,
+  setOpen: (open: boolean) => void
   timecode: number
 }
 
-export default function ShareDialog({
-  setOpen,
-  timecode
-}: ShareDialogProps) {
+export default function ShareDialog({ setOpen, timecode }: ShareDialogProps) {
   const { StartCurrent, IncludeResults } = ShareOption
 
   const [options, setOptions] = useState({
     [StartCurrent]: true,
-    [IncludeResults]: false
+    [IncludeResults]: false,
   })
   const [linkCopied, setLinkCopied] = useState(false)
 
@@ -33,20 +32,21 @@ export default function ShareDialog({
   useEffect(() => {
     dialogEl.current?.scrollIntoView({
       behavior: 'smooth',
-      block: 'nearest'
+      block: 'nearest',
     })
   }, [])
 
   const toggleOption = (option: ShareOption) => {
     setOptions({
       ...options,
-      [option]: !options[option]
+      [option]: !options[option],
     })
     setLinkCopied(false)
   }
 
   const copyLink = async () => {
     const url = new URL(window.location.href)
+    url.hash = ''
     if (options[StartCurrent]) {
       url.searchParams.set('t', Math.floor(timecode).toString())
     }
@@ -83,7 +83,7 @@ export default function ShareDialog({
         </label>
         <label>
           <input
-            type="checkbox" 
+            type="checkbox"
             checked={options[IncludeResults]}
             onChange={() => toggleOption(IncludeResults)}
           />
@@ -91,9 +91,9 @@ export default function ShareDialog({
         </label>
         <div className={s.shareActions}>
           <button
-              className={classNames(s.copyLink, { [s.copied]: linkCopied })}
-              onClick={copyLink}
-            >
+            className={classNames(s.copyLink, { [s.copied]: linkCopied })}
+            onClick={copyLink}
+          >
             <Image src={linkCopied ? checkmarkIcon : linkIcon} alt="" />
             {linkCopied ? 'Copied' : 'Copy link'}
           </button>
@@ -109,10 +109,7 @@ export default function ShareDialog({
           </button>
         </div>
       </dialog>
-      <div 
-        className={s.bgMask}
-        onClick={() => setOpen(false)}
-      />
+      <div className={s.bgMask} onClick={() => setOpen(false)} />
     </>
   )
 }
