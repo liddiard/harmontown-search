@@ -1,0 +1,16 @@
+@use '../globals';
+
+.banner {
+  background-color: globals.$secondary-yellow;
+  color: black;
+  text-shadow: none;
+  margin: 1em auto;
+  max-width: 800px;
+  line-height: 1.35;
+  padding: 1em;
+  border-radius: 0.5em;
+
+  a {
+    color: black;
+  }
+}

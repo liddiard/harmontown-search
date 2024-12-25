@@ -22,9 +22,9 @@ Audio episodes are streamed from [Cloudflare R2](https://www.cloudflare.com/deve
 
 The code for this website plus the transcription and indexing process is open source and [available on GitHub](http://github.com/liddiard/harmontown-search).
 
-## Special thanks
+<h2 id="thanks">Special thanks</h2>
 
-Thank you to [@JonesyCat](https://www.youtube.com/channel/UCikicDkkqldNFwVEpI3SRuQ) for uploading all of the Harmontown video episodes to YouTube so they live on after the closure of harmontown.com. Thanks also to [Zach Manson](https://zachmanson.com/) for giving me the heads up and recommendation to embed the Harmontown video back catalog from this channel.
+Thank you to [@JonesyCat](https://www.youtube.com/channel/UCikicDkkqldNFwVEpI3SRuQ) for uploading all of the Harmontown video episodes to YouTube so that they live on after the closure of harmontown.com. Thanks also to [Zach Manson](https://zachmanson.com/) for giving me the heads up and recommendation to embed the Harmontown videos from this channel.
 
 ## Server costs
 
