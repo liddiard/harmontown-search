@@ -7,7 +7,7 @@ export const highlightMatches = (result = '', query = '') => {
   if (!query) {
     return result
   }
-  const queryWords = query.split(' ')
+  const queryWords = query.trim().split(' ')
   const resultContainsQuery = (resultWord: string) =>
     queryWords.some((queryWord) => new RegExp(queryWord, 'i').test(resultWord))
 
