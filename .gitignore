@@ -1,7 +1,6 @@
 .DS_Store
 episodes/*.mp3
 episodes/*.mp4
-transcripts/original/*.tsv
 transcripts/venv/
 transcripts/corrected/*.tsv
 frontend/public/episodes/
