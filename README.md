@@ -1,4 +1,4 @@
-# 🎤 Harmontown podcast search
+# 🎤 [Harmontown podcast search](https://harmonsearch.com/)
 
 Suite of scripts to download, transcribe, and search-index episodes of Harmontown, along with a [web application](https://harmonsearch.com) to search and play the episodes.
 
