@@ -1,6 +1,7 @@
 @use '../globals';
 
 .banner {
+  display: none; // hide the banner
   background-color: globals.$secondary-yellow;
   color: black;
   text-shadow: none;
