@@ -10,8 +10,7 @@ import {
   useCallback,
   Suspense,
 } from 'react'
-import ReactPlayer, { YouTubePlayerProps } from 'react-player/youtube'
-import BaseReactPlayer from 'react-player/base'
+import ReactPlayer from 'react-player'
 import { Tooltip } from 'react-tooltip'
 import debounce from 'lodash.debounce'
 import classNames from 'classnames'
@@ -46,8 +45,13 @@ function MediaPlayer({ episode }: MediaPlayerProps) {
   const [videoPlaying, setVideoPlaying] = useState(true)
 
   const audioEl = useRef<HTMLAudioElement>(null)
-  const videoEl = useRef<BaseReactPlayer<YouTubePlayerProps>>(null)
+  const videoEl = useRef<HTMLVideoElement>(null)
   const resumePlaybackTimecode = useRef<number | null>(null)
+  // Guards the onReady/onLoadedMetadata seek so it only fires once per episode.
+  // Without this, ReactPlayer can re-fire onReady when it receives new callback
+  // prop references (e.g. from useMemo recalculation), which would repeatedly
+  // snap the video back to startTimecode during normal playback.
+  const hasInitiallySeeked = useRef(false)
 
   const { mediaType, url } = getMediaData(episode)
 
@@ -56,30 +60,40 @@ function MediaPlayer({ episode }: MediaPlayerProps) {
   }, [])
 
   useEffect(() => {
+    // Allow the player to seek again when navigating to a different episode
+    // or when the URL's ?t= parameter changes
+    hasInitiallySeeked.current = false
     resumePlaybackTimecode.current =
       typeof window === 'undefined'
         ? null
         : Number(
             window.localStorage.getItem(
-              getTimecodeLocalStorageKey(episode.number)
-            )
+              getTimecodeLocalStorageKey(episode.number),
+            ),
           )
     setStartTimecode(start || resumePlaybackTimecode.current || 0)
   }, [episode.number, start])
 
-  // update timecode in local storage and passed to transcript for current line
-  // highlight/scroll
+  // Update timecode in local storage and passed to transcript for current line
+  // highlight/scroll. Wrapped in useMemo to maintain a stable debounce timer
+  // across renders — without this, each render would create a fresh debounced
+  // function, defeating the debounce and causing the mediaElement useMemo below
+  // to recalculate on every render (since updateTimecode is in its deps).
   // https://lodash.com/docs/4.17.15#debounce
-  const updateTimecode = debounce(
-    (timecode) => {
-      setTimecode(timecode)
-      window.localStorage.setItem(
-        getTimecodeLocalStorageKey(episode.number),
-        timecode
-      )
-    },
-    500,
-    { leading: true, maxWait: 500 }
+  const updateTimecode = useMemo(
+    () =>
+      debounce(
+        (timecode) => {
+          setTimecode(timecode)
+          window.localStorage.setItem(
+            getTimecodeLocalStorageKey(episode.number),
+            timecode,
+          )
+        },
+        500,
+        { leading: true, maxWait: 500 },
+      ),
+    [episode.number],
   )
 
   const seekAudio: SeekFunc = useCallback(
@@ -92,7 +106,7 @@ function MediaPlayer({ episode }: MediaPlayerProps) {
         audioEl.current.play()
       }
     },
-    [audioEl]
+    [audioEl],
   )
 
   const seekVideo: SeekFunc = useCallback(
@@ -100,14 +114,14 @@ function MediaPlayer({ episode }: MediaPlayerProps) {
       if (!videoEl.current) {
         return
       }
-      videoEl.current.seekTo(ms / 1000)
+      videoEl.current.currentTime = ms / 1000
       if (options.play) {
         // toggle video playback from off to on to force play
         setVideoPlaying(false)
         window.setTimeout(() => setVideoPlaying(true))
       }
     },
-    [videoEl]
+    [videoEl],
   )
 
   const mediaElement = useMemo(
@@ -117,9 +131,15 @@ function MediaPlayer({ episode }: MediaPlayerProps) {
           case MediaType.Audio:
             return (
               <audio
-                src={`${url}#t=${startTimecode}`}
+                src={url}
                 autoPlay
                 controls
+                onLoadedMetadata={() => {
+                  if (startTimecode > 0 && !hasInitiallySeeked.current) {
+                    hasInitiallySeeked.current = true
+                    seekAudio(startTimecode * 1000)
+                  }
+                }}
                 onTimeUpdate={(e) =>
                   updateTimecode((e.target as HTMLAudioElement).currentTime)
                 }
@@ -129,16 +149,27 @@ function MediaPlayer({ episode }: MediaPlayerProps) {
           case MediaType.Video:
             return (
               <ReactPlayer
-                url={`${url}?t=${startTimecode}`}
+                src={url}
                 width="100%"
                 height="100%"
                 className={s.youtubeEmbed}
-                progressInterval={100}
                 playing={videoPlaying}
                 controls
-                playsinline
-                onProgress={({ playedSeconds }) =>
-                  updateTimecode(Math.floor(playedSeconds))
+                playsInline
+                onReady={() => {
+                  if (startTimecode > 0 && !hasInitiallySeeked.current) {
+                    hasInitiallySeeked.current = true
+                    seekVideo(startTimecode * 1000)
+                  }
+                }}
+                // Sync React state with user interactions on the built-in
+                // player controls. Without these, the controlled `playing`
+                // prop would immediately revert any user-initiated
+                // play/pause back to the previous state.
+                onPlay={() => setVideoPlaying(true)}
+                onPause={() => setVideoPlaying(false)}
+                onTimeUpdate={(e) =>
+                  updateTimecode((e.target as HTMLVideoElement).currentTime)
                 }
                 ref={videoEl}
               />
@@ -147,7 +178,7 @@ function MediaPlayer({ episode }: MediaPlayerProps) {
             throw Error(`Unrecognized media type: ${mediaType}`)
         }
       })(mediaType, url),
-    [startTimecode, mediaType, url, updateTimecode, videoPlaying]
+    [startTimecode, mediaType, url, updateTimecode, videoPlaying, seekAudio, seekVideo],
   )
 
   return (

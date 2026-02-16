@@ -5,6 +5,8 @@ const nextConfig = {
   output: 'export',
   // https://stackoverflow.com/a/66573096/2487925
   trailingSlash: true,
+  // Webpack configuration for custom file loaders
+  // Note: Turbopack wasn't working with these custom loaders, so not used for now
   webpack: (
     config,
     { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }

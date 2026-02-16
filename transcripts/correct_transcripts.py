@@ -10,7 +10,7 @@ import re
 SOURCE_DIR = 'original'
 TARGET_DIR = 'corrected'
 
-transcripts = os.listdir(SOURCE_DIR)
+transcripts = [f for f in os.listdir(SOURCE_DIR) if f.endswith(".tsv")]
 corrections = []
 
 # correct a transcript given by the input file handle and write it to the

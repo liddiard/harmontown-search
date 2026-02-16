@@ -3,43 +3,43 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "next lint",
     "deploy": "./deploy.sh"
   },
   "engines": {
-    "node": "22",
-    "npm": "10"
+    "node": "24",
+    "npm": "11"
   },
   "dependencies": {
     "classnames": "^2.5.1",
-    "fuse.js": "^7.0.0",
+    "fuse.js": "^7.1.0",
     "lodash.debounce": "^4.0.8",
     "lodash.shuffle": "^4.2.0",
-    "markdown-it": "^14.1.0",
-    "next": "15.1.2",
+    "markdown-it": "^14.1.1",
+    "next": "16.1.6",
     "react": "^19",
     "react-dom": "^19",
-    "react-error-boundary": "^5.0.0",
+    "react-error-boundary": "^6.1.1",
     "react-kofi-overlay": "^1.0.2",
-    "react-player": "^2.16.0",
-    "react-tooltip": "^5.28.0",
-    "sass": "^1.83.0",
-    "typesense": "^1.8.2"
+    "react-player": "^3.4.0",
+    "react-tooltip": "^5.30.0",
+    "sass": "^1.97.3",
+    "typesense": "^3.0.1"
   },
   "devDependencies": {
     "@types/lodash.debounce": "^4.0.9",
     "@types/lodash.shuffle": "^4.2.9",
     "@types/markdown-it": "^14.1.2",
-    "@types/node": "^22",
-    "@types/papaparse": "^5.3.15",
+    "@types/node": "^25",
+    "@types/papaparse": "^5.5.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "csv-loader": "^3.0.5",
-    "eslint": "^9",
-    "eslint-config-next": "15.1.2",
+    "eslint": "^10",
+    "eslint-config-next": "16.1.6",
     "raw-loader": "^4.0.2",
     "typescript": "^5"
   }

@@ -9,7 +9,7 @@ To populate the search index, follow the instructions in the [transcripts readme
 
 ## Scoped search API key
 
-To prevent users from running arbitrary queries against the search database, you can create a key with read-only access to the "transcripts" collection ([docs](https://typesense.org/docs/0.25.1/api/api-keys.html#create-an-api-key)). For development, you can use the scoped search key already in the repo generated from the default password "xyz".
+To prevent users from running arbitrary queries against the search database, you must create a key with read-only access to the "transcripts" collection ([docs](https://typesense.org/docs/0.25.1/api/api-keys.html#create-an-api-key)). For development, you can use the scoped search key already in the repo generated from the default password "xyz".
 
 For production, you'll need to create your own private server API key (which has unrestricted API access), and create your own public search API key (which is read-only and only allows running a specific query). To do this:
 
