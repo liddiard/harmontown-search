@@ -28,7 +28,7 @@ import shareIcon from 'img/share.svg'
 import refreshIcon from 'img/refresh.svg'
 import Toast from '@/components/Toast'
 
-export type SeekFunc = (ms: number, options: { play?: boolean }) => void
+export type SeekFunc = (ms: number, options?: { play?: boolean }) => void
 
 interface MediaPlayerProps {
   episode: Episode
@@ -178,7 +178,15 @@ function MediaPlayer({ episode }: MediaPlayerProps) {
             throw Error(`Unrecognized media type: ${mediaType}`)
         }
       })(mediaType, url),
-    [startTimecode, mediaType, url, updateTimecode, videoPlaying, seekAudio, seekVideo],
+    [
+      startTimecode,
+      mediaType,
+      url,
+      updateTimecode,
+      videoPlaying,
+      seekAudio,
+      seekVideo,
+    ],
   )
 
   return (

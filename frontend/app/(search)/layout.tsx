@@ -25,10 +25,10 @@ function Search({ children }: SearchProps) {
 
   const currentEpisode = Number(useParams().number)
 
-  const renderTranscriptSearchError = ({ error }: { error: Error }) => (
+  const renderTranscriptSearchError = ({ error }: { error: unknown }) => (
     <div className={s.error}>
       <h2>Error loading transcript search results. Refresh to try again.</h2>
-      <pre>{error.stack}</pre>
+      <pre>{error instanceof Error ? error.stack : String(error)}</pre>
     </div>
   )
 
