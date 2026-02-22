@@ -1,18 +1,39 @@
 # Search engine server
 
-[Typesense](https://typesense.org/) powers the episode transcript search. To run this server locally:
+[Typesense](https://typesense.org/) powers the episode transcript search.
 
-1. [Install Docker](https://docs.docker.com/get-started/get-docker/)
-2. In this directory, run `docker compose -f docker-compose.dev.yml up`
+## Prerequisites
+
+[Install Docker](https://docs.docker.com/get-started/get-docker/)
+
+## Development
+
+From this directory, run:
+
+```
+docker compose up
+```
+
+The server starts on port 8108 with the default API key `xyz`. The scoped search key already in [`app/keys.ts`](/frontend/app/keys.ts) was generated from this key, so no configuration is needed to run the frontend locally.
 
 To populate the search index, follow the instructions in the [transcripts readme](/transcripts/README.md).
 
+## Production
+
+The server is intended to run on a VPS behind a reverse proxy (e.g. Nginx, Caddy) that handles HTTPS and TLS certificates. Typesense itself only runs over HTTP on port 8108.
+
+1. In `typesense-server.ini`, replace the `api-key` value with a secure, randomly-generated key. **Do not commit this file with your production key in it.**
+2. From this directory, run `docker compose up -d`
+3. Configure your reverse proxy to forward HTTPS traffic for your API domain to `http://localhost:8108`.
+
 ## Scoped search API key
 
-To prevent users from running arbitrary queries against the search database, you must create a key with read-only access to the "transcripts" collection ([docs](https://typesense.org/docs/0.25.1/api/api-keys.html#create-an-api-key)). For development, you can use the scoped search key already in the repo generated from the default password "xyz".
+To prevent users from running arbitrary queries against the search database, the frontend uses a read-only scoped search key (not the server API key directly).
 
-For production, you'll need to create your own private server API key (which has unrestricted API access), and create your own public search API key (which is read-only and only allows running a specific query). To do this:
+For **development**, the key already in [`app/keys.ts`](/frontend/app/keys.ts) was generated from the default `xyz` key and works out of the box.
 
-1. Create a key with read-only access to the "transcripts" collection: [see docs](https://typesense.org/docs/0.25.1/api/api-keys.html#create-an-api-key).
-2. From this directory, run `API_KEY=<read-only key> ./generate_scoped_search_key.sh`, replacing `<read-only key>` with the key created in the previous step.
-3. In [`app/keys.ts`](/frontend/app/types.ts), replace the `TYPESENSE.PROD` value with the "scoped" key generated in the previous step.
+For **production**, you'll need to generate your own:
+
+1. Create a read-only key scoped to the "transcripts" collection using your server API key: [see Typesense docs](https://typesense.org/docs/0.25.1/api/api-keys.html#create-an-api-key).
+2. From this directory, run `API_KEY=<read-only key> ./generate_scoped_search_key.sh`.
+3. In [`app/keys.ts`](/frontend/app/keys.ts), replace `TYPESENSE.PROD` with the scoped key from the previous step.
