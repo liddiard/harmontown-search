@@ -7,7 +7,7 @@ echo "⚠️  Temporarily unlinking 'episodes' directory symlink"
 unlink "$BASE_DIR/public/episodes"
 
 echo "ℹ️  Starting Next.js build"
-next build
+npm run build
 echo "✅ Completed Next.js build"
 
 echo "ℹ️  Starting AWS S3 sync"
